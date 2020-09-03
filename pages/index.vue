@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <p>Main content will be here.</p>
+    <p>תוכן שיתווסף בהמשך.</p>
   </div>
 </template>
 
