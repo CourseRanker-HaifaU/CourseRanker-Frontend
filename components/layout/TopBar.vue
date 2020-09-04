@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-16 bg-primary mb-2 px-6 py-2 items-center justify-between text-blue-100"
+    class="flex h-20 bg-primary mb-2 px-6 py-2 items-center justify-between text-blue-100 border-accent border-b-4"
   >
     <div class="bar-block">
       <img
