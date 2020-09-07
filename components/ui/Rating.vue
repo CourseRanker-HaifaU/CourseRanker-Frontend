@@ -1,14 +1,38 @@
 <template>
-  <div class="rating-bar flex" :class="{ 'cursor-pointer': editable }">
-    <font-awesome-icon
-      v-for="n in 5"
-      :key="n"
-      class="fa-2x text-primary"
-      :icon="[displayRating >= n ? 'fas' : 'far', 'star']"
-      @mouseover="mouseOver(n)"
-      @mouseout="mouseOut"
-      @click="ratingSet(n)"
-    />
+  <div>
+    <div
+      class="rating-bar flex not-sr-only"
+      aria-hidden="true"
+      :class="{ 'cursor-pointer': editable }"
+    >
+      <font-awesome-icon
+        v-for="n in 5"
+        :key="n"
+        class="fa-2x text-primary"
+        :icon="[displayRating >= n ? 'fas' : 'far', 'star']"
+        :aria-label="n + ' מתוך 5'"
+        @mouseover="mouseOver(n)"
+        @mouseout="mouseOut"
+        @click="ratingSet(n)"
+      />
+    </div>
+    <div class="sr-only">
+      <div v-if="editable">
+        <select
+          :value="rating"
+          aria-label="דירוג (1-5)"
+          @change="ratingSet($event.target.value)"
+        >
+          <option
+            v-for="n in 5"
+            :key="n"
+            :value="n"
+            :aria-label="n + 'מתוך 5'"
+          ></option>
+        </select>
+      </div>
+      <span v-if="!editable">Rating: {{ rating }}</span>
+    </div>
   </div>
 </template>
 
@@ -18,9 +42,9 @@ export default {
   props: {
     rating: {
       type: Number,
-      default: 0,
+      default: 1,
       validator(value) {
-        return value >= 0 && value <= 5
+        return value >= 1 && value <= 5
       },
     },
     editable: {
