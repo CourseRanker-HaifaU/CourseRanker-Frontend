@@ -48,15 +48,17 @@ export default {
 }
 
 .escape-button {
-  text-align: center;
-  color: #d51111;
+  color: #fff;
   height: 30px;
   width: 30px;
   top: -10px;
   right: -10px;
-  background: #fff;
-  border: 3px solid #d51111;
+  background: #d51111;
+  border: 2px solid #fff;
   border-radius: 50%;
   position: absolute;
+  -webkit-box-shadow-bottom: 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow-bottom: 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.4);
 }
 </style>
