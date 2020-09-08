@@ -17,6 +17,8 @@ module.exports = {
       'secondary-hover': '#e5e5e5',
       'accent-hover': '#bc0f0f',
       'accent-border': '#9d0d0d',
+      'input-border': '#a6a8a9',
+      'input-border-focus': '#a6a8a9',
       transparent: 'transparent',
       current: 'currentColor',
 
