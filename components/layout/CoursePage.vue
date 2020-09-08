@@ -1,30 +1,20 @@
 <template>
-  <div id="app">
-    <form @submit.prevent="onSubmit">
-      <h2 class="label-wrapper">
-        <label for="new-todo-input" class="label__lg">
-          שם הקורס: מבוא למדעי המחשב
-        </label>
-        <label for="new-todo-input" class="label__lg">
-          שם החוג: מדעי המחשב
-        </label>
-        <button type="submit">חזור לדף הראשי</button>
-      </h2>
-    </form>
-    <rating editable></rating>
+  <div class="flex flex-col">
+    <div class="flex flex-row">
+      <h2>שם הקורס:</h2>
+      <span class="text-xl ml-4">מבוא למדעי המחשב</span>
+    </div>
+    <div class="flex flex-row">
+      <h2>שם החוג:</h2>
+      <span class="text-xl">מדעי המחשב</span>
+    </div>
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    onSubmit() {
-      this.$router.push('/')
-    },
-  },
+<style scoped>
+h2 {
+  @apply text-xl;
+  @apply font-bold;
+  @apply ml-2;
 }
-</script>
-
-<style>
-@import '\assets\css\main.css';
 </style>
