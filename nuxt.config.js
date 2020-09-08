@@ -63,6 +63,7 @@ export default {
     '@nuxtjs/stylelint-module',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/fontawesome',
   ],
   /*
    ** Nuxt.js modules
@@ -81,4 +82,10 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
+  fontawesome: {
+    icons: {
+      solid: ['faStar', 'faStarHalfAlt'],
+      regular: ['faStar'],
+    },
+  },
 }
