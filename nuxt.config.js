@@ -36,7 +36,7 @@ export default {
       },
     ],
     bodyAttrs: {
-      class: ['bg-secondary', 'text-dark'],
+      class: ['bg-secondary', 'text-dark', 'min-h-screen'],
     },
   },
   /*
