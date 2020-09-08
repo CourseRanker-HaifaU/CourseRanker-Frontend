@@ -47,6 +47,7 @@
         קורסי בחירה
       </button>
     </form>
+    <button>X</button>
   </div>
 </template>
 
@@ -72,8 +73,10 @@ export default {
 
 <style>
 .overall-div {
-  margin: auto;
-  text-align: center;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .chip-div {
@@ -81,12 +84,13 @@ export default {
   padding: 5px;
   width: 60vw;
   min-height: 50px;
-  display: flex;
   flex-wrap: wrap;
   align-content: space-between;
   background-color: #fff;
   border: 2px solid #0664aa;
   border-radius: 5px;
+  display: flex;
+  flex-direction: row;
 }
 
 .chip {
@@ -96,7 +100,6 @@ export default {
   background: #0664aa;
   border: 1px solid #063a61;
   border-radius: 3px;
-  display: flex;
   align-items: center;
 }
 
