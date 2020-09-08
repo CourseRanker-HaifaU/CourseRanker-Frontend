@@ -3,7 +3,7 @@
     <p>תוכן שיתווסף בהמשך.</p>
     <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
     <br />
-    <search-bar class="label__lg"></search-bar>
+    <search-bar class="label__search"></search-bar>
   </div>
 </template>
 
