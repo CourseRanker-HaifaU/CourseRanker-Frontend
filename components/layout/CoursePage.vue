@@ -2,10 +2,12 @@
   <div id="app">
     <form @submit.prevent="onSubmit">
       <h2 class="label-wrapper">
-        <label for="new-todo-input" class="label__lg">ניסיון</label>
+        <label for="new-todo-input" class="label__lg">
+          ניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיון
+        </label>
       </h2>
-      <button type="submit" class="btn btn__primary btn__lg">בדיקה</button>
     </form>
+    <rating editable></rating>
   </div>
 </template>
 
@@ -55,7 +57,8 @@ export default {
 .label-wrapper {
   margin: 0;
   flex: 0 0 100%;
-  text-align: center;
+  text-align: right;
+  white-space: pre-wrap;
 }
 [class*='__lg'] {
   display: inline-block;
@@ -110,8 +113,11 @@ export default {
 @media screen and (min-width: 550px) {
   #app {
     padding: 4rem;
-    margin-left: 10rem;
-    margin-right: 10rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 20vw;
+    margin-right: 20vw;
+    min-height: 100%;
   }
 }
 #app > * {
