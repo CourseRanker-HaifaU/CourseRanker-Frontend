@@ -8,27 +8,27 @@
       />
       <h1 class="text-4xl my-6 text-primary">כניסה לאתר</h1>
       <form @submit.prevent="onSubmit">
-        <div class="mb-4">
-          <label>
-            <input
-              v-model="userEmail"
-              type="email"
-              name="email"
-              placeholder="אימייל"
-              class="form-field"
-            />
-          </label>
+        <div class="mb-4 text-right">
+          <label for="email">אימייל:</label>
+          <input
+            id="email"
+            v-model="userEmail"
+            type="email"
+            name="email"
+            placeholder="אימייל"
+            class="form-field"
+          />
         </div>
-        <div class="mb-4">
-          <label>
-            <input
-              v-model="userPassword"
-              type="password"
-              name="password"
-              placeholder="סיסמה"
-              class="form-field"
-            />
-          </label>
+        <div class="mb-4 text-right">
+          <label for="password">סיסמה:</label>
+          <input
+            id="password"
+            v-model="userPassword"
+            type="password"
+            name="password"
+            placeholder="סיסמה"
+            class="form-field"
+          />
         </div>
         <div class="flex flex-col">
           <input
