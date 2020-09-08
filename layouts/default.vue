@@ -11,6 +11,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  created() {
+    this.$store.dispatch('auth/initStateFromCookies')
+  },
+}
+</script>
+
 <style scoped>
 .almost-full-height {
   height: 100vh;

@@ -7,7 +7,7 @@
         alt="לוגו ועד הסטודנטים"
       />
       <h1 class="login-header text-4xl mb-6">כניסה לאתר</h1>
-      <form>
+      <form @submit.prevent="obSubmit">
         <div class="mb-4">
           <label>
             <input
@@ -41,12 +41,30 @@
 </template>
 
 <script>
+import login from '@/gql/login.gql'
+
 export default {
   data() {
     return {
       userEmail: '',
       userPassword: '',
     }
+  },
+  methods: {
+    async obSubmit() {
+      const res = await this.$apollo.mutate({
+        mutation: login,
+        variables: {
+          email: this.userEmail,
+          password: this.userPassword,
+        },
+      })
+      this.$store.dispatch('auth/login', {
+        token: res.data.login.token,
+        expiresIn: res.data.login.refreshExpiresIn,
+      })
+      this.$router.push('/')
+    },
   },
 }
 </script>

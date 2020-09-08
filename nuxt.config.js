@@ -64,6 +64,7 @@ export default {
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
     '@nuxtjs/fontawesome',
+    '@nuxtjs/apollo',
   ],
   /*
    ** Nuxt.js modules
@@ -86,6 +87,15 @@ export default {
     icons: {
       solid: ['faStar', 'faStarHalfAlt'],
       regular: ['faStar'],
+    },
+  },
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: process.env.HTTP_ENDPOINT
+          ? process.env.HTTP_ENDPOINT
+          : 'http://localhost:8000/graphql/',
+      },
     },
   },
 }
