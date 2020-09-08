@@ -47,7 +47,6 @@
         קורסי בחירה
       </button>
     </form>
-    <button>X</button>
   </div>
 </template>
 
