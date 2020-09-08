@@ -15,7 +15,7 @@ module.exports = {
       accent: '#d51111',
       dark: '#303030',
       'secondary-hover': '#e5e5e5',
-
+      'accent-hover': '#bc0f0f',
       transparent: 'transparent',
       current: 'currentColor',
 
