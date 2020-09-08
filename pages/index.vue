@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <p>תוכן שיתווסף בהמשך.</p>
-    <search-bar></search-bar>
+    <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
+    <br />
+    <search-bar class="label__search"></search-bar>
   </div>
 </template>
 
