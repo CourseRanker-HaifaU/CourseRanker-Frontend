@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <p>תוכן שיתווסף בהמשך.</p>
+    <search-bar></search-bar>
   </div>
 </template>
 
