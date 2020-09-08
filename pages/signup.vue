@@ -2,12 +2,11 @@
   <div class="h-cover w-full text-center">
     <div class="p-8 m-4 md:max-w-md w-full">
       <img
-        class="m-auto rounded-full"
+        class="m-auto rounded-full border-4 border-solid border-input-border"
         src="~/assets/images/logoranker.png"
         alt="לוגו ועד הסטודנטים"
-        style="border: 3px solid #a6a8a9"
       />
-      <h1 class="login-header text-4xl mb-6">יצירת חשבון</h1>
+      <h1 class="text-primary text-4xl my-6">יצירת חשבון</h1>
       <form class="grid grid-cols-2 grid-flow-row gap-4">
         <div>
           <input
@@ -26,37 +25,31 @@
           />
         </div>
         <div class="col-span-2">
-          <label>
-            <input
-              v-model="userEmail"
-              type="email"
-              name="email"
-              placeholder="אימייל"
-              class="form-field"
-            />
-          </label>
+          <input
+            v-model="userEmail"
+            type="email"
+            name="email"
+            placeholder="אימייל"
+            class="form-field"
+          />
         </div>
         <div class="col-span-2">
-          <label>
-            <input
-              v-model="userPassword"
-              type="password"
-              name="password"
-              placeholder="סיסמה"
-              class="login-input shadow-md rounded w-full py-2 px-3 text-gray-700 leading-tight"
-            />
-          </label>
+          <input
+            v-model="userPassword"
+            type="password"
+            name="password"
+            placeholder="סיסמה"
+            class="login-input shadow-md rounded w-full py-2 px-3 text-gray-700 leading-tight"
+          />
         </div>
         <div class="col-span-2">
-          <label>
-            <input
-              v-model="userRepassword"
-              type="password"
-              name="repassword"
-              placeholder="חיזרו על הסיסמה"
-              class="form-field"
-            />
-          </label>
+          <input
+            v-model="userRepassword"
+            type="password"
+            name="repassword"
+            placeholder="חיזרו על הסיסמה"
+            class="form-field"
+          />
         </div>
         <input
           id="sign-up"
