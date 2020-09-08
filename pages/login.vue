@@ -59,7 +59,7 @@ export default {
           password: this.userPassword,
         },
       })
-      this.$store.commit('auth/setToken', {
+      this.$store.dispatch('auth/login', {
         token: res.data.login.token,
         expiresIn: res.data.login.refreshExpiresIn,
       })
