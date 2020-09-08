@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <div class="flex flex-row">
       <h2>שם הקורס:</h2>
-      <span class="text-xl ml-4">מבוא למדעי המחשב</span>
+      <span class="text-xl">מבוא למדעי המחשב</span>
     </div>
     <div class="flex flex-row">
       <h2>שם החוג:</h2>
