@@ -16,7 +16,7 @@
     <div class="bar-block">
       <nuxt-link
         to="/login"
-        class="border-accent border-solid border p-2 rounded-lg bg-secondary text-dark font-bold hover:bg-secondary-hover"
+        class="bg-accent text-white p-2 rounded-lg font-bold shadow hover:bg-accent-hover"
       >
         התחברות
       </nuxt-link>
