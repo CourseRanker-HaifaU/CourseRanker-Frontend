@@ -9,7 +9,7 @@
           src="~/assets/images/logoranker.png"
           alt="לוגו ועד הסטודנטים"
         />
-        <div class="mr-6 flex flex-col justify-center items-center font-bold">
+        <div class="mr-6 flex flex-col justify-center items-center">
           <span>ועד הסטודנטים</span>
           <span>בחוג למדעי המחשב</span>
         </div>
@@ -18,7 +18,7 @@
     <div class="bar-block">
       <nuxt-link
         to="/login"
-        class="bg-accent text-white p-2 rounded-lg font-bold shadow hover:bg-accent-hover"
+        class="login-btn search-btn text-white py-2 px-4 rounded-lg"
       >
         התחברות
       </nuxt-link>
@@ -27,6 +27,16 @@
 </template>
 
 <style scoped>
+.login-btn {
+  background-color: #d51111;
+  border: 1px solid #9d0d0d;
+}
+
+.login-btn:hover {
+  background-color: #bc0f0f;
+  transition: background-color 0.2s ease-in;
+}
+
 .bar-block {
   @apply h-full;
   @apply inline-flex;
