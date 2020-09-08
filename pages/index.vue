@@ -1,8 +1,9 @@
 <template>
-  <div class="container">
+  <div id="app">
     <p>תוכן שיתווסף בהמשך.</p>
     <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
-    <search-bar></search-bar>
+    <br />
+    <search-bar class="label__lg"></search-bar>
   </div>
 </template>
 
@@ -11,6 +12,8 @@ export default {}
 </script>
 
 <style>
+@import '\assets\css\main.css';
+
 /* Sample `apply` at-rules with Tailwind CSS
 .container {
 @apply min-h-screen flex justify-center items-center text-center mx-auto;

@@ -82,7 +82,7 @@ export default {
 .chip-div {
   margin: auto;
   padding: 5px;
-  width: 60vw;
+  width: 41vw;
   min-height: 50px;
   flex-wrap: wrap;
   align-content: space-between;
