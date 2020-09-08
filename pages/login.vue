@@ -1,10 +1,11 @@
 <template>
-  <div class="flex h-cover w-full text-center">
+  <div class="h-cover w-full text-center">
     <div class="w-full p-8 m-4 md:max-w-sm">
       <img
-        class="cs-img m-auto rounded-full"
+        class="m-auto rounded-full"
         src="~/assets/images/logoranker.png"
         alt="לוגו ועד הסטודנטים"
+        style="border: 3px solid #a6a8a9"
       />
       <h1 class="login-header text-4xl mb-6">כניסה לאתר</h1>
       <form @submit.prevent="obSubmit">
@@ -15,7 +16,7 @@
               type="email"
               name="email"
               placeholder="אימייל"
-              class="shadow-md appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+              class="login-input shadow-md rounded w-full py-2 px-3 text-gray-700 leading-tight"
             />
           </label>
         </div>
@@ -26,15 +27,26 @@
               type="password"
               name="password"
               placeholder="סיסמה"
-              class="shadow-md appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              class="login-input shadow-md rounded w-full py-2 px-3 text-gray-700 leading-tight"
             />
           </label>
         </div>
-        <input
-          type="submit"
-          value="התחבר"
-          class="submit-btn text-white py-2 px-4 rounded focus:outline-none mt-6"
-        />
+        <div class="flex flex-col">
+          <input
+            id="login"
+            type="submit"
+            value="התחבר"
+            class="text-white py-2 px-4 rounded focus:outline-none mt-6"
+          />
+          <hr class="mt-6" style="border-top: 2px solid #c4c6c7" />
+          <nuxt-link
+            id="signup"
+            to="/signup"
+            class="text-white py-2 px-4 rounded focus:outline-none mt-6"
+          >
+            צור/צרי חשבון חדש
+          </nuxt-link>
+        </div>
       </form>
     </div>
   </div>
@@ -70,30 +82,30 @@ export default {
 </script>
 
 <style>
-.cs-img {
-  border: 3px solid #a6a8a9;
-}
 .login-header {
   margin-bottom: 30px;
   color: #0664aa;
 }
-
-input[type='email'],
-input[type='password'] {
+.login-input {
   border: 1px solid #a6a8a9;
 }
-
-input[type='email']:focus,
-input[type='password']:focus {
+.login-input:focus {
   outline: none;
   border: none;
   box-shadow: 0 0 0 2pt #d51111;
 }
-.submit-btn {
+#login {
   background-color: #0664aa;
 }
-.submit-btn:hover {
+#login:hover {
   background-color: #065793;
+  transition: background-color 0.2s ease-in;
+}
+#signup {
+  background-color: #00ab0c;
+}
+#signup:hover {
+  background-color: #01900b;
   transition: background-color 0.2s ease-in;
 }
 </style>
