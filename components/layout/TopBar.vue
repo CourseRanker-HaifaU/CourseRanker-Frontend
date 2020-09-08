@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex h-20 bg-primary px-6 py-2 items-center justify-between text-blue-100 border-accent border-b-4"
-  >
+  <div class="top-bar">
     <div class="bar-block">
       <nuxt-link to="/" class="h-full inline-flex">
         <img
@@ -9,32 +7,51 @@
           src="~/assets/images/logoranker.png"
           alt="לוגו ועד הסטודנטים"
         />
-        <div class="mr-6 flex flex-col justify-center items-center">
+        <div
+          class="mr-6 flex flex-col justify-center items-center tracking-wider"
+        >
           <span>ועד הסטודנטים</span>
           <span>בחוג למדעי המחשב</span>
         </div>
       </nuxt-link>
     </div>
     <div class="bar-block">
-      <nuxt-link
-        to="/login"
-        class="login-btn search-btn text-white py-2 px-4 rounded-lg"
-      >
-        התחברות
-      </nuxt-link>
+      <nuxt-link to="/login" class="login-btn">התחברות</nuxt-link>
     </div>
   </div>
 </template>
 
 <style scoped>
+.top-bar {
+  @apply flex;
+  @apply h-20;
+  @apply bg-primary;
+  @apply px-6;
+  @apply py-2;
+  @apply items-center;
+  @apply justify-between;
+  @apply text-blue-100;
+  @apply border-accent;
+  @apply border-b-4;
+}
+
 .login-btn {
-  background-color: #d51111;
-  border: 1px solid #9d0d0d;
+  @apply bg-accent;
+  @apply border;
+  @apply border-solid;
+  @apply border-accent-border;
+  @apply shadow-lg;
+  @apply rounded-lg;
+  @apply text-white;
+  @apply py-2;
+  @apply px-4;
 }
 
 .login-btn:hover {
-  background-color: #bc0f0f;
-  transition: background-color 0.2s ease-in;
+  @apply bg-accent-hover;
+  @apply transition-colors;
+  @apply ease-in;
+  @apply duration-200;
 }
 
 .bar-block {
