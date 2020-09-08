@@ -8,8 +8,8 @@
       />
       <h1 class="text-4xl my-6 text-primary">כניסה לאתר</h1>
       <form @submit.prevent="onSubmit">
-        <div class="mb-4 flex flex-row items-center">
-          <label for="email" class="ml-2 w-1/6">אימייל:</label>
+        <div class="mb-4 text-right">
+          <label for="email">אימייל:</label>
           <input
             id="email"
             v-model="userEmail"
@@ -19,8 +19,8 @@
             class="form-field"
           />
         </div>
-        <div class="mb-4 flex flex-row items-center">
-          <label for="password" class="ml-2 w-1/6">סיסמה:</label>
+        <div class="mb-4 text-right">
+          <label for="password">סיסמה:</label>
           <input
             id="password"
             v-model="userPassword"
