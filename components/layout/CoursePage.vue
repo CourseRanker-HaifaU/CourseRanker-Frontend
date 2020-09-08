@@ -3,8 +3,9 @@
     <form @submit.prevent="onSubmit">
       <h2 class="label-wrapper">
         <label for="new-todo-input" class="label__lg">
-          ניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיון
+          יסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיוןניסיון
         </label>
+        <b-button>Button</b-button>
       </h2>
     </form>
     <rating editable></rating>
@@ -115,9 +116,10 @@ export default {
     padding: 4rem;
     margin-top: 0;
     margin-bottom: 0;
-    margin-left: 20vw;
-    margin-right: 20vw;
-    min-height: 100%;
+    margin-left: 25vw;
+    margin-right: 25vw;
+    min-height: 500%;
+    overflow-wrap: anywhere;
   }
 }
 #app > * {

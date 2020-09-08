@@ -2,6 +2,7 @@
   <div class="container">
     <p>תוכן שיתווסף בהמשך.</p>
     <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
+    <search-bar></search-bar>
   </div>
 </template>
 
