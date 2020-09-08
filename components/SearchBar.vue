@@ -12,6 +12,7 @@
           type="text"
           class="search-bar focus:outline-none"
           placeholder="חיפוש"
+          @keyup.delete="deleteChip(chipsList.length - 1)"
         />
       </div>
       <br />
