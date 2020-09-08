@@ -94,7 +94,7 @@ export default {
       default: {
         httpEndpoint: process.env.HTTP_ENDPOINT
           ? process.env.HTTP_ENDPOINT
-          : 'http://localhost:8000',
+          : 'http://localhost:8000/graphql/',
       },
     },
   },
