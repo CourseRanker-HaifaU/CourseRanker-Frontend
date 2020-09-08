@@ -7,8 +7,16 @@ export const mutations = {
     state.token = token
     state.expiresIn = expiresIn
   },
+  clearToken(state) {
+    state.token = null
+    state.expiresIn = null
+  },
 }
-export const actions = {}
+export const actions = {
+  logOut(context) {
+    context.commit('clearToken')
+  },
+}
 
 export const getters = {
   token(state) {

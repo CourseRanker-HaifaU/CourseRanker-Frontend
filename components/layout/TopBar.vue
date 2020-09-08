@@ -16,10 +16,36 @@
       </nuxt-link>
     </div>
     <div class="bar-block">
-      <nuxt-link to="/login" class="login-btn">התחברות</nuxt-link>
+      <nuxt-link v-if="!isLoggedIn" to="/login" class="login-btn">
+        התחברות
+      </nuxt-link>
+      <button v-if="isLoggedIn" class="login-btn" @click="logOut">
+        התנתקות
+      </button>
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters({
+      isLoggedIn: 'auth/isLoggedIn',
+    }),
+  },
+  methods: {
+    ...mapActions({
+      storeLogOut: 'auth/logOut',
+    }),
+    logOut() {
+      this.storeLogOut()
+      this.$router.push('/')
+    },
+  },
+}
+</script>
 
 <style scoped>
 .top-bar {
