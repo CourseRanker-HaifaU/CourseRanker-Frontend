@@ -11,7 +11,7 @@ module.exports = {
     },
     colors: {
       primary: '#0664aa',
-      secondary: '#f8f8f8',
+      secondary: '#f0f0f0',
       accent: '#d51111',
       dark: '#303030',
       'secondary-hover': '#e5e5e5',
@@ -20,7 +20,7 @@ module.exports = {
       current: 'currentColor',
 
       black: '#000',
-      white: '#fff',
+      white: '#fafafa',
 
       gray: {
         100: '#f7fafc',

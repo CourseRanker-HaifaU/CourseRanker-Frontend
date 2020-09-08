@@ -1,10 +1,12 @@
 <template>
-  <div>
+  <div class="h-screen">
     <header>
       <top-bar></top-bar>
     </header>
-    <main>
-      <Nuxt class="px-6 py-2 flex flex-col items-center min-w-full" />
+    <main
+      class="flex flex-col items-center lg:mx-48 bg-white px-6 py-2 min-h-full"
+    >
+      <Nuxt class="flex flex-col items-center" />
     </main>
   </div>
 </template>
