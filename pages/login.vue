@@ -49,6 +49,7 @@
 
 <script>
 import login from '@/gql/login.gql'
+import { calculateExpiresIn } from '@/utils'
 
 export default {
   data() {
@@ -66,11 +67,13 @@ export default {
           password: this.userPassword,
         },
       })
-      this.$store.dispatch('auth/login', {
-        token: res.data.login.token,
-        expiresIn: res.data.login.refreshExpiresIn,
-      })
-      this.$router.push('/')
+      await this.$apolloHelpers
+        .onLogin(res.data.login.token, undefined, {
+          expires: calculateExpiresIn(res.data.login.refreshExpiresIn),
+        })
+        .then(() => {
+          window.location = '/'
+        })
     },
   },
 }
