@@ -1,14 +1,22 @@
 <template>
   <div class="container">
-    <p>תוכן שיתווסף בהמשך.</p>
-    <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
-    <br />
+    <welcome-message v-if="showWelcome"></welcome-message>
     <search-bar class="label__search"></search-bar>
+    <br />
+    <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
   </div>
 </template>
 
 <script>
-export default {}
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters({
+      showWelcome: 'messages/showWelcome',
+    }),
+  },
+}
 </script>
 
 <style>
