@@ -7,11 +7,15 @@
         alt="לוגו ועד הסטודנטים"
       />
       <h1 class="text-primary text-4xl my-6">צור חשבון חדש</h1>
-      <form class="grid grid-cols-2 grid-flow-row gap-4 text-right">
+      <form
+        class="grid grid-cols-2 grid-flow-row gap-4 text-right"
+        @submit.prevent="onSubmit"
+      >
         <div>
           <label for="firstname">שם פרטי:</label>
           <input
             id="firstname"
+            v-model="firstName"
             type="text"
             name="first"
             placeholder="שם פרטי"
@@ -22,6 +26,7 @@
           <label for="lastname">שם משפחה:</label>
           <input
             id="lastname"
+            v-model="lastName"
             type="text"
             name="last"
             placeholder="שם משפחה"
@@ -73,5 +78,33 @@
 </template>
 
 <script>
-export default {}
+import newUser from '@/gql/newUser.gql'
+import { userLogin } from '@/utils'
+
+export default {
+  data() {
+    return {
+      firstName: '',
+      lastName: '',
+      userEmail: '',
+      userPassword: '',
+      userRepassword: '',
+    }
+  },
+  methods: {
+    async onSubmit() {
+      // TODO: Add validation
+      await this.$apollo.mutate({
+        mutation: newUser,
+        variables: {
+          email: this.userEmail,
+          password: this.userPassword,
+          firstName: this.firstName,
+          lastName: this.lastName,
+        },
+      })
+      userLogin(this, this.userEmail, this.userPassword)
+    },
+  },
+}
 </script>
