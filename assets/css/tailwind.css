@@ -2,7 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* eslint-disable-next-line unknownAtRules */
 @layer components {
   .button {
     @apply text-white;

@@ -1,6 +1,8 @@
 <template>
   <div class="frame-div flex items-stretch">
-    <div class="content-div flex-1 m-6 p-2">
+    <div
+      class="flex-1 m-6 p-2 flex flex-col justify-center items-center bg-white rounded-lg overflow-visible relative"
+    >
       <button class="escape-button" @click="escape">x</button>
       <div class="text-center">
         <h1 class="text-primary text-4xl m-2">
@@ -31,34 +33,28 @@ export default {
 
 <style scoped>
 .frame-div {
+  @apply mt-6;
+  @apply mb-8;
+  @apply rounded-lg;
+  @apply bg-primary;
+
   width: 60vw;
   height: 40vh;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  background: #0664aa;
-  border-radius: 10px;
-}
-
-.content-div {
-  text-align: center;
-  background: #fff;
-  border-radius: 10px;
-  overflow: visible;
-  position: relative;
 }
 
 .escape-button {
-  color: #fff;
-  height: 30px;
-  width: 30px;
+  @apply text-white;
+  @apply w-8;
+  @apply h-8;
+  @apply bg-accent;
+  @apply border-2;
+  @apply border-solid;
+  @apply border-white;
+  @apply rounded-full;
+  @apply shadow-md;
+  @apply absolute;
+
   top: -10px;
   right: -10px;
-  background: #d51111;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  position: absolute;
-  -webkit-box-shadow-bottom: 5px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow-bottom: 5px rgba(0, 0, 0, 0.4);
-  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.4);
 }
 </style>
