@@ -80,6 +80,7 @@
 <script>
 import newUser from '@/gql/newUser.gql'
 import { userLogin } from '@/utils'
+import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
 
 export default {
   data() {
@@ -94,16 +95,35 @@ export default {
   methods: {
     async onSubmit() {
       // TODO: Add validation
-      await this.$apollo.mutate({
-        mutation: newUser,
-        variables: {
-          email: this.userEmail,
-          password: this.userPassword,
-          firstName: this.firstName,
-          lastName: this.lastName,
-        },
-      })
-      userLogin(this, this.userEmail, this.userPassword)
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        // TODO: Notify the user in a better way
+        alert('Invalid data!')
+      } else {
+        await this.$apollo.mutate({
+          mutation: newUser,
+          variables: {
+            email: this.userEmail,
+            password: this.userPassword,
+            firstName: this.firstName,
+            lastName: this.lastName,
+          },
+        })
+        userLogin(this, this.userEmail, this.userPassword)
+      }
+    },
+  },
+  validations: {
+    userEmail: {
+      required,
+      email,
+    },
+    userPassword: {
+      required,
+      minLength: minLength(6),
+    },
+    userRepassword: {
+      sameAsPassword: sameAs('userPassword'),
     },
   },
 }
