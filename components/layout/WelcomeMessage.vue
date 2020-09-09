@@ -3,7 +3,13 @@
     <div
       class="flex-1 m-6 p-2 flex flex-col justify-center items-center bg-white rounded-lg overflow-visible relative"
     >
-      <button class="escape-button" @click="escape">x</button>
+      <button
+        class="escape-button"
+        @click="closeWelcome"
+        @keydown.esc="closeWelcome"
+      >
+        x
+      </button>
       <div class="text-center">
         <h1 class="text-primary text-4xl m-2">
           ברוכים הבאים לאתר הנדיר והמדהים הזה
@@ -21,12 +27,17 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
+  created() {
+    this.restoreFromLocalStorage()
+  },
   methods: {
-    escape() {
-      this.$destroy()
-      this.$el.parentNode.removeChild(this.$el)
-    },
+    ...mapActions({
+      closeWelcome: 'messages/closeWelcome',
+      restoreFromLocalStorage: 'messages/restoreFromLocalStorage',
+    }),
   },
 }
 </script>

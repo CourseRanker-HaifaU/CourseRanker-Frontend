@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <welcome-message></welcome-message>
+    <welcome-message v-if="showWelcome"></welcome-message>
     <search-bar class="label__search"></search-bar>
     <br />
     <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
@@ -8,7 +8,15 @@
 </template>
 
 <script>
-export default {}
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters({
+      showWelcome: 'messages/showWelcome',
+    }),
+  },
+}
 </script>
 
 <style>
