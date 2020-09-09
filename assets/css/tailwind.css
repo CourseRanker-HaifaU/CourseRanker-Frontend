@@ -1,3 +1,73 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+/* eslint-disable-next-line unknownAtRules */
+@layer components {
+  .button {
+    @apply text-white;
+    @apply py-2;
+    @apply px-4;
+    @apply rounded;
+    @apply w-full;
+  }
+
+  .button:focus {
+    @apply outline-none;
+  }
+
+  .button:hover {
+    @apply transition-colors;
+    @apply duration-200;
+    @apply ease-in;
+    @apply cursor-pointer;
+  }
+
+  .blue-button {
+    @apply bg-primary;
+  }
+
+  .blue-button:hover {
+    background-color: #005793;
+  }
+
+  .green-button {
+    background-color: #00ab0c;
+  }
+
+  .green-button:hover {
+    @apply transition-colors;
+    @apply ease-in;
+    @apply duration-200;
+
+    background-color: #01900b;
+  }
+
+  .form-field {
+    @apply border;
+    @apply border-input-border;
+    @apply border-solid;
+    @apply shadow-md;
+    @apply rounded;
+    @apply w-full;
+    @apply py-2;
+    @apply px-3;
+    @apply text-gray-700;
+    @apply leading-tight;
+  }
+
+  .form-field:focus {
+    @apply transition-all;
+    @apply duration-100;
+    @apply ease-linear;
+    @apply border-accent;
+  }
+
+  .round-big-logo {
+    @apply m-auto;
+    @apply rounded-full;
+    @apply border-4;
+    @apply border-solid;
+    @apply border-input-border;
+  }
+}
