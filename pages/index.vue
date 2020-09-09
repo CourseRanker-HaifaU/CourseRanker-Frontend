@@ -21,13 +21,6 @@ export default {
 </script>
 
 <style>
-.catagories_row {
-  text-align: right;
-}
-.items_row:hover {
-  background-color: #cacad3;
-}
-
 /* Sample `apply` at-rules with Tailwind CSS
 .container {
 @apply min-h-screen flex justify-center items-center text-center mx-auto;
