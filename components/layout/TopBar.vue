@@ -27,21 +27,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-
 export default {
   computed: {
-    ...mapGetters({
-      isLoggedIn: 'auth/isLoggedIn',
-    }),
+    isLoggedIn() {
+      return !!this.$apolloHelpers.getToken()
+    },
   },
   methods: {
-    ...mapActions({
-      storeLogOut: 'auth/logOut',
-    }),
     logOut() {
-      this.storeLogOut()
-      this.$router.push('/')
+      this.$apolloHelpers.onLogout().then(() => {
+        window.location = '/'
+      })
     },
   },
 }
