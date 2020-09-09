@@ -49,6 +49,7 @@
 
 <script>
 import { userLogin } from '@/utils'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   data() {
@@ -59,7 +60,22 @@ export default {
   },
   methods: {
     onSubmit() {
-      userLogin(this, this.userEmail, this.userPassword)
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        // TODO: Replace this with a more meaningful input to the user
+        alert('Invalid input!')
+      } else {
+        userLogin(this, this.userEmail, this.userPassword)
+      }
+    },
+  },
+  validations: {
+    userEmail: {
+      required,
+      email,
+    },
+    userPassword: {
+      required,
     },
   },
 }
