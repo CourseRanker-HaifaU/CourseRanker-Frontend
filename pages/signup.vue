@@ -7,59 +7,59 @@
         alt="לוגו ועד הסטודנטים"
       />
       <h1 class="text-primary text-4xl my-6">צור חשבון חדש</h1>
-      <form class="grid grid-cols-2 grid-flow-row gap-4">
+      <form class="grid grid-cols-2 grid-flow-row gap-4 text-right">
         <div>
-          <label>
-            <input
-              type="text"
-              name="last"
-              placeholder="שם משפחה"
-              class="form-field"
-            />
-          </label>
+          <label for="firstname">שם פרטי:</label>
+          <input
+            id="firstname"
+            type="text"
+            name="first"
+            placeholder="שם פרטי"
+            class="form-field"
+          />
         </div>
         <div>
-          <label>
-            <input
-              type="text"
-              name="first"
-              placeholder="שם פרטי"
-              class="form-field"
-            />
-          </label>
+          <label for="lastname">שם משפחה:</label>
+          <input
+            id="lastname"
+            type="text"
+            name="last"
+            placeholder="שם משפחה"
+            class="form-field"
+          />
         </div>
         <div class="col-span-2">
-          <label>
-            <input
-              v-model="userEmail"
-              type="email"
-              name="email"
-              placeholder="אימייל"
-              class="form-field"
-            />
-          </label>
+          <label for="email">אימייל:</label>
+          <input
+            id="email"
+            v-model="userEmail"
+            type="email"
+            name="email"
+            placeholder="אימייל"
+            class="form-field"
+          />
         </div>
         <div class="col-span-2">
-          <label>
-            <input
-              v-model="userPassword"
-              type="password"
-              name="password"
-              placeholder="סיסמה"
-              class="form-field"
-            />
-          </label>
+          <label for="password">סיסמה:</label>
+          <input
+            id="password"
+            v-model="userPassword"
+            type="password"
+            name="password"
+            placeholder="סיסמה"
+            class="form-field"
+          />
         </div>
         <div class="col-span-2">
-          <label>
-            <input
-              v-model="userRepassword"
-              type="password"
-              name="repassword"
-              placeholder="חיזרו על הסיסמה"
-              class="form-field"
-            />
-          </label>
+          <label for="repassword">אישור סיסמה:</label>
+          <input
+            id="repassword"
+            v-model="userRepassword"
+            type="password"
+            name="repassword"
+            placeholder="אישור סיסמה"
+            class="form-field"
+          />
         </div>
         <input
           id="sign-up"
