@@ -48,8 +48,7 @@
 </template>
 
 <script>
-import login from '@/gql/login.gql'
-import { calculateExpiresIn } from '@/utils'
+import { userLogin } from '@/utils'
 
 export default {
   data() {
@@ -59,21 +58,8 @@ export default {
     }
   },
   methods: {
-    async onSubmit() {
-      const res = await this.$apollo.mutate({
-        mutation: login,
-        variables: {
-          email: this.userEmail,
-          password: this.userPassword,
-        },
-      })
-      await this.$apolloHelpers
-        .onLogin(res.data.login.token, undefined, {
-          expires: calculateExpiresIn(res.data.login.refreshExpiresIn),
-        })
-        .then(() => {
-          window.location = '/'
-        })
+    onSubmit() {
+      userLogin(this, this.userEmail, this.userPassword)
     },
   },
 }
