@@ -54,12 +54,8 @@ export default {
     },
   },
   methods: {
-    created() {
-      this.restoreFromLocalStorage()
-    },
     ...mapActions({
       keepWelcomeState: 'messages/keepWelcomeState',
-      restoreFromLocalStorage: 'messages/restoreFromLocalStorage',
     }),
   },
 }
