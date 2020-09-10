@@ -37,7 +37,7 @@
 export default {
   methods: {
     sendTo(msg) {
-      window.location.href = msg
+      this.$router.push(msg)
     },
   },
 }
