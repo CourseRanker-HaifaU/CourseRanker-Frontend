@@ -8,7 +8,7 @@
         <th class="border px-8 py-4">סוג קורס</th>
         <th class="border px-8 py-4">תיאור</th>
       </tr>
-      <tr class="items_row cursor-pointer">
+      <tr class="items_row cursor-pointer" @click="sendTo('/course')">
         <td class="border px-8 py-4">מבוא למדעי המחשב</td>
         <td class="border px-8 py-4">א'</td>
         <td class="border px-8 py-4">5</td>
@@ -33,11 +33,17 @@
   </div>
 </template>
 
-<style scoped>
-.my_table {
-  width: 10rem;
+<script>
+export default {
+  methods: {
+    sendTo(msg) {
+      window.location.href = msg
+    },
+  },
 }
+</script>
 
+<style scoped>
 .catagories_row {
   text-align: right;
 }
