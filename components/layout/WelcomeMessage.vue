@@ -1,16 +1,27 @@
 <template>
-  <div class="frame-div flex items-stretch">
+  <div
+    :class="{
+      'frame-open-div': welcomeState,
+      'frame-close-div': !welcomeState,
+    }"
+    class="flex items-stretch"
+  >
     <div
-      class="flex-1 m-6 p-2 flex flex-col justify-center items-center bg-white rounded-lg overflow-visible relative"
+      :class="{
+        'content-open-div': welcomeState,
+        'content-close-div': !welcomeState,
+      }"
     >
       <button
-        class="escape-button"
-        @click="closeWelcome"
-        @keydown.esc="closeWelcome"
+        :class="{
+          'fold-button': welcomeState,
+          'unfold-button': !welcomeState,
+        }"
+        @click="keepWelcomeState"
       >
-        x
+        {{ btnContent }}
       </button>
-      <div class="text-center">
+      <div v-if="welcomeState" class="text-center">
         <h1 class="text-primary text-4xl m-2">
           ברוכים הבאים לאתר הנדיר והמדהים הזה
         </h1>
@@ -27,15 +38,27 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  created() {
-    this.restoreFromLocalStorage()
+  computed: {
+    ...mapGetters({
+      welcomeState: 'messages/welcomeState',
+    }),
+    btnContent() {
+      if (this.welcomeState) {
+        return 'x'
+      } else {
+        return '+'
+      }
+    },
   },
   methods: {
+    created() {
+      this.restoreFromLocalStorage()
+    },
     ...mapActions({
-      closeWelcome: 'messages/closeWelcome',
+      keepWelcomeState: 'messages/keepWelcomeState',
       restoreFromLocalStorage: 'messages/restoreFromLocalStorage',
     }),
   },
@@ -43,7 +66,7 @@ export default {
 </script>
 
 <style scoped>
-.frame-div {
+.frame-open-div {
   @apply mt-6;
   @apply mb-8;
   @apply rounded-lg;
@@ -53,7 +76,56 @@ export default {
   height: 40vh;
 }
 
-.escape-button {
+.frame-close-div {
+  @apply mt-6;
+  @apply mb-2;
+  @apply rounded-lg;
+  @apply bg-primary;
+
+  width: 60vw;
+  height: 3vh;
+}
+
+.content-open-div {
+  @apply flex-1;
+  @apply m-6;
+  @apply p-2;
+  @apply flex;
+  @apply flex-col;
+  @apply justify-center;
+  @apply items-center;
+  @apply bg-white;
+  @apply rounded-lg;
+  @apply overflow-visible;
+  @apply relative;
+}
+
+.content-close-div {
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
+  @apply relative;
+}
+
+.unfold-button,
+.fold-button {
+  @apply outline-none;
+}
+
+.unfold-button {
+  @apply text-white;
+  @apply w-8;
+  @apply h-8;
+  @apply bg-primary;
+  @apply border-2;
+  @apply border-solid;
+  @apply border-white;
+  @apply rounded-full;
+  @apply shadow-md;
+  @apply absolute;
+}
+
+.fold-button {
   @apply text-white;
   @apply w-8;
   @apply h-8;
