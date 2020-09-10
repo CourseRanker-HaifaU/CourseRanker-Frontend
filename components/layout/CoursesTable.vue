@@ -1,36 +1,65 @@
 <template>
-  <div
-    class="frame-div flex items-stretch flex-shrink sm:text-sm md:text-base w-full"
-  >
-    <table class="lg:w-full">
-      <tr class="text-right bg-primary text-white">
-        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">שם הקורס</th>
-        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">סימסטר</th>
-        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">נקודות זכות</th>
-        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">סוג קורס</th>
-        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">תיאור</th>
-      </tr>
+  <div class="frame-div flex items-stretch flex-shrink w-full">
+    <table class="lg:w-full text-right">
+      <thead>
+        <tr class="border-b-2 border-black">
+          <th class="td-style">
+            שם קורס
+            <font-awesome-icon :icon="['fas', 'align-left']" class="mr-2" />
+          </th>
+          <th class="td-style">
+            סמסטר
+            <font-awesome-icon :icon="['fas', 'align-left']" class="mr-2" />
+          </th>
+          <th class="td-style">
+            מרצה
+            <font-awesome-icon :icon="['fas', 'align-left']" class="mr-2" />
+          </th>
+          <th class="td-style">
+            מתרגל/ת
+            <font-awesome-icon :icon="['fas', 'align-left']" class="mr-2" />
+          </th>
+          <th class="td-style">
+            חוות דעת קורס
+            <font-awesome-icon :icon="['fas', 'align-left']" class="mr-2" />
+          </th>
+          <th class="td-style">
+            חוות דעת מרצה
+            <font-awesome-icon :icon="['fas', 'align-left']" class="mr-2" />
+          </th>
+          <th class="td-style">
+            חוות דעת מתרגל/ת
+            <font-awesome-icon :icon="['fas', 'align-left']" class="mr-2" />
+          </th>
+        </tr>
+      </thead>
 
       <tr
         v-for="course in courses"
         :key="course.id"
-        class="cursor-pointer items_row"
+        class="cursor-pointer border-b border-black text-right"
         @click="sendTo(`/course/${course.id}`)"
       >
-        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
+        <td class="td-style">
           {{ course.name }}
         </td>
-        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
+        <td class="td-style">
           {{ course.semester }}
         </td>
-        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
-          {{ course.points }}
+        <td class="td-style">
+          {{ course.lecturer }}
         </td>
-        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
-          {{ course.isCompulsory ? 'חובה' : 'בחירה' }}
+        <td class="td-style">
+          {{ course.teachingAssistant }}
         </td>
-        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
-          {{ course.description }}
+        <td class="td-style">
+          <rating :rating="5" style="font-size: 7px"></rating>
+        </td>
+        <td class="td-style">
+          <rating :rating="4" style="font-size: 7px"></rating>
+        </td>
+        <td class="td-style">
+          <rating :rating="5" style="font-size: 7px"></rating>
         </td>
       </tr>
     </table>
@@ -45,34 +74,30 @@ export default {
         {
           id: 1,
           name: 'מבוא למדעי המחשב',
-          semester: 'א׳',
-          points: 5,
-          isCompulsory: true,
-          description: 'סילבוס',
+          semester: 'א\' תשפ"א',
+          lecturer: "פרופ' שולי וינטנר",
+          teachingAssistant: 'דניאל מובסוביץ',
         },
         {
           id: 2,
           name: 'מתמטיקה דיסקרטית',
-          semester: 'א׳',
-          points: 5,
-          isCompulsory: true,
-          description: 'סילבוס',
+          semester: 'א\' תשפ"א',
+          lecturer: 'ד"ר אור מאיר',
+          teachingAssistant: 'קופל דפנה',
         },
         {
           id: 3,
-          name: 'חדו״א א׳',
-          semester: 'א׳',
-          points: 5,
-          isCompulsory: true,
-          description: 'סילבוס',
+          name: 'חדו״א 1',
+          semester: 'א\' תשפ"א',
+          lecturer: "פרופ' דניאל קרן",
+          teachingAssistant: 'רועי וליץ',
         },
         {
           id: 4,
-          name: 'מבוא להכנת ביסקוויטים',
-          semester: 'א׳',
-          points: 2,
-          isCompulsory: false,
-          description: 'סילבוס',
+          name: 'אלגברה לינארית',
+          semester: 'א\' תשפ"א',
+          lecturer: 'ד"ר אוריה פירסט',
+          teachingAssistant: 'יולי עזרא',
         },
       ],
     }
@@ -86,15 +111,26 @@ export default {
 </script>
 
 <style scoped>
-.items_row {
-  @apply transition-all;
-  @apply duration-200;
-  @apply ease-in;
-  @apply bg-dark;
-  @apply p-4;
-  @apply bg-secondary;
+.td-style {
+  @apply w-1/7;
+  @apply py-4;
+  @apply mx-0;
+  @apply font-normal;
 }
-.items_row:hover {
-  @apply bg-secondary-hover;
+@screen sm {
+  .td-style {
+    @apply text-xs;
+  }
+}
+@screen md {
+  .td-style {
+    @apply text-sm;
+    @apply mx-2;
+  }
+}
+@screen lg {
+  .td-style {
+    @apply mx-4;
+  }
 }
 </style>

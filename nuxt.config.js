@@ -85,7 +85,7 @@ export default {
   build: {},
   fontawesome: {
     icons: {
-      solid: ['faStar', 'faStarHalfAlt'],
+      solid: ['faStar', 'faStarHalfAlt', 'faAlignLeft'],
       regular: ['faStar'],
     },
   },
