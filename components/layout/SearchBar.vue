@@ -1,5 +1,5 @@
 <template>
-  <div class="overall-div">
+  <div class="overall-div mb-10 mt-6">
     <form>
       <div class="chip-div">
         <div v-for="(chip, index) in chipsList" :key="chip" class="chip">
