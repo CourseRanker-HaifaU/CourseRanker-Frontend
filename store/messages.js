@@ -1,29 +1,30 @@
 const SHOW_WELCOME_KEY = 'welcome-shown'
 
 export const state = () => ({
-  welcomeShown: false,
+  welcomeShown: true,
 })
 
 export const getters = {
-  showWelcome(state) {
-    return !state.welcomeShown
+  welcomeState(state) {
+    return state.welcomeShown
   },
 }
 
 export const mutations = {
-  closeWelcome(state) {
-    state.welcomeShown = true
+  changeWelcomeState(state, welcomeShown) {
+    state.welcomeShown = welcomeShown
   },
 }
 
 export const actions = {
-  closeWelcome(context) {
-    context.commit('closeWelcome')
-    localStorage.setItem(SHOW_WELCOME_KEY, true)
+  keepWelcomeState(context) {
+    context.commit('changeWelcomeState', !context.state.welcomeShown)
+    localStorage.setItem(SHOW_WELCOME_KEY, context.state.welcomeShown)
   },
   restoreFromLocalStorage(context) {
-    if (localStorage.getItem(SHOW_WELCOME_KEY)) {
-      context.commit('closeWelcome')
-    }
+    context.commit(
+      'changeWelcomeState',
+      localStorage.getItem(SHOW_WELCOME_KEY) === 'true'
+    )
   },
 }
