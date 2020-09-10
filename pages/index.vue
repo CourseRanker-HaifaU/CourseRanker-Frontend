@@ -3,7 +3,7 @@
     <welcome-message v-if="showWelcome"></welcome-message>
     <search-bar class="label__search"></search-bar>
     <br />
-    <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
+    <courses-table></courses-table>
   </div>
 </template>
 
