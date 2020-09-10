@@ -1,5 +1,5 @@
 <template>
-  <div class="frame-div flex items-stretch">
+  <div class="frame-div flex items-stretch flex-shrink sm:text-sm md:text-base">
     <table>
       <tr class="catagories_row bg-primary text-white">
         <th class="border px-8 py-4">שם הקורס</th>
