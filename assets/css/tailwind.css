@@ -70,3 +70,12 @@
     @apply border-input-border;
   }
 }
+
+.page-enter-active, .page-leave-active {
+  @apply transition-opacity;
+  @apply duration-200;
+}
+
+.page-enter, .page-leave-to {
+  opacity: 0;
+}
