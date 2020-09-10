@@ -1,33 +1,37 @@
 <template>
-  <div class="frame-div flex items-stretch flex-shrink sm:text-sm md:text-base">
-    <table>
-      <tr class="catagories_row bg-primary text-white">
-        <th class="border px-8 py-4">שם הקורס</th>
-        <th class="border px-8 py-4">סימסטר</th>
-        <th class="border px-8 py-4">נקודות זכות</th>
-        <th class="border px-8 py-4">סוג קורס</th>
-        <th class="border px-8 py-4">תיאור</th>
+  <div
+    class="frame-div flex items-stretch flex-shrink sm:text-sm md:text-base w-full"
+  >
+    <table class="lg:w-full">
+      <tr class="text-right bg-primary text-white">
+        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">שם הקורס</th>
+        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">סימסטר</th>
+        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">נקודות זכות</th>
+        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">סוג קורס</th>
+        <th class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">תיאור</th>
       </tr>
-      <tr class="items_row cursor-pointer" @click="sendTo('/course')">
-        <td class="border px-8 py-4">מבוא למדעי המחשב</td>
-        <td class="border px-8 py-4">א'</td>
-        <td class="border px-8 py-4">5</td>
-        <td class="border px-8 py-4">חובה</td>
-        <td class="border px-8 py-4">סילבוס</td>
-      </tr>
-      <tr class="items_row cursor-pointer">
-        <td class="border px-8 py-4">מתמטיקה דיסקרטית</td>
-        <td class="border px-8 py-4">א'</td>
-        <td class="border px-8 py-4">5</td>
-        <td class="border px-8 py-4">חובה</td>
-        <td class="border px-8 py-4">סילבוס</td>
-      </tr>
-      <tr class="items_row cursor-pointer">
-        <td class="border px-8 py-4">חדו"א א</td>
-        <td class="border px-8 py-4">א'</td>
-        <td class="border px-8 py-4">5</td>
-        <td class="border px-8 py-4">חובה</td>
-        <td class="border px-8 py-4">סילבוס</td>
+
+      <tr
+        v-for="course in courses"
+        :key="course.id"
+        class="cursor-pointer items_row"
+        @click="sendTo(`/course/${course.id}`)"
+      >
+        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
+          {{ course.name }}
+        </td>
+        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
+          {{ course.semester }}
+        </td>
+        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
+          {{ course.points }}
+        </td>
+        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
+          {{ course.isCompulsory ? 'חובה' : 'בחירה' }}
+        </td>
+        <td class="border px-8 py-4 mx-0 md:mx-2 lg:mx-4">
+          {{ course.description }}
+        </td>
       </tr>
     </table>
   </div>
@@ -35,6 +39,44 @@
 
 <script>
 export default {
+  data() {
+    return {
+      courses: [
+        {
+          id: 1,
+          name: 'מבוא למדעי המחשב',
+          semester: 'א׳',
+          points: 5,
+          isCompulsory: true,
+          description: 'סילבוס',
+        },
+        {
+          id: 2,
+          name: 'מתמטיקה דיסקרטית',
+          semester: 'א׳',
+          points: 5,
+          isCompulsory: true,
+          description: 'סילבוס',
+        },
+        {
+          id: 3,
+          name: 'חדו״א א׳',
+          semester: 'א׳',
+          points: 5,
+          isCompulsory: true,
+          description: 'סילבוס',
+        },
+        {
+          id: 4,
+          name: 'מבוא להכנת ביסקוויטים',
+          semester: 'א׳',
+          points: 2,
+          isCompulsory: false,
+          description: 'סילבוס',
+        },
+      ],
+    }
+  },
   methods: {
     sendTo(msg) {
       this.$router.push(msg)
@@ -44,23 +86,15 @@ export default {
 </script>
 
 <style scoped>
-.catagories_row {
-  text-align: right;
-}
 .items_row {
-  -moz-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  -webkit-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
-  background: #f5f5f5;
-  padding: 20px;
+  @apply transition-all;
+  @apply duration-200;
+  @apply ease-in;
+  @apply bg-dark;
+  @apply p-4;
+  @apply bg-secondary;
 }
 .items_row:hover {
-  background: rgb(219, 219, 219);
-}
-th,
-td {
-  width: 400px;
-  overflow: hidden;
+  @apply bg-secondary-hover;
 }
 </style>
