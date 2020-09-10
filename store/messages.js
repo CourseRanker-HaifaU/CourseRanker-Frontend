@@ -11,27 +11,20 @@ export const getters = {
 }
 
 export const mutations = {
-  changeWelcomeState(state) {
-    state.welcomeShown = !state.welcomeShown
-  },
-  setTrue(state) {
-    state.welcomeShown = true
-  },
-  setFalse(state) {
-    state.welcomeShown = false
+  changeWelcomeState(state, welcomeShown) {
+    state.welcomeShown = welcomeShown
   },
 }
 
 export const actions = {
   keepWelcomeState(context) {
-    context.commit('changeWelcomeState')
+    context.commit('changeWelcomeState', !context.state.welcomeShown)
     localStorage.setItem(SHOW_WELCOME_KEY, context.state.welcomeShown)
   },
   restoreFromLocalStorage(context) {
-    if (localStorage.getItem(SHOW_WELCOME_KEY) === 'true') {
-      context.commit('setTrue')
-    } else {
-      context.commit('setFalse')
-    }
+    context.commit(
+      'changeWelcomeState',
+      localStorage.getItem(SHOW_WELCOME_KEY) === 'true'
+    )
   },
 }
