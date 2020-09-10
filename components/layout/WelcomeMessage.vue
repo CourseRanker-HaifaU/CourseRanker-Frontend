@@ -47,7 +47,7 @@ export default {
     }),
     btnContent() {
       if (this.welcomeState) {
-        return 'x'
+        return '-'
       } else {
         return '+'
       }
