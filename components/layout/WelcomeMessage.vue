@@ -45,13 +45,6 @@ export default {
     ...mapGetters({
       welcomeState: 'messages/welcomeState',
     }),
-    btnContent() {
-      if (this.welcomeState) {
-        return '-'
-      } else {
-        return '+'
-      }
-    },
   },
   methods: {
     ...mapActions({

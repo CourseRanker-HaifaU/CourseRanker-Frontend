@@ -19,21 +19,23 @@
         />
       </div>
       <br />
-      <button class="search-btn" @click.prevent="addChip('שנה א')">
-        שנה א'
-      </button>
-      <button class="search-btn" @click.prevent="addChip('שנה ב')">
-        שנה ב'
-      </button>
-      <button class="search-btn" @click.prevent="addChip('שנה ג')">
-        שנה ג'
-      </button>
-      <button class="search-btn" @click.prevent="addChip('קורסי חובה')">
-        קורסי חובה
-      </button>
-      <button class="search-btn" @click.prevent="addChip('קורסי בחירה')">
-        קורסי בחירה
-      </button>
+      <div class="btn-div">
+        <button class="search-btn" @click.prevent="addChip('שנה א')">
+          שנה א'
+        </button>
+        <button class="search-btn" @click.prevent="addChip('שנה ב')">
+          שנה ב'
+        </button>
+        <button class="search-btn" @click.prevent="addChip('שנה ג')">
+          שנה ג'
+        </button>
+        <button class="search-btn" @click.prevent="addChip('קורסי חובה')">
+          קורסי חובה
+        </button>
+        <button class="search-btn" @click.prevent="addChip('קורסי בחירה')">
+          קורסי בחירה
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -94,6 +96,13 @@ export default {
   border-radius: 3px;
 }
 
+.btn-div {
+  @apply w-full;
+  @apply grid;
+  @apply grid-cols-5;
+  @apply gap-6;
+}
+
 .delete-btn {
   @apply flex;
   @apply items-center;
@@ -121,7 +130,11 @@ input {
 .search-btn:hover {
   @apply bg-accent-hover;
   @apply transition;
-  @apply duration-1000;
+  @apply duration-300;
   @apply ease-in;
+}
+
+.search-btn:focus {
+  @apply outline-none;
 }
 </style>

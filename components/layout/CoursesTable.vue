@@ -37,7 +37,7 @@
       <tr
         v-for="course in courses"
         :key="course.id"
-        class="cursor-pointer border-b border-black text-right"
+        class="cursor-pointer border-b border-black text-right hover:bg-gray-200"
         @click="sendTo(`/course/${course.id}`)"
       >
         <td class="td-style">
