@@ -1,11 +1,14 @@
 <template>
-  <div class="overall-div mb-10 mt-6">
+  <div class="overall-div">
     <form>
       <div class="chip-div">
         <div v-for="(chip, index) in chipsList" :key="chip" class="chip">
           {{ chip }}
-          <button class="delete-btn" @click.prevent="deleteChip(index)">
-            x
+          <button
+            class="delete-btn focus:outline-none"
+            @click.prevent="deleteChip(index)"
+          >
+            <font-awesome-icon :icon="['fas', 'times-circle']" />
           </button>
         </div>
         <input
@@ -16,37 +19,23 @@
         />
       </div>
       <br />
-      <button type="submit" class="absolute right-0 top-0 mt-5 mr-4"></button>
-      <button
-        class="search-btn text-white py-2 px-4 rounded"
-        @click.prevent="addChip('שנה א')"
-      >
-        שנה א'
-      </button>
-      <button
-        class="search-btn text-white py-2 px-4 rounded"
-        @click.prevent="addChip('שנה ב')"
-      >
-        שנה ב'
-      </button>
-      <button
-        class="search-btn text-white py-2 px-4 rounded"
-        @click.prevent="addChip('שנה ג')"
-      >
-        שנה ג'
-      </button>
-      <button
-        class="search-btn text-white py-2 px-4 rounded"
-        @click.prevent="addChip('קורסי חובה')"
-      >
-        קורסי חובה
-      </button>
-      <button
-        class="search-btn text-white py-2 px-4 rounded"
-        @click.prevent="addChip('קורסי בחירה')"
-      >
-        קורסי בחירה
-      </button>
+      <div class="btn-div">
+        <button class="search-btn" @click.prevent="addChip('שנה א')">
+          שנה א'
+        </button>
+        <button class="search-btn" @click.prevent="addChip('שנה ב')">
+          שנה ב'
+        </button>
+        <button class="search-btn" @click.prevent="addChip('שנה ג')">
+          שנה ג'
+        </button>
+        <button class="search-btn" @click.prevent="addChip('קורסי חובה')">
+          קורסי חובה
+        </button>
+        <button class="search-btn" @click.prevent="addChip('קורסי בחירה')">
+          קורסי בחירה
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -73,56 +62,79 @@ export default {
 
 <style>
 .overall-div {
-  display: flex;
-  align-self: center;
-  align-items: center;
-  flex-direction: column;
+  @apply flex;
+  @apply self-center;
+  @apply items-center;
+  @apply flex-col;
+  @apply mb-10;
+  @apply mt-6;
 }
 
 .chip-div {
-  margin: auto;
-  padding: 5px;
+  @apply flex;
+  @apply flex-row;
+  @apply bg-white;
+  @apply rounded-md;
+  @apply border-2;
+  @apply border-solid;
+  @apply border-primary;
+  @apply p-1;
+
   width: 60vw;
   min-height: 50px;
-  flex-wrap: wrap;
-  align-content: space-between;
-  background-color: #fff;
-  border: 2px solid #0664aa;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: row;
 }
 
 .chip {
-  margin: 4px;
-  padding: 1px 4px;
-  color: #fff;
-  background: #0664aa;
-  border: 1px solid #063a61;
+  @apply flex;
+  @apply items-center;
+  @apply text-white;
+  @apply bg-primary;
+  @apply m-1;
+  @apply py-px;
+  @apply px-1;
+
   border-radius: 3px;
-  align-items: center;
+}
+
+.btn-div {
+  @apply w-full;
+  @apply grid;
+  @apply grid-cols-5;
+  @apply gap-6;
 }
 
 .delete-btn {
-  padding-right: 4px;
-  padding-left: 4px;
+  @apply flex;
+  @apply items-center;
+  @apply pr-2;
 }
 
 input {
-  border: none;
-  outline: none;
-  padding: 4px;
-  flex: 1 1 auto;
-  background: transparent;
+  @apply border-none;
+  @apply outline-none;
+  @apply flex-1;
+  @apply bg-transparent;
+  @apply p-1;
 }
 
 .search-btn {
-  background-color: #d51111;
-  border: 1px solid #9d0d0d;
+  @apply bg-accent;
+  @apply text-white;
+  @apply py-2;
+  @apply px-4;
+  @apply rounded;
+  @apply border;
+  @apply border-accent-border;
 }
 
 .search-btn:hover {
-  background-color: #bc0f0f;
-  transition: background-color 0.2s ease-in;
+  @apply bg-accent-hover;
+  @apply transition;
+  @apply duration-300;
+  @apply ease-in;
+}
+
+.search-btn:focus {
+  @apply outline-none;
 }
 </style>

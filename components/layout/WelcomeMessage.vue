@@ -19,7 +19,7 @@
         }"
         @click="keepWelcomeState"
       >
-        {{ btnContent }}
+        <font-awesome-icon :icon="['fas', welcomeState ? 'minus' : 'plus']" />
       </button>
       <div v-if="welcomeState" class="text-center">
         <h1 class="text-primary text-4xl m-2">
@@ -45,13 +45,6 @@ export default {
     ...mapGetters({
       welcomeState: 'messages/welcomeState',
     }),
-    btnContent() {
-      if (this.welcomeState) {
-        return '-'
-      } else {
-        return '+'
-      }
-    },
   },
   methods: {
     ...mapActions({
@@ -105,6 +98,9 @@ export default {
 
 .unfold-button,
 .fold-button {
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
   @apply outline-none;
 }
 
