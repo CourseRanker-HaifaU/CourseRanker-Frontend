@@ -62,6 +62,10 @@
               <rating :rating="5" class="rating"></rating>
             </span>
           </div>
+          <div>
+            <button class="button blue-button ml-2">הוסף לקורסים שלי</button>
+            <button class="button blue-button">הוסף חוות דעת</button>
+          </div>
         </div>
       </transition>
     </div>
