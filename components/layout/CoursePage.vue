@@ -5,26 +5,30 @@
       <div style="margin-bottom: 18px">
         <hr class="border-0 bg-gray-500 text-gray-500 h-px" />
       </div>
-      <div class="grid grid-flow-col grid-cols-4 grid-rows-2 gap-2">
+      <div
+        v-for="detail in details"
+        :key="detail.unit"
+        class="grid grid-flow-col grid-cols-4 grid-rows-2 gap-2"
+      >
         <div>
           <th>חוג:</th>
-          <td>מדעי המחשב</td>
+          <td>{{ detail.unit }}</td>
         </div>
         <div>
           <th>נקודות זכות:</th>
-          <td>5</td>
+          <td>{{ detail.credit }}</td>
         </div>
         <div>
           <th>אופן הוראה:</th>
-          <td>שיעור ותרגול</td>
+          <td>{{ detail.teachingMethod }}</td>
         </div>
         <div>
           <th>קהל יעד:</th>
-          <td>חוג</td>
+          <td>{{ detail.audience }}</td>
         </div>
         <div>
           <th>סוג קורס:</th>
-          <td>חובה</td>
+          <td>{{ detail.type }}</td>
         </div>
         <div>
           <th>דירוג ממוצע:</th>
@@ -36,14 +40,18 @@
     </div>
     <div class="container">
       <h1>סימסטר א' תשפ"א</h1>
-      <div class="grid gap-1 grid-cols-2 gap-y-3">
+      <div
+        v-for="detail in sem_details"
+        :key="detail.lecturer"
+        class="grid gap-1 grid-cols-2 gap-y-3"
+      >
         <div>
           <th>מרצה:</th>
-          <td>אור מאיר</td>
+          <td>{{ detail.lecturer }}</td>
         </div>
         <div>
           <th>מתרגל/ת:</th>
-          <td>דפנה קופל</td>
+          <td>{{ detail.teachingAssistant }}</td>
         </div>
         <div>
           <th>דירוג מרצה:</th>
@@ -79,6 +87,30 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      details: [
+        {
+          unit: 'מדעי המחשב',
+          credit: 5,
+          teachingMethod: 'הרצאה ותרגול',
+          audience: 'חוג',
+          type: 'חובה',
+        },
+      ],
+      sem_details: [
+        {
+          lecturer: 'שולי וינטנר',
+          teachingAssistant: 'דניאל מובסוביץ',
+        },
+      ],
+    }
+  },
+}
+</script>
 
 <style scoped>
 h2 {
