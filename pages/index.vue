@@ -3,7 +3,7 @@
     <welcome-message></welcome-message>
     <search-bar class="label__search"></search-bar>
     <br />
-    <courses-table></courses-table>
+    <courses-table :which-table="'courses'"></courses-table>
   </div>
 </template>
 
