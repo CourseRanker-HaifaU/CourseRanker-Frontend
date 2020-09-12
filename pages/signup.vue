@@ -11,61 +11,39 @@
         class="grid grid-cols-2 grid-flow-row gap-4 text-right"
         @submit.prevent="onSubmit"
       >
-        <div>
-          <label for="firstname">שם פרטי:</label>
-          <input
-            id="firstname"
-            v-model="firstName"
-            type="text"
-            name="first"
-            placeholder="שם פרטי"
-            class="form-field"
-          />
-        </div>
-        <div>
-          <label for="lastname">שם משפחה:</label>
-          <input
-            id="lastname"
-            v-model="lastName"
-            type="text"
-            name="last"
-            placeholder="שם משפחה"
-            class="form-field"
-          />
-        </div>
-        <div class="col-span-2">
-          <label for="email">אימייל:</label>
-          <input
-            id="email"
-            v-model="userEmail"
-            type="email"
-            name="email"
-            placeholder="אימייל"
-            class="form-field"
-          />
-        </div>
-        <div class="col-span-2">
-          <label for="password">סיסמה:</label>
-          <input
-            id="password"
-            v-model="userPassword"
-            type="password"
-            name="password"
-            placeholder="סיסמה"
-            class="form-field"
-          />
-        </div>
-        <div class="col-span-2">
-          <label for="repassword">אישור סיסמה:</label>
-          <input
-            id="repassword"
-            v-model="userRepassword"
-            type="password"
-            name="repassword"
-            placeholder="אישור סיסמה"
-            class="form-field"
-          />
-        </div>
+        <input-field
+          id="firstname"
+          v-model="firstName"
+          type="text"
+          label="שם פרטי"
+        />
+        <input-field
+          id="lastname"
+          v-model="lastName"
+          type="text"
+          label="שם משפחה"
+        />
+        <input-field
+          id="email"
+          v-model="userEmail"
+          type="email"
+          label="אימייל"
+          div-class="col-span-2"
+        />
+        <input-field
+          id="password"
+          v-model="userPassword"
+          type="password"
+          label="סיסמה"
+          div-class="col-span-2"
+        />
+        <input-field
+          id="רקpassword"
+          v-model="userRepassword"
+          type="password"
+          label="אישור סיסמה"
+          div-class="col-span-2"
+        />
         <input
           id="sign-up"
           type="submit"
