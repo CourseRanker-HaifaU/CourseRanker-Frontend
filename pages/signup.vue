@@ -11,61 +11,42 @@
         class="grid grid-cols-2 grid-flow-row gap-4 text-right"
         @submit.prevent="onSubmit"
       >
-        <div>
-          <label for="firstname">שם פרטי:</label>
-          <input
-            id="firstname"
-            v-model="firstName"
-            type="text"
-            name="first"
-            placeholder="שם פרטי"
-            class="form-field"
-          />
-        </div>
-        <div>
-          <label for="lastname">שם משפחה:</label>
-          <input
-            id="lastname"
-            v-model="lastName"
-            type="text"
-            name="last"
-            placeholder="שם משפחה"
-            class="form-field"
-          />
-        </div>
-        <div class="col-span-2">
-          <label for="email">אימייל:</label>
-          <input
-            id="email"
-            v-model="userEmail"
-            type="email"
-            name="email"
-            placeholder="אימייל"
-            class="form-field"
-          />
-        </div>
-        <div class="col-span-2">
-          <label for="password">סיסמה:</label>
-          <input
-            id="password"
-            v-model="userPassword"
-            type="password"
-            name="password"
-            placeholder="סיסמה"
-            class="form-field"
-          />
-        </div>
-        <div class="col-span-2">
-          <label for="repassword">אישור סיסמה:</label>
-          <input
-            id="repassword"
-            v-model="userRepassword"
-            type="password"
-            name="repassword"
-            placeholder="אישור סיסמה"
-            class="form-field"
-          />
-        </div>
+        <input-field
+          id="firstname"
+          v-model="firstName"
+          type="text"
+          label="שם פרטי"
+        />
+        <input-field
+          id="lastname"
+          v-model="lastName"
+          type="text"
+          label="שם משפחה"
+        />
+        <input-field
+          id="email"
+          v-model="userEmail"
+          type="email"
+          label="אימייל"
+          div-class="col-span-2"
+          :error-message="emailError"
+        />
+        <input-field
+          id="password"
+          v-model="userPassword"
+          type="password"
+          label="סיסמה"
+          div-class="col-span-2"
+          :error-message="passwordError"
+        />
+        <input-field
+          id="repassword"
+          v-model="userRepassword"
+          type="password"
+          label="אישור סיסמה"
+          div-class="col-span-2"
+          :error-message="repasswordError"
+        />
         <input
           id="sign-up"
           type="submit"
@@ -90,7 +71,27 @@ export default {
       userEmail: '',
       userPassword: '',
       userRepassword: '',
+      emailError: '',
+      passwordError: '',
+      repasswordError: '',
     }
+  },
+  watch: {
+    userEmail(oldVal, newVal) {
+      if (this.emailError !== '' && oldVal !== newVal) {
+        this.emailError = ''
+      }
+    },
+    userPassword(oldVal, newVal) {
+      if (this.passwordError !== '' && oldVal !== newVal) {
+        this.passwordError = ''
+      }
+    },
+    userRepassword(oldVal, newVal) {
+      if (this.repasswordError !== '' && oldVal !== newVal) {
+        this.repasswordError = ''
+      }
+    },
   },
   methods: {
     async onSubmit() {
@@ -98,7 +99,17 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         // TODO: Notify the user in a better way
-        alert('Invalid data!')
+        if (this.$v.userEmail.$invalid) {
+          this.emailError = 'חובה להזין כתובת אימייל תקינה'
+        }
+
+        if (this.$v.userPassword.$invalid) {
+          this.passwordError = 'חובה להזין סיסמה באורך 6 תווים לפחות'
+        }
+
+        if (this.$v.userRepassword.$invalid) {
+          this.repasswordError = 'שדה זה חייב להיות זהה לסיסמה'
+        }
       } else {
         await this.$apollo.mutate({
           mutation: newUser,
@@ -123,6 +134,7 @@ export default {
       minLength: minLength(6),
     },
     userRepassword: {
+      required,
       sameAsPassword: sameAs('userPassword'),
     },
   },

@@ -8,28 +8,22 @@
       />
       <h1 class="text-4xl my-6 text-primary">כניסה לאתר</h1>
       <form @submit.prevent="onSubmit">
-        <div class="mb-4 text-right">
-          <label for="email">אימייל:</label>
-          <input
-            id="email"
-            v-model="userEmail"
-            type="email"
-            name="email"
-            placeholder="אימייל"
-            class="form-field"
-          />
-        </div>
-        <div class="mb-4 text-right">
-          <label for="password">סיסמה:</label>
-          <input
-            id="password"
-            v-model="userPassword"
-            type="password"
-            name="password"
-            placeholder="סיסמה"
-            class="form-field"
-          />
-        </div>
+        <input-field
+          id="email"
+          v-model="userEmail"
+          type="email"
+          label="אימייל"
+          div-class="mb-4 text-right"
+          :error-message="emailError"
+        />
+        <input-field
+          id="password"
+          v-model="userPassword"
+          type="password"
+          label="סיסמה"
+          div-class="mb-4 text-right"
+          :error-message="passwordError"
+        />
         <div class="flex flex-col">
           <input
             id="login"
@@ -56,14 +50,34 @@ export default {
     return {
       userEmail: '',
       userPassword: '',
+      emailError: '',
+      passwordError: '',
     }
+  },
+  watch: {
+    userEmail(oldVal, newVal) {
+      if (this.emailError !== '' && oldVal !== newVal) {
+        this.emailError = ''
+      }
+    },
+    userPassword(oldVal, newVal) {
+      if (this.passwordError !== '' && oldVal !== newVal) {
+        this.passwordError = ''
+      }
+    },
   },
   methods: {
     onSubmit() {
       this.$v.$touch()
       if (this.$v.$invalid) {
         // TODO: Replace this with a more meaningful input to the user
-        alert('Invalid input!')
+        if (this.$v.userEmail.$invalid) {
+          this.emailError = 'חובה להזין כתובת אימייל תקינה'
+        }
+
+        if (this.$v.userPassword.$invalid) {
+          this.passwordError = 'חובה להזין סיסמה'
+        }
       } else {
         userLogin(this, this.userEmail, this.userPassword)
       }
