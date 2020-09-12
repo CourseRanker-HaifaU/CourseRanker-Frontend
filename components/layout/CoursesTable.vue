@@ -91,11 +91,7 @@
         <!-------------------- 5th col-optional -------------------->
         <td v-if="whichTable != 'myCourses'" class="td-style">
           <!-- Will later show actual rating -->
-          <rating
-            v-if="whichTable === 'courses'"
-            :rating="5"
-            style="font-size: 7px"
-          ></rating>
+          <rating v-if="whichTable === 'courses'" :rating="5"></rating>
           <button v-if="whichTable === 'feedback'" class="table-btn">
             הוספת חוות דעת
           </button>
@@ -104,11 +100,7 @@
         <!-------------------- 6th col-optional -------------------->
         <td v-if="whichTable != 'myCourses'" class="td-style">
           <!-- Will later show actual rating -->
-          <rating
-            v-if="whichTable === 'courses'"
-            :rating="4"
-            style="font-size: 7px"
-          ></rating>
+          <rating v-if="whichTable === 'courses'" :rating="4"></rating>
           <button v-if="whichTable === 'feedback'" class="table-btn">
             הוספת חוות דעת
           </button>
@@ -117,11 +109,7 @@
         <!-------------------- 7th col-optional -------------------->
         <td v-if="whichTable != 'myCourses'" class="'td-style'">
           <!-- Will later show actual rating -->
-          <rating
-            v-if="whichTable === 'courses'"
-            :rating="5"
-            style="font-size: 7px"
-          ></rating>
+          <rating v-if="whichTable === 'courses'" :rating="5"></rating>
           <button v-if="whichTable === 'feedback'" class="table-btn">
             הוספת חוות דעת
           </button>
@@ -141,7 +129,7 @@
 export default {
   props: {
     whichTable: {
-      /* in "index.vue" -> courses, 
+      /* in "index.vue" -> courses,
          in  "my_courses.vue" -> myCourses, feedback */
       type: String,
       default() {
