@@ -29,6 +29,8 @@
           type="email"
           label="אימייל"
           div-class="col-span-2"
+          :error="emailError != ''"
+          :error-message="emailError"
         />
         <input-field
           id="password"
@@ -36,13 +38,17 @@
           type="password"
           label="סיסמה"
           div-class="col-span-2"
+          :error="passwordError != ''"
+          :error-message="passwordError"
         />
         <input-field
-          id="רקpassword"
+          id="repassword"
           v-model="userRepassword"
           type="password"
           label="אישור סיסמה"
           div-class="col-span-2"
+          :error="repasswordError != ''"
+          :error-message="repasswordError"
         />
         <input
           id="sign-up"
@@ -68,7 +74,27 @@ export default {
       userEmail: '',
       userPassword: '',
       userRepassword: '',
+      emailError: '',
+      passwordError: '',
+      repasswordError: '',
     }
+  },
+  watch: {
+    userEmail(oldVal, newVal) {
+      if (this.emailError !== '' && oldVal !== newVal) {
+        this.emailError = ''
+      }
+    },
+    userPassword(oldVal, newVal) {
+      if (this.passwordError !== '' && oldVal !== newVal) {
+        this.passwordError = ''
+      }
+    },
+    userRepassword(oldVal, newVal) {
+      if (this.repasswordError !== '' && oldVal !== newVal) {
+        this.repasswordError = ''
+      }
+    },
   },
   methods: {
     async onSubmit() {
@@ -76,7 +102,17 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         // TODO: Notify the user in a better way
-        alert('Invalid data!')
+        if (this.$v.userEmail.$invalid) {
+          this.emailError = 'חובה להזין כתובת אימייל תקינה'
+        }
+
+        if (this.$v.userPassword.$invalid) {
+          this.passwordError = 'חובה להזין סיסמה באורך 6 תווים לפחות'
+        }
+
+        if (this.$v.userRepassword.$invalid) {
+          this.repasswordError = 'שדה זה חייב להיות זהה לסיסמה'
+        }
       } else {
         await this.$apollo.mutate({
           mutation: newUser,
@@ -101,6 +137,7 @@ export default {
       minLength: minLength(6),
     },
     userRepassword: {
+      required,
       sameAsPassword: sameAs('userPassword'),
     },
   },
