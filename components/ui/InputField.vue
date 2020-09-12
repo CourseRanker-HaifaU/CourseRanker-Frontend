@@ -1,6 +1,6 @@
 <template>
   <div :class="divClass">
-    <label for="email" :class="{ 'text-accent': error }">{{ label }}:</label>
+    <label for="email">{{ label }}:</label>
     <input
       :id="id"
       :value="value"
