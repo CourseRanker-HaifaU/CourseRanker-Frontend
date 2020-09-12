@@ -29,7 +29,6 @@
           type="email"
           label="אימייל"
           div-class="col-span-2"
-          :error="emailError != ''"
           :error-message="emailError"
         />
         <input-field
@@ -38,7 +37,6 @@
           type="password"
           label="סיסמה"
           div-class="col-span-2"
-          :error="passwordError != ''"
           :error-message="passwordError"
         />
         <input-field
@@ -47,7 +45,6 @@
           type="password"
           label="אישור סיסמה"
           div-class="col-span-2"
-          :error="repasswordError != ''"
           :error-message="repasswordError"
         />
         <input

@@ -41,12 +41,14 @@ export default {
       type: String,
       default: '',
     },
-    error: {
-      type: Boolean,
-    },
     errorMessage: {
       type: String,
       default: '',
+    },
+  },
+  computed: {
+    error() {
+      return this.errorMessage.length > 0
     },
   },
   methods: {
