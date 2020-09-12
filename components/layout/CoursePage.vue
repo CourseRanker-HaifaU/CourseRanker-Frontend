@@ -1,15 +1,11 @@
 <template>
   <div class="flex flex-col gap-y-10">
-    <div class="container">
-      <h2>מבוא למדעי המחשב</h2>
+    <div v-for="detail in details" :key="detail.unit" class="container">
+      <h2>{{ detail.name }}</h2>
       <div style="margin-bottom: 18px">
         <hr class="border-0 bg-gray-500 text-gray-500 h-px" />
       </div>
-      <div
-        v-for="detail in details"
-        :key="detail.unit"
-        class="grid grid-flow-col grid-cols-4 grid-rows-2 gap-2"
-      >
+      <div class="grid grid-flow-col grid-cols-4 grid-rows-2 gap-2">
         <div>
           <th>חוג:</th>
           <td>{{ detail.unit }}</td>
@@ -38,13 +34,9 @@
         </div>
       </div>
     </div>
-    <div class="container">
-      <h1>סימסטר א' תשפ"א</h1>
-      <div
-        v-for="detail in sem_details"
-        :key="detail.lecturer"
-        class="grid gap-1 grid-cols-2 gap-y-3"
-      >
+    <div v-for="detail in sem_details" :key="detail.lecturer" class="container">
+      <h1>{{ detail.semester }}</h1>
+      <div class="grid gap-1 grid-cols-2 gap-y-3">
         <div>
           <th>מרצה:</th>
           <td>{{ detail.lecturer }}</td>
@@ -94,6 +86,7 @@ export default {
     return {
       details: [
         {
+          name: 'מבוא למדעי המחשב',
           unit: 'מדעי המחשב',
           credit: 5,
           teachingMethod: 'הרצאה ותרגול',
@@ -103,6 +96,7 @@ export default {
       ],
       sem_details: [
         {
+          semester: 'סימסטר א\' תשפ"א',
           lecturer: 'שולי וינטנר',
           teachingAssistant: 'דניאל מובסוביץ',
         },
