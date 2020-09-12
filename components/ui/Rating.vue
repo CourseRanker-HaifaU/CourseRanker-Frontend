@@ -8,7 +8,7 @@
       <font-awesome-icon
         v-for="n in 5"
         :key="n"
-        class="fa-2x text-primary"
+        class="text-primary text-xs"
         :icon="[displayRating >= n ? 'fas' : 'far', 'star']"
         :aria-label="n + ' מתוך 5'"
         @mouseover="mouseOver(n)"
