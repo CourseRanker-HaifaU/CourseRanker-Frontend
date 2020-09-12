@@ -1,19 +1,21 @@
 <template>
   <div class="container">
-    <welcome-message v-if="showWelcome"></welcome-message>
+    <welcome-message></welcome-message>
     <search-bar class="label__search"></search-bar>
     <br />
-    <nuxt-link to="/course">מבוא למדעי המחשב</nuxt-link>
+    <courses-table></courses-table>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
+import { mapActions } from 'vuex'
 export default {
-  computed: {
-    ...mapGetters({
-      showWelcome: 'messages/showWelcome',
+  created() {
+    this.restoreFromLocalStorage()
+  },
+  methods: {
+    ...mapActions({
+      restoreFromLocalStorage: 'messages/restoreFromLocalStorage',
     }),
   },
 }

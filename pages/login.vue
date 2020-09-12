@@ -48,7 +48,8 @@
 </template>
 
 <script>
-import login from '@/gql/login.gql'
+import { userLogin } from '@/utils'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   data() {
@@ -58,19 +59,23 @@ export default {
     }
   },
   methods: {
-    async onSubmit() {
-      const res = await this.$apollo.mutate({
-        mutation: login,
-        variables: {
-          email: this.userEmail,
-          password: this.userPassword,
-        },
-      })
-      this.$store.dispatch('auth/login', {
-        token: res.data.login.token,
-        expiresIn: res.data.login.refreshExpiresIn,
-      })
-      this.$router.push('/')
+    onSubmit() {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        // TODO: Replace this with a more meaningful input to the user
+        alert('Invalid input!')
+      } else {
+        userLogin(this, this.userEmail, this.userPassword)
+      }
+    },
+  },
+  validations: {
+    userEmail: {
+      required,
+      email,
+    },
+    userPassword: {
+      required,
     },
   },
 }
