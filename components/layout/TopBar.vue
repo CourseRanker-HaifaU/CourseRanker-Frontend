@@ -1,43 +1,54 @@
 <template>
-  <div class="top-bar">
-    <div class="bar-block">
-      <nuxt-link to="/" class="h-full inline-flex">
-        <img
-          class="h-full rounded-full"
-          src="~/assets/images/logoranker.png"
-          alt="לוגו ועד הסטודנטים"
-        />
-        <div
-          class="mr-6 flex flex-col justify-center items-center tracking-wider"
+  <div class="top-and-menu">
+    <div class="top-bar">
+      <div class="bar-block">
+        <nuxt-link to="/" class="h-full inline-flex">
+          <img
+            class="h-full rounded-full"
+            src="~/assets/images/logoranker.png"
+            alt="לוגו ועד הסטודנטים"
+          />
+          <div
+            class="mr-6 flex flex-col justify-center items-center tracking-wider"
+          >
+            <span>ועד הסטודנטים</span>
+            <span>בחוג למדעי המחשב</span>
+          </div>
+        </nuxt-link>
+      </div>
+      <div class="bar-block">
+        <nuxt-link
+          v-if="!isLoggedIn"
+          to="/login"
+          class="button red-button bar-btn"
         >
-          <span>ועד הסטודנטים</span>
-          <span>בחוג למדעי המחשב</span>
-        </div>
-      </nuxt-link>
+          התחברות
+        </nuxt-link>
+      </div>
+      <div v-if="isLoggedIn" class="bar-block">
+        <button class="button red-button bar-btn" @click="isOpen = !isOpen">
+          <font-awesome-icon :icon="['fas', 'bars']" />
+        </button>
+      </div>
     </div>
-    <div class="bar-block">
-      <nuxt-link v-if="!isLoggedIn" to="/login" class="login-btn">
-        התחברות
-      </nuxt-link>
-      <button v-if="isLoggedIn" class="login-btn" @click="logOut">
-        התנתקות
-      </button>
+
+    <div v-show="isOpen">
+      <!-- This is the hamburger-menu component, will be shown when isOpen -->
+      <hamburger-menu></hamburger-menu>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      isOpen: false,
+    }
+  },
   computed: {
     isLoggedIn() {
       return !!this.$apolloHelpers.getToken()
-    },
-  },
-  methods: {
-    logOut() {
-      this.$apolloHelpers.onLogout().then(() => {
-        window.location = '/'
-      })
     },
   },
 }
@@ -45,6 +56,7 @@ export default {
 
 <style scoped>
 .top-bar {
+  @apply relative;
   @apply flex;
   @apply h-20;
   @apply bg-primary;
@@ -57,23 +69,11 @@ export default {
   @apply border-b-4;
 }
 
-.login-btn {
-  @apply bg-accent;
+.bar-btn {
   @apply border;
-  @apply border-solid;
-  @apply border-accent-border;
-  @apply shadow-lg;
-  @apply rounded-lg;
-  @apply text-white;
-  @apply py-2;
-  @apply px-4;
-}
-
-.login-btn:hover {
-  @apply bg-accent-hover;
-  @apply transition-colors;
-  @apply ease-in;
-  @apply duration-200;
+  @apply border-white;
+  @apply rounded-md;
+  @apply m-1; /* Delete later */
 }
 
 .bar-block {

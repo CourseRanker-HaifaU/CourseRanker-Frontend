@@ -92,6 +92,7 @@ export default {
         'faTimesCircle',
         'faPlus',
         'faMinus',
+        'faBars',
       ],
       regular: ['faStar'],
     },
