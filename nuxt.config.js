@@ -93,6 +93,7 @@ export default {
         'faPlus',
         'faMinus',
         'faBars',
+        'faExclamationTriangle',
       ],
       regular: ['faStar'],
     },

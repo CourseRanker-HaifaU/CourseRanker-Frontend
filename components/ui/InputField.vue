@@ -13,7 +13,10 @@
       }"
       @input="emitInput"
     />
-    <p v-if="error" class="text-accent text-xs">{{ errorMessage }}</p>
+    <p v-if="error" class="text-accent text-xs mt-1">
+      <font-awesome-icon :icon="['fas', 'exclamation-triangle']" />
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 
