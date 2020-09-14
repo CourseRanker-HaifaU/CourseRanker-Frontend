@@ -12,11 +12,7 @@
 </template>
 
 <script>
-export default {
-  created() {
-    this.$store.dispatch('auth/initStateFromCookies')
-  },
-}
+export default {}
 </script>
 
 <style scoped>
