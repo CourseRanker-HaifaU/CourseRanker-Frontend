@@ -82,7 +82,9 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    analyze: !!process.env.BUILD_ANALYZE,
+  },
   fontawesome: {
     icons: {
       solid: [
