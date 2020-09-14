@@ -13,7 +13,7 @@
         </div>
         <input
           type="text"
-          class="search-bar focus:outline-none"
+          class="focus:outline-none"
           placeholder="חיפוש"
           @keyup.delete="deleteChip(chipsList.length - 1)"
         />
@@ -79,8 +79,8 @@ export default {
   @apply border-solid;
   @apply border-primary;
   @apply p-1;
+  @apply w-full;
 
-  width: 60vw;
   min-height: 50px;
 }
 
@@ -99,8 +99,8 @@ export default {
 .btn-div {
   @apply w-full;
   @apply grid;
-  @apply grid-cols-5;
-  @apply gap-6;
+  @apply grid-cols-3;
+  @apply gap-4;
 }
 
 .delete-btn {
@@ -121,7 +121,7 @@ input {
   @apply bg-accent;
   @apply text-white;
   @apply py-2;
-  @apply px-4;
+  @apply px-2;
   @apply rounded;
   @apply border;
   @apply border-accent-border;
@@ -136,5 +136,16 @@ input {
 
 .search-btn:focus {
   @apply outline-none;
+}
+
+@screen md {
+  .search-btn {
+    @apply px-4;
+  }
+
+  .btn-div {
+    @apply grid-cols-5;
+    @apply gap-6;
+  }
 }
 </style>
