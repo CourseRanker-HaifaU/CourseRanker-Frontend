@@ -60,18 +60,19 @@ export default {
   @apply mb-8;
   @apply rounded-lg;
   @apply bg-primary;
+  @apply w-full;
 
-  width: 60vw;
   height: 40vh;
 }
 
 .frame-close-div {
   @apply mt-6;
   @apply mb-2;
+  @apply mr-3;
   @apply rounded-lg;
   @apply bg-primary;
+  @apply w-full;
 
-  width: 60vw;
   height: 3vh;
 }
 
