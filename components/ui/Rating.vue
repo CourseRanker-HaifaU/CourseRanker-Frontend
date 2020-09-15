@@ -42,9 +42,9 @@ export default {
   props: {
     rating: {
       type: Number,
-      default: 1,
+      default: 0,
       validator(value) {
-        return value >= 1 && value <= 5
+        return value >= 0 && value <= 5
       },
     },
     editable: {
@@ -59,7 +59,9 @@ export default {
   },
   computed: {
     displayRating() {
-      return this.hoverRating === null ? this.rating : this.hoverRating
+      return Math.round(
+        this.hoverRating === null ? this.rating : this.hoverRating
+      )
     },
   },
   methods: {

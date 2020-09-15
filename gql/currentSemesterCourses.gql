@@ -1,0 +1,49 @@
+query currentSemesterCourses($keywords: String!) {
+  allSemesters(isCurrent: true) {
+    edges {
+      node {
+        coursesemesterSet(course_Name_Icontains: $keywords) {
+          edges {
+            node {
+              id
+              course {
+                name
+              }
+              semester {
+                name
+                year
+              }
+              coursesemesterstaffSet {
+                edges {
+                  node {
+                    lecturers {
+                      edges {
+                        node {
+                          title
+                          firstName
+                          lastName
+                        }
+                      }
+                    }
+                    teachingAssistants {
+                      edges {
+                        node {
+                          title
+                          firstName
+                          lastName
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              averageLecturerRating
+              averageTeachingAssistantRating
+              averageCourseRating
+            }
+          }
+        }
+      }
+    }
+  }
+}
