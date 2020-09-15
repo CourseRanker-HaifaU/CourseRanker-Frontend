@@ -2,44 +2,62 @@
   <div class="frame-div flex flex-col w-full items-stretch justify-start">
     <div v-if="isSmall" class="courses-cards">
       <div
-        v-for="course in courses"
-        :key="course.id"
+        v-for="listItem in courseList"
+        :key="listItem.id"
         class="course-card"
-        @click="sendTo(`/course/${course.id}`)"
+        @click="sendTo(`/course/${listItem.id}`)"
       >
         <div>
           <strong>שם קורס:</strong>
-          {{ course.name }}
+          {{ listItem.course.name }}
         </div>
         <div>
           <strong>סמסטר:</strong>
-          {{ course.semester }}
+          {{ getSemester(listItem.semester) }}
         </div>
         <div>
           <strong>מרצה:</strong>
-          {{ course.lecturer }}
+          {{
+            multipleStaffToString(
+              listItem.coursesemesterstaffSet.edges[0].node.lecturers.edges
+            )
+          }}
         </div>
         <div>
           <strong>מתרגל/ת:</strong>
-          {{ course.teachingAssistant }}
+          {{
+            multipleStaffToString(
+              listItem.coursesemesterstaffSet.edges[0].node.teachingAssistants
+                .edges
+            )
+          }}
         </div>
         <div>
           <strong>חוות דעת קורס:</strong>
-          <rating v-if="whichTable === 'courses'" :rating="5" />
+          <rating
+            v-if="whichTable === 'courses'"
+            :rating="listItem.averageCourseRating"
+          />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
         </div>
         <div>
           <strong>חוות דעת מרצה:</strong>
-          <rating v-if="whichTable === 'courses'" :rating="4" />
+          <rating
+            v-if="whichTable === 'courses'"
+            :rating="listItem.averageLecturerRating"
+          />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
         </div>
         <div>
           <strong>חוות דעת מתרגל/ת:</strong>
-          <rating v-if="whichTable === 'courses'" :rating="5" />
+          <rating
+            v-if="whichTable === 'courses'"
+            :rating="listItem.averageTeachingAssistantRating"
+          />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
@@ -69,8 +87,8 @@
       </thead>
 
       <tr
-        v-for="course in courses"
-        :key="course.id"
+        v-for="listItem in courseList"
+        :key="listItem.id"
         class="cursor-pointer border-b border-black text-right hover:bg-gray-200"
         @click="sendTo(`/course/${course.id}`)"
       >
@@ -78,34 +96,45 @@
         <td
           :class="[whichTable === 'myCourses' ? 'td-my-courses' : 'td-style']"
         >
-          {{ course.name }}
+          {{ listItem.course.name }}
         </td>
 
         <!-------------------- 2nd col -------------------->
         <td
           :class="[whichTable === 'myCourses' ? 'td-my-courses' : 'td-style']"
         >
-          {{ course.semester }}
+          {{ getSemester(listItem.semester) }}
         </td>
 
         <!-------------------- 3rd col -------------------->
         <td
           :class="[whichTable === 'myCourses' ? 'td-my-courses' : 'td-style']"
         >
-          {{ course.lecturer }}
+          {{
+            multipleStaffToString(
+              listItem.coursesemesterstaffSet.edges[0].node.lecturers.edges
+            )
+          }}
         </td>
 
         <!-------------------- 4rd col -------------------->
         <td
           :class="[whichTable === 'myCourses' ? 'td-my-courses' : 'td-style']"
         >
-          {{ course.teachingAssistant }}
+          {{
+            multipleStaffToString(
+              listItem.coursesemesterstaffSet.edges[0].node.teachingAssistants
+                .edges
+            )
+          }}
         </td>
 
         <!-------------------- 5th col-optional -------------------->
         <td v-if="whichTable != 'myCourses'" class="td-style">
-          <!-- Will later show actual rating -->
-          <rating v-if="whichTable === 'courses'" :rating="5"></rating>
+          <rating
+            v-if="whichTable === 'courses'"
+            :rating="listItem.averageCourseRating"
+          ></rating>
           <button v-if="whichTable === 'feedback'" class="table-btn">
             הוספת חוות דעת
           </button>
@@ -113,8 +142,10 @@
 
         <!-------------------- 6th col-optional -------------------->
         <td v-if="whichTable != 'myCourses'" class="td-style">
-          <!-- Will later show actual rating -->
-          <rating v-if="whichTable === 'courses'" :rating="4"></rating>
+          <rating
+            v-if="whichTable === 'courses'"
+            :rating="listItem.averageLecturerRating"
+          ></rating>
           <button v-if="whichTable === 'feedback'" class="table-btn">
             הוספת חוות דעת
           </button>
@@ -122,8 +153,10 @@
 
         <!-------------------- 7th col-optional -------------------->
         <td v-if="whichTable != 'myCourses'" class="'td-style'">
-          <!-- Will later show actual rating -->
-          <rating v-if="whichTable === 'courses'" :rating="5"></rating>
+          <rating
+            v-if="whichTable === 'courses'"
+            :rating="listItem.averageTeachingAssistantRating"
+          ></rating>
           <button v-if="whichTable === 'feedback'" class="table-btn">
             הוספת חוות דעת
           </button>
@@ -140,6 +173,9 @@
 </template>
 
 <script>
+import currentSemesterCourses from '@/gql/currentSemesterCourses.gql'
+import { multipleStaffToString, getSemester } from '@/utils'
+
 export default {
   props: {
     whichTable: {
@@ -154,36 +190,6 @@ export default {
   data() {
     return {
       windowWidth: window.innerWidth,
-      courses: [
-        {
-          id: 1,
-          name: 'מבוא למדעי המחשב',
-          semester: 'א\' תשפ"א',
-          lecturer: "פרופ' שולי וינטנר",
-          teachingAssistant: 'דניאל מובסוביץ',
-        },
-        {
-          id: 2,
-          name: 'מתמטיקה דיסקרטית',
-          semester: 'א\' תשפ"א',
-          lecturer: 'ד"ר אור מאיר',
-          teachingAssistant: 'קופל דפנה',
-        },
-        {
-          id: 3,
-          name: 'חדו״א 1',
-          semester: 'א\' תשפ"א',
-          lecturer: "פרופ' דניאל קרן",
-          teachingAssistant: 'רועי וליץ',
-        },
-        {
-          id: 4,
-          name: 'אלגברה לינארית',
-          semester: 'א\' תשפ"א',
-          lecturer: 'ד"ר אוריה פירסט',
-          teachingAssistant: 'יולי עזרא',
-        },
-      ],
     }
   },
   computed: {
@@ -199,6 +205,28 @@ export default {
   methods: {
     sendTo(msg) {
       this.$router.push(msg)
+    },
+    getSemester,
+    multipleStaffToString,
+  },
+  apollo: {
+    courseList: {
+      query: currentSemesterCourses,
+      update: (data) => {
+        const allSemesters = data.allSemesters.edges
+        const dataArray = []
+        for (const semester of allSemesters) {
+          const semesterCourses = []
+          for (const course of semester.node.coursesemesterSet.edges) {
+            semesterCourses.push(course.node)
+          }
+          dataArray.push(...semesterCourses)
+        }
+        return dataArray
+      },
+      variables: {
+        keywords: '',
+      },
     },
   },
 }

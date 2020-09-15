@@ -26,3 +26,28 @@ export async function userLogin(vueInstance, email, password) {
     })
   }
 }
+
+export const staffToString = ({ firstName, lastName, title }) => {
+  const titleMapping = {
+    DR: 'ד״ר',
+    PR: 'פרופ׳',
+    MR: 'מר',
+    MS: 'גב׳',
+  }
+
+  if (!(title in titleMapping)) {
+    return ''
+  }
+
+  return `${titleMapping[title]} ${firstName} ${lastName}`
+}
+
+export const multipleStaffToString = (arr) => {
+  return arr.map((item) => staffToString(item.node)).join(', ')
+}
+
+export const getSemester = ({ name, year }) => {
+  const semesterName = name === 'A' ? 'א׳' : name === 'B' ? 'ב׳' : 'קיץ'
+
+  return `${semesterName} ${year}`
+}
