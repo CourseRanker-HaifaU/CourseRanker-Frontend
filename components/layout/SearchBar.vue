@@ -1,42 +1,39 @@
 <template>
   <div class="overall-div">
-    <form>
-      <div class="chip-div">
-        <div v-for="(chip, index) in chipsList" :key="chip" class="chip">
-          {{ chip }}
-          <button
-            class="delete-btn focus:outline-none"
-            @click.prevent="deleteChip(index)"
-          >
-            <font-awesome-icon :icon="['fas', 'times-circle']" />
-          </button>
-        </div>
-        <input
-          type="text"
-          class="focus:outline-none"
-          placeholder="חיפוש"
-          @keyup.delete="deleteChip(chipsList.length - 1)"
-        />
-      </div>
-      <br />
-      <div class="btn-div">
-        <button class="search-btn" @click.prevent="addChip('שנה א')">
-          שנה א'
-        </button>
-        <button class="search-btn" @click.prevent="addChip('שנה ב')">
-          שנה ב'
-        </button>
-        <button class="search-btn" @click.prevent="addChip('שנה ג')">
-          שנה ג'
-        </button>
-        <button class="search-btn" @click.prevent="addChip('קורסי חובה')">
-          קורסי חובה
-        </button>
-        <button class="search-btn" @click.prevent="addChip('קורסי בחירה')">
-          קורסי בחירה
+    <div class="chip-div">
+      <div v-for="(chip, index) in chipsList" :key="chip" class="chip">
+        {{ chip }}
+        <button
+          class="delete-btn focus:outline-none"
+          @click.prevent="deleteChip(index)"
+        >
+          <font-awesome-icon :icon="['fas', 'times-circle']" />
         </button>
       </div>
-    </form>
+      <input
+        type="text"
+        class="focus:outline-none"
+        placeholder="חיפוש"
+        @keyup.delete="deleteChip(chipsList.length - 1)"
+      />
+    </div>
+    <div class="btn-div">
+      <button class="search-btn" @click.prevent="addChip('שנה א')">
+        שנה א'
+      </button>
+      <button class="search-btn" @click.prevent="addChip('שנה ב')">
+        שנה ב'
+      </button>
+      <button class="search-btn" @click.prevent="addChip('שנה ג')">
+        שנה ג'
+      </button>
+      <button class="search-btn" @click.prevent="addChip('קורסי חובה')">
+        קורסי חובה
+      </button>
+      <button class="search-btn" @click.prevent="addChip('קורסי בחירה')">
+        קורסי בחירה
+      </button>
+    </div>
   </div>
 </template>
 
@@ -68,6 +65,8 @@ export default {
   @apply flex-col;
   @apply mb-10;
   @apply mt-6;
+  @apply w-full;
+  @apply min-w-full;
 }
 
 .chip-div {
@@ -80,6 +79,8 @@ export default {
   @apply border-primary;
   @apply p-1;
   @apply w-full;
+  @apply min-w-full;
+  @apply mb-4;
 
   min-height: 50px;
 }

@@ -61,8 +61,6 @@ export default {
   @apply rounded-lg;
   @apply bg-primary;
   @apply w-full;
-
-  height: 40vh;
 }
 
 .frame-close-div {
@@ -79,7 +77,7 @@ export default {
 .content-open-div {
   @apply flex-1;
   @apply m-6;
-  @apply p-2;
+  @apply p-6;
   @apply flex;
   @apply flex-col;
   @apply justify-center;
