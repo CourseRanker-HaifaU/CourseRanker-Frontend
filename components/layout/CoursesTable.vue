@@ -1,55 +1,69 @@
 <template>
-  <div class="frame-div flex items-stretch flex-shrink w-full">
-    <table class="lg:w-full text-right">
+  <div class="frame-div flex flex-col w-full items-stretch justify-start">
+    <div v-if="isSmall" class="courses-cards">
+      <div
+        v-for="course in courses"
+        :key="course.id"
+        class="course-card"
+        @click="sendTo(`/course/${course.id}`)"
+      >
+        <div>
+          <strong>שם קורס:</strong>
+          {{ course.name }}
+        </div>
+        <div>
+          <strong>סמסטר:</strong>
+          {{ course.semester }}
+        </div>
+        <div>
+          <strong>מרצה:</strong>
+          {{ course.lecturer }}
+        </div>
+        <div>
+          <strong>מתרגל/ת:</strong>
+          {{ course.teachingAssistant }}
+        </div>
+        <div>
+          <strong>חוות דעת קורס:</strong>
+          <rating v-if="whichTable === 'courses'" :rating="5" />
+          <button v-if="whichTable !== 'courses'" class="button button-blue">
+            הוספת חוות דעת
+          </button>
+        </div>
+        <div>
+          <strong>חוות דעת מרצה:</strong>
+          <rating v-if="whichTable === 'courses'" :rating="4" />
+          <button v-if="whichTable !== 'courses'" class="button button-blue">
+            הוספת חוות דעת
+          </button>
+        </div>
+        <div>
+          <strong>חוות דעת מתרגל/ת:</strong>
+          <rating v-if="whichTable === 'courses'" :rating="5" />
+          <button v-if="whichTable !== 'courses'" class="button button-blue">
+            הוספת חוות דעת
+          </button>
+        </div>
+      </div>
+    </div>
+    <table v-if="!isSmall" class="lg:w-full text-right min-w-full">
       <thead>
         <tr class="border-b-2 border-black">
-          <th class="td-style">
-            שם קורס
-            <span style="float: left"
-              ><font-awesome-icon :icon="['fas', 'align-left']" class="ml-2"
-            /></span>
-          </th>
-          <th class="td-style">
-            סמסטר
-            <span style="float: left"
-              ><font-awesome-icon :icon="['fas', 'align-left']" class="ml-2"
-            /></span>
-          </th>
-          <th class="td-style">
-            מרצה
-            <span style="float: left"
-              ><font-awesome-icon :icon="['fas', 'align-left']" class="ml-2"
-            /></span>
-          </th>
-          <th class="td-style">
-            מתרגל/ת
-            <span style="float: left"
-              ><font-awesome-icon :icon="['fas', 'align-left']" class="ml-2"
-            /></span>
-          </th>
+          <th class="td-style">שם קורס</th>
+          <th class="td-style">סמסטר</th>
+          <th class="td-style">מרצה</th>
+          <th class="td-style">מתרגל/ת</th>
           <th v-if="whichTable != 'myCourses'" class="td-style">
             חוות דעת קורס
-            <span style="float: left"
-              ><font-awesome-icon :icon="['fas', 'align-left']" class="ml-2"
-            /></span>
           </th>
           <th v-if="whichTable != 'myCourses'" class="td-style">
             חוות דעת מרצה
-            <span style="float: left"
-              ><font-awesome-icon :icon="['fas', 'align-left']" class="ml-2"
-            /></span>
           </th>
           <th v-if="whichTable != 'myCourses'" class="td-style">
             חוות דעת מתרגל/ת
-            <span style="float: left"
-              ><font-awesome-icon :icon="['fas', 'align-left']" class="ml-2"
-            /></span>
           </th>
           <th v-if="whichTable === 'myCourses'" class="td-style">
             מחק מהקורסים שלי
-            <span style="float: left"
-              ><font-awesome-icon :icon="['fas', 'align-left']" class="ml-2"
-            /></span>
           </th>
         </tr>
       </thead>
@@ -139,6 +153,7 @@ export default {
   },
   data() {
     return {
+      windowWidth: window.innerWidth,
       courses: [
         {
           id: 1,
@@ -171,6 +186,16 @@ export default {
       ],
     }
   },
+  computed: {
+    isSmall() {
+      return this.windowWidth <= 640
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', () => {
+      this.windowWidth = window.innerWidth
+    })
+  },
   methods: {
     sendTo(msg) {
       this.$router.push(msg)
@@ -180,22 +205,49 @@ export default {
 </script>
 
 <style scoped>
-.td-style {
-  @apply w-1/7;
-  @apply py-4;
-  @apply mx-0;
-  @apply font-normal;
+.course-card {
+  @apply grid;
+  @apply grid-cols-2;
+  @apply gap-2;
+  @apply mt-2;
+  @apply border;
+  @apply border-primary;
+  @apply rounded;
+  @apply border-solid;
+  @apply p-4;
+  @apply text-center;
+  @apply cursor-pointer;
 }
+
+.course-card:hover {
+  @apply bg-secondary-hover;
+}
+
+.course-card div {
+  @apply inline-flex;
+  @apply flex-row;
+  @apply flex-wrap;
+  @apply items-start;
+  @apply self-center;
+}
+
+.course-card div strong {
+  @apply ml-2;
+}
+
+.td-style {
+  @apply py-4;
+  @apply px-1;
+  @apply mx-0;
+  @apply text-xs;
+  @apply align-middle;
+}
+
 .td-my-courses {
   @apply w-1/5;
   @apply py-4;
   @apply mx-0;
   @apply font-normal;
-}
-@screen sm {
-  .td-style {
-    @apply text-xs;
-  }
 }
 @screen md {
   .td-style {

@@ -60,25 +60,24 @@ export default {
   @apply mb-8;
   @apply rounded-lg;
   @apply bg-primary;
-
-  width: 60vw;
-  height: 40vh;
+  @apply w-full;
 }
 
 .frame-close-div {
   @apply mt-6;
   @apply mb-2;
+  @apply mr-3;
   @apply rounded-lg;
   @apply bg-primary;
+  @apply w-full;
 
-  width: 60vw;
   height: 3vh;
 }
 
 .content-open-div {
   @apply flex-1;
   @apply m-6;
-  @apply p-2;
+  @apply p-6;
   @apply flex;
   @apply flex-col;
   @apply justify-center;
