@@ -90,7 +90,7 @@
         v-for="listItem in courseList"
         :key="listItem.id"
         class="cursor-pointer border-b border-black text-right hover:bg-gray-200"
-        @click="sendTo(`/course/${course.id}`)"
+        @click="sendTo(`/course/${listItem.id}`)"
       >
         <!-------------------- 1st col -------------------->
         <td

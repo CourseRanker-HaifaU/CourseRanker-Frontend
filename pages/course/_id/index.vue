@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col gap-y-10 mt-4">
-    <div v-for="detail in details" :key="detail.unit" class="container">
+  <div class="flex flex-col gap-y-10 mt-4 min-w-full items-stretch">
+    <div v-for="detail in details" :key="detail.unit">
       <h1 class="text-3xl font-bold ml-6">{{ detail.name }}</h1>
       <div style="margin-bottom: 18px">
         <hr class="border-0 bg-gray-500 text-gray-500 h-px" />
