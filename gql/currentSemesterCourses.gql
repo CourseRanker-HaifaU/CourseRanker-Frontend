@@ -40,8 +40,6 @@ query currentSemesterCourses($keywords: String!) {
               averageLecturerRating
               averageTeachingAssistantRating
               averageCourseRating
-              averageCourseAndLecturerRating
-              averageCourseAndTeachingAssistantRating
             }
           }
         }
