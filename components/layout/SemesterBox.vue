@@ -1,65 +1,86 @@
 <template>
   <div>
     <div
-      v-for="(detail, index) in details"
-      :key="detail.lecturer"
+      v-for="(edge, index) in data"
+      :key="edge.node.id"
       class="container text-right mb-4"
     >
       <div
         class="flex flex-row bg-primary text-white items-baseline rounded-t-md px-2 pt-2"
-        :class="{ 'rounded-md': !detail.isShown }"
+        :class="{ 'rounded-md': !edge.isShown }"
       >
-        <button
-          class="mx-2"
-          @click="details[index].isShown = !details[index].isShown"
-        >
-          <font-awesome-icon
-            :icon="['fas', detail.isShown ? 'minus' : 'plus']"
-          />
+        <button class="mx-2" @click="triggerToggleShown(index)">
+          <font-awesome-icon :icon="['fas', edge.isShown ? 'minus' : 'plus']" />
         </button>
-        <h2 class="text-xl font-bold ml-2 pb-3">{{ detail.semester }}</h2>
+        <h2 class="text-xl font-bold ml-2 pb-3">
+          {{ 'סמסטר ' + getSemester(edge.node.semester) }}
+        </h2>
       </div>
       <transition name="reveal" mode="out-in">
         <div
-          v-show="detail.isShown"
+          v-show="edge.isShown"
           class="grid gap-1 grid-cols-2 gap-y-3 border-primary border-b-2 border-l-2 border-r-2 rounded-b-md p-4"
         >
           <div>
             <strong>מרצה:</strong>
-            <span>{{ detail.lecturer }}</span>
+            <span>{{
+              multipleStaffToString(
+                edge.node.coursesemesterstaffSet.edges[0].node.lecturers.edges
+              )
+            }}</span>
           </div>
           <div>
             <strong>מתרגל/ת:</strong>
-            <span>{{ detail.teachingAssistant }}</span>
+            <span>{{
+              multipleStaffToString(
+                edge.node.coursesemesterstaffSet.edges[0].node
+                  .teachingAssistants.edges
+              )
+            }}</span>
           </div>
           <div>
             <strong>דירוג מרצה:</strong>
             <span>
-              <rating :rating="5" class="rating"></rating>
+              <rating
+                :rating="edge.node.averageLecturerRating"
+                class="rating"
+              ></rating>
             </span>
           </div>
           <div>
             <strong>דירוג מתרגל/ת:</strong>
             <span>
-              <rating :rating="5" class="rating"></rating>
+              <rating
+                :rating="edge.node.averageTeachingAssistantRating"
+                class="rating"
+              ></rating>
             </span>
           </div>
           <div>
             <strong>דירוג קורס:</strong>
             <span>
-              <rating :rating="5" class="rating"></rating>
+              <rating
+                :rating="edge.node.averageCourseRating"
+                class="rating"
+              ></rating>
             </span>
           </div>
           <div>
             <strong>דירוג קורס + מרצה:</strong>
             <span>
-              <rating :rating="5" class="rating"></rating>
+              <rating
+                :rating="edge.node.averageCourseAndLecturerRating"
+                class="rating"
+              ></rating>
             </span>
           </div>
           <div>
             <strong>דירוג קורס + מתרגל/ת:</strong>
             <span>
-              <rating :rating="5" class="rating"></rating>
+              <rating
+                :rating="edge.node.averageCourseAndTeachingAssistantRating"
+                class="rating"
+              ></rating>
             </span>
           </div>
           <div>
@@ -73,18 +94,28 @@
 </template>
 
 <script>
+import { multipleStaffToString, getSemester } from '@/utils'
+
 export default {
+  props: {
+    data: {
+      type: Array,
+      default() {
+        return []
+      },
+    },
+  },
   data() {
     return {
-      details: [
-        {
-          semester: 'סמסטר א\' תשפ"א',
-          lecturer: 'שולי וינטנר',
-          teachingAssistant: 'דניאל מובסוביץ',
-          isShown: true,
-        },
-      ],
+      showIndices: [0],
     }
+  },
+  methods: {
+    multipleStaffToString,
+    getSemester,
+    triggerToggleShown(index) {
+      this.$emit('toggle-shown', index)
+    },
   },
 }
 </script>
