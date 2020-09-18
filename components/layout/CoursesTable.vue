@@ -5,7 +5,7 @@
         v-for="listItem in courseList"
         :key="listItem.id"
         class="course-card"
-        @click="sendTo(`/course/${listItem.id}`)"
+        @click="sendTo(`/course/${listItem.course.id}`)"
       >
         <div>
           <strong>שם קורס:</strong>
@@ -90,7 +90,7 @@
         v-for="listItem in courseList"
         :key="listItem.id"
         class="cursor-pointer border-b border-black text-right hover:bg-gray-200"
-        @click="sendTo(`/course/${listItem.id}`)"
+        @click="sendTo(`/course/${listItem.course.id}`)"
       >
         <!-------------------- 1st col -------------------->
         <td
