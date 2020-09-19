@@ -57,7 +57,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .overall-div {
   @apply flex;
   @apply self-center;
