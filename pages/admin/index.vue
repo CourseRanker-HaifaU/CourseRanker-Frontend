@@ -33,13 +33,14 @@
             label="שנה לועזית"
             div-class="mb-8 text-right"
           />
-          <input-field
-            id="semester"
-            v-model="semester"
-            type="semester"
-            label="סימסטר"
-            div-class="mb-8 text-right"
-          />
+          <div class="flex flex-col">
+            <div style="margin-left: 20px; margin-bottom: 5px">סימסטר:</div>
+            <select v-model="selected" :class="divClass">
+              <option>א'</option>
+              <option>ב'</option>
+              <option>קיץ</option>
+            </select>
+          </div>
           <div class="flex flex-col">
             <input
               id="addSemester"
