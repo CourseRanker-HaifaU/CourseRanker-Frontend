@@ -1,0 +1,53 @@
+query courseDetails($id: ID!) {
+  courseDetails(id: $id) {
+    name
+    unit {
+      name
+    }
+    courseType
+    compulsory
+    points
+    classification
+    averageRating
+    coursesemesterSet {
+      edges {
+        node {
+          id
+          semester {
+            name
+            year
+          }
+          coursesemesterstaffSet {
+            edges {
+              node {
+                lecturers {
+                  edges {
+                    node {
+                      title
+                      firstName
+                      lastName
+                    }
+                  }
+                }
+                teachingAssistants {
+                  edges {
+                    node {
+                      title
+                      firstName
+                      lastName
+                    }
+                  }
+                }
+              }
+            }
+          }
+          averageLecturerRating
+          averageTeachingAssistantRating
+          averageCourseRating
+          averageCourseAndLecturerRating
+          averageCourseAndTeachingAssistantRating
+        }
+      }
+    }
+  }
+}
