@@ -13,7 +13,29 @@
           label="שם הקורס"
           class="mt-8"
         />
-        <div></div>
+        <multiselect
+          v-model="lecturer"
+          tag-placeholder="בחר מרצה/ים/ות"
+          placeholder="חפש או הוסף מרצה"
+          label="name"
+          track-by="code"
+          :options="lecturers"
+          :multiple="true"
+          :taggable="true"
+          :hide-selected="true"
+        ></multiselect>
+        <multiselect
+          v-model="assistant"
+          tag-placeholder="בחר מתרגל/ים/ות"
+          placeholder="חפש או הוסף מתרגל/ת"
+          label="name"
+          track-by="code"
+          tag-position="top"
+          :options="assistants"
+          :multiple="true"
+          :taggable="true"
+          :hide-selected="true"
+        ></multiselect>
         <div class="flex flex-col">
           <div style="margin-left: 20px; margin-bottom: 5px">אופן הוראה:</div>
           <select v-model="selected" :class="divClass">
@@ -66,11 +88,52 @@
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
 export default {
+  components: {
+    Multiselect,
+  },
   data() {
     return {
-      courseName: '',
+      lecturer: { name: "פרופ' שולי וינטנר", code: 'sw' },
+      lecturers: [
+        { name: "פרופ' שולי וינטנר", code: 'sw' },
+        { name: 'ד"ר אור מאיר', code: 'om' },
+        { name: "פרופ' דני קרן", code: 'dk' },
+        { name: 'ד"ר גיא אבני', code: 'ga' },
+        { name: 'ד"ר ריטה אוסדצ\'י', code: 'ro' },
+        { name: "פרופ' יוסי בן אשר", code: 'yba' },
+        { name: "פרופ' אור דונקלמן", code: 'od' },
+        { name: "פרופ' הל-אור חגית", code: 'hoh' },
+        { name: "פרופ' אלק וינשטין", code: 'av' },
+        { name: "פרופ' גדי לנדאו", code: 'gl' },
+      ],
+      assistant: { name: "פרופ' שולי וינטנר", code: 'sw' },
+      assistants: [
+        { name: "פרופ' שולי וינטנר", code: 'sw' },
+        { name: 'ד"ר אור מאיר', code: 'om' },
+        { name: "פרופ' דני קרן", code: 'dk' },
+        { name: 'ד"ר גיא אבני', code: 'ga' },
+        { name: 'ד"ר ריטה אוסדצ\'י', code: 'ro' },
+        { name: "פרופ' יוסי בן אשר", code: 'yba' },
+        { name: "פרופ' אור דונקלמן", code: 'od' },
+        { name: "פרופ' הל-אור חגית", code: 'hoh' },
+        { name: "פרופ' אלק וינשטין", code: 'av' },
+        { name: "פרופ' גדי לנדאו", code: 'gl' },
+      ],
     }
+  },
+  methods: {
+    addTag(newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000),
+      }
+      this.options.push(tag)
+      this.value.push(tag)
+    },
   },
 }
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
