@@ -5,9 +5,24 @@
       <hr class="border-0 bg-gray-500 text-gray-500 h-px" />
     </div>
     <div class="self-start">
-      <button class="button blue-button ml-2 my-2">הוספת קורס חדש</button>
-      <button class="button blue-button ml-2 my-2">הוספת סימסטר לקורס</button>
-      <button class="button blue-button ml-2 my-2">דיווחי תוכן פוגעני</button>
+      <button
+        class="button blue-button ml-2 my-2"
+        @click="sendTo(`add_course`)"
+      >
+        הוספת קורס חדש
+      </button>
+      <button
+        class="button blue-button ml-2 my-2"
+        @click="sendTo(`add_semester_to_course`)"
+      >
+        הוספת סימסטר לקורס
+      </button>
+      <button
+        class="button blue-button ml-2 my-2"
+        @click="sendTo(`violation_page`)"
+      >
+        דיווחי תוכן פוגעני
+      </button>
     </div>
     <div class="h-cover w-full mt-6">
       <h2 class="text-2xl underline">הגדרת סמסטר נוכחי</h2>
@@ -49,5 +64,11 @@
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    sendTo(msg) {
+      this.$router.push('/admin/' + msg)
+    },
+  },
+}
 </script>
