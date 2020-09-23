@@ -8,6 +8,7 @@
     @apply py-2;
     @apply px-4;
     @apply rounded;
+    @apply max-w-xl;
   }
 
   .button:focus {
@@ -60,6 +61,16 @@
     @apply px-3;
     @apply text-gray-700;
     @apply leading-tight;
+    @apply h-10;
+    @apply max-w-xl;
+  }
+
+  select.form-field::after {
+    @apply bg-dark;
+
+    width: 5px;
+    height: 5px;
+    content: "";
   }
 
   .form-field:focus {
@@ -67,6 +78,7 @@
     @apply duration-100;
     @apply ease-linear;
     @apply border-accent;
+    @apply outline-none;
   }
 
   .round-big-logo {
@@ -75,6 +87,42 @@
     @apply border-4;
     @apply border-solid;
     @apply border-input-border;
+  }
+
+  .form-checkbox {
+    @apply appearance-none;
+    @apply h-8;
+    @apply w-8;
+    @apply select-none;
+    @apply shadow;
+    @apply rounded-lg;
+    @apply border-input-border;
+    @apply border;
+    @apply border-solid;
+    @apply cursor-pointer;
+    @apply transition-all;
+    @apply ease-in;
+    @apply duration-100;
+
+    color-adjust: exact;
+    background-origin: border-box;
+    background-color: #fff;
+  }
+
+  .form-checkbox:checked {
+    @apply bg-primary;
+    @apply rounded-lg;
+    @apply bg-center;
+    @apply bg-no-repeat;
+
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+    background-size: 100% 100%;
+  }
+
+  .form-checkbox:focus,
+  .form-checkbox:active {
+    @apply border-accent-border;
+    @apply outline-none;
   }
 }
 
@@ -85,4 +133,11 @@
 
 .page-enter, .page-leave-to {
   opacity: 0;
+}
+
+@media lg {
+  .form-field {
+    @apply w-full;
+    @apply flex-grow;
+  }
 }

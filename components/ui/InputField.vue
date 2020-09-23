@@ -1,6 +1,6 @@
 <template>
   <div :class="divClass">
-    <label for="email">{{ label }}:</label>
+    <label v-if="showLabel" :for="id">{{ label }}:</label>
     <input
       :id="id"
       :value="value"
@@ -26,7 +26,7 @@ export default {
   props: {
     label: {
       type: String,
-      required: true,
+      default: '',
     },
     type: {
       type: String,
@@ -47,6 +47,10 @@ export default {
     errorMessage: {
       type: String,
       default: '',
+    },
+    showLabel: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {

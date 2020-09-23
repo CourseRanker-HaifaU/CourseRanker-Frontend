@@ -15,6 +15,7 @@
           label="אימייל"
           div-class="mb-4 text-right"
           :error-message="emailError"
+          show-label
         />
         <input-field
           id="password"
@@ -23,6 +24,7 @@
           label="סיסמה"
           div-class="mb-4 text-right"
           :error-message="passwordError"
+          show-label
         />
         <div class="flex flex-col">
           <input

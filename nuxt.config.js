@@ -42,7 +42,10 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    'vue-multiselect/dist/vue-multiselect.min.css',
+    '@/assets/css/custom_dropdown.css',
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -96,6 +99,7 @@ export default {
         'faMinus',
         'faBars',
         'faExclamationTriangle',
+        'faArrowRight',
       ],
       regular: ['faStar'],
     },
