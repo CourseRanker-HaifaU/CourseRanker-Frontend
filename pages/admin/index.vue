@@ -34,7 +34,7 @@
         <label for="foreign">שנה לועזית:</label>
         <input-field
           id="foreign"
-          v-model="foriegnYear"
+          v-model="foreignYear"
           type="number"
           div-class="text-right"
         />
@@ -42,10 +42,12 @@
         <div id="selectedSemester">
           <multiselect
             v-model="selectedSemester"
-            :options="semesterTypes"
+            label="text"
+            track-by="code"
             :searchable="false"
             :show-labels="false"
-            placeholder="א׳"
+            :options="semesterTypes"
+            placeholder="בחר סמסטר"
           >
           </multiselect>
         </div>
@@ -62,6 +64,7 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
+import addSemester from '@/gql/addSemester.gql'
 
 export default {
   components: {
@@ -69,13 +72,32 @@ export default {
   },
   data() {
     return {
-      selectedSemester: 'א׳',
-      semesterTypes: ['א', 'ב', 'קיץ'],
+      selectedSemester: { code: 'A', text: 'א׳' },
+      semesterTypes: [
+        { code: 'A', text: 'א׳' },
+        { code: 'B', text: 'ב׳' },
+        { code: 'SUMMER', text: 'קיץ' },
+      ],
+      hebYear: '',
+      foreignYear: new Date().getFullYear().toString(),
     }
   },
   methods: {
     sendTo(msg) {
       this.$router.push('/admin/' + msg)
+    },
+    async onSubmit() {
+      await this.$apollo.mutate({
+        mutation: addSemester,
+        variables: {
+          input: {
+            semName: this.selectedSemester.code,
+            semYearGregorian: this.foreignYear,
+            semYearJewish: this.hebYear,
+          },
+        },
+      })
+      this.$router.go() // Refresh the page
     },
   },
 }

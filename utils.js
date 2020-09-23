@@ -46,8 +46,8 @@ export const multipleStaffToString = (arr) => {
   return arr.map((item) => staffToString(item.node)).join(', ')
 }
 
-export const getSemester = ({ name, year }) => {
+export const getSemester = ({ name, yearJewish }) => {
   const semesterName = name === 'A' ? 'א׳' : name === 'B' ? 'ב׳' : 'קיץ'
 
-  return `${semesterName} ${year}`
+  return `${semesterName} ${yearJewish}`
 }
