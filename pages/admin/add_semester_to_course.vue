@@ -129,7 +129,7 @@ export default {
           },
         },
       })
-      this.$router.go('/admin')
+      alert('נוסף בהצלחה!')
     },
   },
   apollo: {
