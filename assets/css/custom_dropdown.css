@@ -1,0 +1,46 @@
+span.multiselect__tag,
+.multiselect__option--highlight,
+.multiselect__option--selected.multiselect__option--highlight,
+.multiselect__option--highlight::after {
+  @apply bg-accent;
+  @apply text-right;
+  @apply whitespace-normal;
+  @apply break-words;
+  @apply min-h-0;
+
+
+  direction: rtl;
+}
+
+.multiselect__option--highlight,
+.multiselect__option--selected.multiselect__option--highlight,
+.multiselect__option--highlight::after {
+  @apply h-10;
+}
+
+.multiselect {
+  @apply border;
+  @apply border-input-border;
+  @apply border-solid;
+  @apply rounded-md;
+  @apply shadow-md;
+  @apply max-w-xl;
+}
+
+.multiselect__select {
+  @apply min-h-0;
+  @apply h-10;
+}
+
+.multiselect:focus,
+.multiselect:focus-within {
+  @apply border-accent;
+}
+
+.multiselect__tag-icon:hover {
+  @apply bg-accent-hover;
+}
+
+span.multiselect__tag .multiselect__tag-icon::after {
+  @apply text-white;
+}

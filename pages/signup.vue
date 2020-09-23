@@ -16,12 +16,14 @@
           v-model="firstName"
           type="text"
           label="שם פרטי"
+          show-label
         />
         <input-field
           id="lastname"
           v-model="lastName"
           type="text"
           label="שם משפחה"
+          show-label
         />
         <input-field
           id="email"
@@ -30,6 +32,7 @@
           label="אימייל"
           div-class="col-span-2"
           :error-message="emailError"
+          show-label
         />
         <input-field
           id="password"
@@ -38,6 +41,7 @@
           label="סיסמה"
           div-class="col-span-2"
           :error-message="passwordError"
+          show-label
         />
         <input-field
           id="repassword"
@@ -46,6 +50,7 @@
           label="אישור סיסמה"
           div-class="col-span-2"
           :error-message="repasswordError"
+          show-label
         />
         <input
           id="sign-up"

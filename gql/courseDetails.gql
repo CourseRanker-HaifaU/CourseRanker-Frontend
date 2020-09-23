@@ -15,7 +15,7 @@ query courseDetails($id: ID!) {
           id
           semester {
             name
-            year
+            yearJewish
           }
           coursesemesterstaffSet {
             edges {
