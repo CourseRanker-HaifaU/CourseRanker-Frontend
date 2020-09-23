@@ -1,0 +1,29 @@
+query {
+  allSemesters{
+    edges {
+      node {
+        id
+        name
+        yearJewish
+      }
+    }
+  }
+  allStaff {
+    edges {
+      node {
+        id
+        title
+        firstName
+        lastName
+      }
+    }
+  }
+  allCourses {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}

@@ -9,6 +9,20 @@
         type="text"
         class="text-right min-w-full"
       />
+      <label for="unit" class="my-auto text-right"
+        >יחידה (פקולטה או חוג):
+      </label>
+      <div id="unit">
+        <multiselect
+          v-model="unit"
+          :options="allUnitsOptions"
+          :searchable="true"
+          :show-labels="false"
+          placeholder="בחר יחידה"
+          label="name"
+          track-by="id"
+        ></multiselect>
+      </div>
       <label for="course-type" class="my-auto text-right">אופן הוראה:</label>
       <div id="course-type">
         <multiselect
@@ -64,6 +78,8 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
+import allUnits from '@/gql/allUnits.gql'
+import addCourse from '@/gql/addCourse.gql'
 
 export default {
   components: {
@@ -104,7 +120,40 @@ export default {
       ],
       courseType: null,
       classification: null,
+      unit: null,
+      allUnits: {},
     }
+  },
+  computed: {
+    allUnitsOptions() {
+      if (!('edges' in this.allUnits)) {
+        return []
+      }
+      return this.allUnits.edges.map((item) => item.node)
+    },
+  },
+  methods: {
+    async onSubmit() {
+      await this.$apollo.mutate({
+        mutation: addCourse,
+        variables: {
+          input: {
+            name: this.courseName,
+            unitId: this.unit.id,
+            type: this.courseType.id,
+            isCompulsory: this.isCompulsory,
+            points: this.points,
+            classification: this.classification.id,
+          },
+        },
+      })
+      alert('נוסף בהצלחה!')
+    },
+  },
+  apollo: {
+    allUnits: {
+      query: allUnits,
+    },
   },
 }
 </script>

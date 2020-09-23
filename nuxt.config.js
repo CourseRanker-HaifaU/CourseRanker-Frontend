@@ -1,9 +1,5 @@
 export default {
-  /*
-   ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
-   */
-  mode: 'spa',
+  ssr: false,
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -110,6 +106,14 @@ export default {
         httpEndpoint: process.env.HTTP_ENDPOINT
           ? process.env.HTTP_ENDPOINT
           : 'http://localhost:8000/graphql/',
+        defaultOptions: {
+          watchQuery: {
+            fetchPolicy: 'no-cache',
+          },
+          query: {
+            fetchPolicy: 'no-cache',
+          },
+        },
       },
     },
   },
