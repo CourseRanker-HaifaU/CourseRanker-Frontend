@@ -33,27 +33,27 @@
     </div>
     <div v-show="isOpen">
       <!-- This is the hamburger-menu component, will be shown when isOpen -->
-      <div v-if="isAdmin">
-        <!-- This is the admin-hamburger-menu component, will be shown when admin is logged -->
-        <admin-hamburger-menu></admin-hamburger-menu>
-      </div>
-      <div v-else>
-        <!-- This is the user-hamburger-menu component, will be shown when user is logged -->
-        <user-hamburger-menu></user-hamburger-menu>
-      </div>
+      <!-- This is the admin-hamburger-menu component, will be shown when admin is logged in -->
+      <admin-hamburger-menu v-if="isAdmin"></admin-hamburger-menu>
+      <!-- This is the user-hamburger-menu component, will be shown when user is logged in -->
+      <user-hamburger-menu v-if="!isAdmin"></user-hamburger-menu>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
       isOpen: false,
-      isAdmin: false,
     }
   },
   computed: {
+    ...mapGetters({
+      isAdmin: 'user_data/isAdmin',
+    }),
     isLoggedIn() {
       return !!this.$apolloHelpers.getToken()
     },
