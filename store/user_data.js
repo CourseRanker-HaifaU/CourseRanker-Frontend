@@ -6,6 +6,12 @@ export const state = () => ({
   userData: null,
 })
 
+export const getters = {
+  isAdmin(state) {
+    return state.userData !== null && state.userData.role !== 'A_1'
+  },
+}
+
 export const mutations = {
   setUserData(state, userData) {
     state.userData = userData
@@ -20,7 +26,7 @@ export const actions = {
   restoreState(context) {
     const cookie = Cookies.get(USER_DATA_COOKIE_KEY)
     if (typeof cookie !== 'undefined') {
-      context.commit('setUserData', cookie)
+      context.commit('setUserData', JSON.parse(cookie))
     }
   },
   clearData(context) {

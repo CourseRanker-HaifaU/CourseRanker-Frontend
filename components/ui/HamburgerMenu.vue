@@ -1,47 +1,72 @@
 <template>
   <div class="menu-div">
-    <div style="height: 50px">
-      <nuxt-link to="/" class="menu-link hover:text-blue-300 focus:outline-none"
-        >פאנל משתמש</nuxt-link
-      >
-    </div>
-    <div style="height: 50px">
-      <nuxt-link
-        to="/my_courses"
-        class="menu-link hover:text-blue-300 focus:outline-none"
-        >הקורסים שלי</nuxt-link
-      >
-    </div>
-    <div style="height: 50px">
-      <nuxt-link to="/" class="menu-link hover:text-blue-300 focus:outline-none"
-        >חוות הדעת שלי</nuxt-link
-      >
-    </div>
-    <div style="height: 50px">
-      <nuxt-link to="/" class="menu-link hover:text-blue-300 focus:outline-none"
-        >עזרה</nuxt-link
-      >
-    </div>
-    <div style="height: 50px">
-      <button
-        class="menu-link hover:text-blue-300 focus:outline-none"
-        @click="logOut"
-      >
-        התנתקות
-      </button>
-    </div>
+    <nuxt-link
+      v-for="link in links"
+      :key="link.link"
+      :to="link.link"
+      class="menu-link focus-outline-none"
+      @click.native="emitMenuClose"
+    >
+      {{ link.label }}
+    </nuxt-link>
+    <button class="menu-link focus:outline-none text-right" @click="logOut">
+      התנתקות
+    </button>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
+import { mapActions, mapGetters } from 'vuex'
 export default {
+  data() {
+    return {
+      adminLinks: [
+        {
+          label: 'פאנל מנהל',
+          link: '/admin',
+        },
+        {
+          label: 'הוספת קורס',
+          link: '/admin/add_course',
+        },
+        {
+          label: 'הוספת סמסטר לקורס',
+          link: '/admin/add_semester_to_course',
+        },
+      ],
+      userLinks: [
+        {
+          label: 'פאנל משתמש',
+          link: '/',
+        },
+        {
+          label: 'הקורסים שלי',
+          link: '/my_courses',
+        },
+        {
+          label: 'חוות הדעת שלי',
+          link: '/',
+        },
+      ],
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isAdmin: 'user_data/isAdmin',
+    }),
+    links() {
+      return this.isAdmin ? this.adminLinks : this.userLinks
+    },
+  },
   methods: {
     ...mapActions({
       clearUserData: 'user_data/clearData',
     }),
+    emitMenuClose() {
+      this.$emit('menu-close')
+    },
     logOut() {
+      this.emitMenuClose()
       this.clearUserData()
       this.$apolloHelpers.onLogout().then(() => {
         window.location = '/'
@@ -58,22 +83,27 @@ export default {
   @apply bg-primary;
   @apply shadow-lg;
   @apply absolute;
-  @apply content-center;
+  @apply flex;
+  @apply flex-col;
+  @apply items-start;
 
-  width: 250px;
-  height: 350px;
-  -moz-border-radius: 0 0 350px 0;
-  -webkit-border-radius: 0 0 350px 0;
-  border-right: 10px solid #fff;
+  @apply rounded-br-lg;
 }
 
 .menu-link {
-  @apply absolute;
   @apply text-white;
   @apply text-xl;
   @apply font-bold;
+  @apply py-4;
+  @apply px-3;
+  @apply w-full;
+}
 
-  margin-top: 20px;
-  padding-right: 90px;
+.menu-link:hover {
+  @apply bg-primary-hover;
+}
+
+.menu-link:last-of-type:hover {
+  @apply rounded-br-lg;
 }
 </style>

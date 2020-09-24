@@ -1,5 +1,5 @@
 <template>
-  <div class="top-and-menu">
+  <div class="top-and-menu relative">
     <div class="top-bar">
       <div class="bar-block">
         <nuxt-link to="/" class="h-full inline-flex">
@@ -31,15 +31,16 @@
         </button>
       </div>
     </div>
-
     <div v-show="isOpen">
       <!-- This is the hamburger-menu component, will be shown when isOpen -->
-      <hamburger-menu></hamburger-menu>
+      <hamburger-menu @menu-close="isOpen = false"></hamburger-menu>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -47,6 +48,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      isAdmin: 'user_data/isAdmin',
+    }),
     isLoggedIn() {
       return !!this.$apolloHelpers.getToken()
     },

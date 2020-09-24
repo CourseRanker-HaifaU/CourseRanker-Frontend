@@ -1,6 +1,7 @@
 span.multiselect__tag,
 .multiselect__option--highlight,
 .multiselect__option--selected.multiselect__option--highlight,
+.multiselect__option--selected.multiselect__option--highlight::after,
 .multiselect__option--highlight::after {
   @apply bg-accent;
   @apply text-right;
