@@ -8,7 +8,7 @@
             <div class="flex flex-row mb-1 sm:mb-0">
               <div class="relative ml-4">
                 <select
-                  class="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  class="appearance-none h-full rounded-l border block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 >
                   <option>5</option>
                   <option>10</option>
@@ -30,7 +30,7 @@
               </div>
               <div class="relative ml-4">
                 <select
-                  class="appearance-none h-full rounded-r border-t sm:rounded-r-none border-r border-l border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                  class="appearance-none h-full rounded-r border-t sm:rounded-r-none border-r border-l border-b block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
                 >
                   <option>הכל</option>
                   <option>טופל</option>
@@ -90,27 +90,21 @@
                     <td class="row">
                       <div class="flex items-center">
                         <div class="ml-3">
-                          <p class="text-gray-900 whitespace-no-wrap">
-                            אבי בניהו
-                          </p>
+                          <p>אבי בניהו</p>
                         </div>
                       </div>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">מנהל</p>
+                      <p>מנהל</p>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">21/7/2020</p>
+                      <p>21/7/2020</p>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">
-                        *תמצית תגובה עם קישור אליה*
-                      </p>
+                      <p>*תמצית תגובה עם קישור אליה*</p>
                     </td>
                     <td class="row">
-                      <span
-                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
-                      >
+                      <span class="status-cell text-green-900">
                         <span
                           aria-hidden
                           class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
@@ -123,27 +117,21 @@
                     <td class="row">
                       <div class="flex items-center">
                         <div class="ml-3">
-                          <p class="text-gray-900 whitespace-no-wrap">
-                            שימי שמיים
-                          </p>
+                          <p>שימי שמיים</p>
                         </div>
                       </div>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">עורך תוכן</p>
+                      <p>עורך תוכן</p>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">09/09/2020</p>
+                      <p>09/09/2020</p>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">
-                        *תמצית תגובה עם קישור אליה*
-                      </p>
+                      <p>*תמצית תגובה עם קישור אליה*</p>
                     </td>
                     <td class="row">
-                      <span
-                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
-                      >
+                      <span class="status-cell text-green-900">
                         <span
                           aria-hidden
                           class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
@@ -156,27 +144,21 @@
                     <td class="row">
                       <div class="flex items-center">
                         <div class="ml-3">
-                          <p class="text-gray-900 whitespace-no-wrap">
-                            דנה כהן
-                          </p>
+                          <p>דנה כהן</p>
                         </div>
                       </div>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">משתמש</p>
+                      <p>משתמש</p>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">20/09/2020</p>
+                      <p>20/09/2020</p>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">
-                        *תמצית תגובה עם קישור אליה*
-                      </p>
+                      <p>*תמצית תגובה עם קישור אליה*</p>
                     </td>
                     <td class="row">
-                      <span
-                        class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight"
-                      >
+                      <span class="status-cell text-orange-900">
                         <span
                           aria-hidden
                           class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
@@ -189,27 +171,21 @@
                     <td class="row">
                       <div class="flex items-center">
                         <div class="ml-3">
-                          <p class="text-gray-900 whitespace-no-wrap">
-                            שמעון שמעוני
-                          </p>
+                          <p>שמעון שמעוני</p>
                         </div>
                       </div>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">משתמש</p>
+                      <p>משתמש</p>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">09/08/2020</p>
+                      <p>09/08/2020</p>
                     </td>
                     <td class="row">
-                      <p class="text-gray-900 whitespace-no-wrap">
-                        *תמצית תגובה עם קישור אליה*
-                      </p>
+                      <p>*תמצית תגובה עם קישור אליה*</p>
                     </td>
                     <td class="row">
-                      <span
-                        class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight"
-                      >
+                      <span class="status-cell text-red-900">
                         <span
                           aria-hidden
                           class="absolute inset-0 bg-red-200 opacity-50 rounded-full"
@@ -263,6 +239,14 @@
   @apply text-sm;
 }
 
+.status-cell {
+  @apply relative;
+  @apply inline-block;
+  @apply px-3;
+  @apply py-1;
+  @apply font-semibold;
+}
+
 .nav-button {
   @apply text-sm;
   @apply bg-gray-300;
@@ -270,6 +254,7 @@
   @apply font-semibold;
   @apply py-2;
   @apply px-4;
+  @apply leading-tight;
 }
 
 .nav-button:hover {
@@ -278,5 +263,10 @@
 
 tr:hover td {
   @apply bg-secondary-hover;
+}
+
+p {
+  @apply text-gray-900;
+  @apply whitespace-no-wrap;
 }
 </style>
