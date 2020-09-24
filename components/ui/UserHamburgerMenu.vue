@@ -62,8 +62,7 @@ export default {
 
   width: 250px;
   height: 350px;
-  -moz-border-radius: 0 0 350px 0;
-  -webkit-border-radius: 0 0 350px 0;
+  border-radius: 0 0 350px 0;
   border-right: 10px solid #fff;
 }
 
