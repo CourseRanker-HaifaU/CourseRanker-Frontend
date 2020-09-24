@@ -8,13 +8,21 @@ export async function userLogin(vueInstance, email, password) {
     const res = await vueInstance.$apollo.mutate({
       mutation: login,
       variables: {
-        email,
-        password,
+        input: {
+          email,
+          password,
+        },
       },
+    })
+    const userData = res.data.login.user
+    const expiresIn = calculateExpiresIn(res.data.login.refreshExpiresIn)
+    vueInstance.$store.dispatch('user_data/onLogin', {
+      userData,
+      expiresIn,
     })
     await vueInstance.$apolloHelpers
       .onLogin(res.data.login.token, undefined, {
-        expires: calculateExpiresIn(res.data.login.refreshExpiresIn),
+        expires: expiresIn,
       })
       .then(() => {
         window.location = '/'
