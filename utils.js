@@ -25,7 +25,7 @@ export async function userLogin(vueInstance, email, password) {
         expires: expiresIn,
       })
       .then(() => {
-        // window.location = '/'
+        window.location = '/'
       })
   } catch (error) {
     vueInstance.$nuxt.error({

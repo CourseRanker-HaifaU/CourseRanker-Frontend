@@ -1,0 +1,109 @@
+<template>
+  <div class="menu-div">
+    <nuxt-link
+      v-for="link in links"
+      :key="link.link"
+      :to="link.link"
+      class="menu-link focus-outline-none"
+      @click.native="emitMenuClose"
+    >
+      {{ link.label }}
+    </nuxt-link>
+    <button class="menu-link focus:outline-none text-right" @click="logOut">
+      התנתקות
+    </button>
+  </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex'
+export default {
+  data() {
+    return {
+      adminLinks: [
+        {
+          label: 'פאנל מנהל',
+          link: '/admin',
+        },
+        {
+          label: 'הוספת קורס',
+          link: '/admin/add_course',
+        },
+        {
+          label: 'הוספת סמסטר לקורס',
+          link: '/admin/add_semester_to_course',
+        },
+      ],
+      userLinks: [
+        {
+          label: 'פאנל משתמש',
+          link: '/',
+        },
+        {
+          label: 'הקורסים שלי',
+          link: '/my_courses',
+        },
+        {
+          label: 'חוות הדעת שלי',
+          link: '/',
+        },
+      ],
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isAdmin: 'user_data/isAdmin',
+    }),
+    links() {
+      return this.isAdmin ? this.adminLinks : this.userLinks
+    },
+  },
+  methods: {
+    ...mapActions({
+      clearUserData: 'user_data/clearData',
+    }),
+    emitMenuClose() {
+      this.$emit('menu-close')
+    },
+    logOut() {
+      this.emitMenuClose()
+      this.clearUserData()
+      this.$apolloHelpers.onLogout().then(() => {
+        window.location = '/'
+      })
+    },
+  },
+}
+</script>
+
+<style>
+.menu-div {
+  @apply left-0;
+  @apply z-10;
+  @apply bg-primary;
+  @apply shadow-lg;
+  @apply absolute;
+  @apply flex;
+  @apply flex-col;
+  @apply items-start;
+
+  @apply rounded-br-lg;
+}
+
+.menu-link {
+  @apply text-white;
+  @apply text-xl;
+  @apply font-bold;
+  @apply py-4;
+  @apply px-3;
+  @apply w-full;
+}
+
+.menu-link:hover {
+  @apply bg-primary-hover;
+}
+
+.menu-link:last-of-type:hover {
+  @apply rounded-br-lg;
+}
+</style>

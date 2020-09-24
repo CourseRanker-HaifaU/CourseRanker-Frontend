@@ -1,5 +1,5 @@
 <template>
-  <div class="top-and-menu">
+  <div class="top-and-menu relative">
     <div class="top-bar">
       <div class="bar-block">
         <nuxt-link to="/" class="h-full inline-flex">
@@ -33,10 +33,7 @@
     </div>
     <div v-show="isOpen">
       <!-- This is the hamburger-menu component, will be shown when isOpen -->
-      <!-- This is the admin-hamburger-menu component, will be shown when admin is logged in -->
-      <admin-hamburger-menu v-if="isAdmin"></admin-hamburger-menu>
-      <!-- This is the user-hamburger-menu component, will be shown when user is logged in -->
-      <user-hamburger-menu v-if="!isAdmin"></user-hamburger-menu>
+      <hamburger-menu @menu-close="isOpen = false"></hamburger-menu>
     </div>
   </div>
 </template>
