@@ -57,7 +57,7 @@
                 <td class="row">{{ row.type }}</td>
                 <td class="row">{{ row.date }}</td>
                 <td class="row">{{ row.author }}</td>
-                <td class="row cursor-pointer;" @click="sendTo(`/course/`)">
+                <td class="row" @click="sendTo(`/course/`)">
                   {{ row.comment }}
                 </td>
                 <td class="row">
@@ -87,9 +87,6 @@
           <div
             class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between"
           >
-            <span class="text-gray-900 text-sm">
-              מראה 1 עד 4 דיווחים מתוך 50
-            </span>
             <div class="inline-flex mt-2 xs:mt-0">
               <button
                 v-if="page != 1"
@@ -136,7 +133,7 @@ export default {
   data() {
     return {
       perPageOptions: [5, 10, 20],
-      statusOptions: ['הכול', 'טופל', 'לא טופל', 'תלונת שוואֲ'],
+      statusOptions: ['הכול', 'טופל', 'לא טופל', 'תלונת שווא'],
       selectedStatus: 'הכול',
       filter: '',
       posts: [''],
@@ -243,6 +240,7 @@ export default {
   @apply border-gray-200;
   @apply bg-white;
   @apply text-sm;
+  @apply cursor-pointer;
 }
 
 .status-cell {
