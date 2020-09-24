@@ -34,9 +34,15 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   methods: {
+    ...mapActions({
+      clearUserData: 'user_data/clearData',
+    }),
     logOut() {
+      this.clearUserData()
       this.$apolloHelpers.onLogout().then(() => {
         window.location = '/'
       })

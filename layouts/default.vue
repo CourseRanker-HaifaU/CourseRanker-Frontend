@@ -12,7 +12,17 @@
 </template>
 
 <script>
-export default {}
+import { mapActions } from 'vuex'
+export default {
+  created() {
+    this.restoreUserData()
+  },
+  methods: {
+    ...mapActions({
+      restoreUserData: 'user_data/restoreState',
+    }),
+  },
+}
 </script>
 
 <style scoped>
