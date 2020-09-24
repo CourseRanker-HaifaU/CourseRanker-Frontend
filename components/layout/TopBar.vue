@@ -31,10 +31,16 @@
         </button>
       </div>
     </div>
-
     <div v-show="isOpen">
       <!-- This is the hamburger-menu component, will be shown when isOpen -->
-      <hamburger-menu></hamburger-menu>
+      <div v-if="isAdmin">
+        <!-- This is the admin-hamburger-menu component, will be shown when admin is logged -->
+        <admin-hamburger-menu></admin-hamburger-menu>
+      </div>
+      <div v-else>
+        <!-- This is the user-hamburger-menu component, will be shown when user is logged -->
+        <user-hamburger-menu></user-hamburger-menu>
+      </div>
     </div>
   </div>
 </template>
@@ -44,6 +50,7 @@ export default {
   data() {
     return {
       isOpen: false,
+      isAdmin: false,
     }
   },
   computed: {
