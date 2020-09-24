@@ -81,116 +81,59 @@
                     <th class="column-title">משתמש מדווח</th>
                     <th class="column-title">סוג משתמש</th>
                     <th class="column-title">נשלח בתאריך</th>
+                    <th class="column-title">כותב התגובה</th>
                     <th class="column-title">תגובה מדווחת</th>
                     <th class="column-title">סטטוס</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr
+                    v-for="(row, index) in filteredRows"
+                    :key="`name-${index}`"
+                  >
+                    <td
+                      class="row items-center"
+                      v-html="highlightMatches(row.name)"
+                    ></td>
+                    <td
+                      class="row"
+                      v-html="highlightMatches([...row.type].sort().join(', '))"
+                    ></td>
+                    <td
+                      class="row"
+                      v-html="highlightMatches([...row.date].sort().join(', '))"
+                    ></td>
+                    <td
+                      class="row"
+                      v-html="
+                        highlightMatches([...row.author].sort().join(', '))
+                      "
+                    ></td>
+                    <td
+                      class="row"
+                      v-html="
+                        highlightMatches([...row.comment].sort().join(', '))
+                      "
+                    ></td>
                     <td class="row">
-                      <div class="flex items-center">
-                        <div class="ml-3">
-                          <p>אבי בניהו</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="row">
-                      <p>מנהל</p>
-                    </td>
-                    <td class="row">
-                      <p>21/7/2020</p>
-                    </td>
-                    <td class="row">
-                      <p>*תמצית תגובה עם קישור אליה*</p>
-                    </td>
-                    <td class="row">
-                      <span class="status-cell text-green-900">
+                      <span
+                        class="status-cell"
+                        :class="{
+                          'status-red': row.status == 'לא טופל',
+                          'status-green': row.status == 'טופל',
+                          'status-orange': row.status == 'תלונת שווא',
+                        }"
+                      >
                         <span
                           aria-hidden
-                          class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                          class="absolute inset-0 opacity-50 rounded-full"
+                          :class="{
+                            'status-red-inner': row.status == 'לא טופל',
+                            'status-green-inner': row.status == 'טופל',
+                            'status-orange-inner': row.status == 'תלונת שווא',
+                          }"
                         ></span>
-                        <span class="relative">טופל</span>
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="row">
-                      <div class="flex items-center">
-                        <div class="ml-3">
-                          <p>שימי שמיים</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="row">
-                      <p>עורך תוכן</p>
-                    </td>
-                    <td class="row">
-                      <p>09/09/2020</p>
-                    </td>
-                    <td class="row">
-                      <p>*תמצית תגובה עם קישור אליה*</p>
-                    </td>
-                    <td class="row">
-                      <span class="status-cell text-green-900">
-                        <span
-                          aria-hidden
-                          class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                        ></span>
-                        <span class="relative">טופל</span>
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="row">
-                      <div class="flex items-center">
-                        <div class="ml-3">
-                          <p>דנה כהן</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="row">
-                      <p>משתמש</p>
-                    </td>
-                    <td class="row">
-                      <p>20/09/2020</p>
-                    </td>
-                    <td class="row">
-                      <p>*תמצית תגובה עם קישור אליה*</p>
-                    </td>
-                    <td class="row">
-                      <span class="status-cell text-orange-900">
-                        <span
-                          aria-hidden
-                          class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
-                        ></span>
-                        <span class="relative">תלונת שווא</span>
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="row">
-                      <div class="flex items-center">
-                        <div class="ml-3">
-                          <p>שמעון שמעוני</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="row">
-                      <p>משתמש</p>
-                    </td>
-                    <td class="row">
-                      <p>09/08/2020</p>
-                    </td>
-                    <td class="row">
-                      <p>*תמצית תגובה עם קישור אליה*</p>
-                    </td>
-                    <td class="row">
-                      <span class="status-cell text-red-900">
-                        <span
-                          aria-hidden
-                          class="absolute inset-0 bg-red-200 opacity-50 rounded-full"
-                        ></span>
-                        <span class="relative">לא טופל</span>
+                        <span class="relative"> {{ row.status }}</span>
                       </span>
                     </td>
                   </tr>
@@ -214,6 +157,64 @@
     </body>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      filter: '',
+      rows: [
+        {
+          name: 'אבי אבן',
+          type: ['מנהל'],
+          date: ['22/02/2020'],
+          author: 'שלמה זרעיה',
+          comment: ['*תמצית תגובה עם קישור*'],
+          status: ['טופל'],
+        },
+        {
+          name: 'שימי שמיים',
+          type: ['עורך תוכן'],
+          date: ['22/02/2020'],
+          author: 'שלמה זרעיה',
+          comment: ['*תמצית תגובה עם קישור*'],
+          status: ['לא טופל'],
+        },
+        {
+          name: 'דנה כהן',
+          type: ['משתמש'],
+          date: ['22/02/2020'],
+          author: 'שלמה זרעיה',
+          comment: ['*תמצית תגובה עם קישור*'],
+          status: ['תלונת שווא'],
+        },
+      ],
+    }
+  },
+  computed: {
+    filteredRows() {
+      return this.rows.filter((row) => {
+        const name = row.name.toString().toLowerCase()
+        const searchTerm = this.filter.toLowerCase()
+
+        return name.includes(searchTerm)
+      })
+    },
+  },
+  methods: {
+    highlightMatches(text) {
+      const matchExists = text.toLowerCase().includes(this.filter.toLowerCase())
+      if (!matchExists) return text
+
+      const re = new RegExp(this.filter, 'ig')
+      return text.replace(
+        re,
+        (matchedText) => `<strong>${matchedText}</strong>`
+      )
+    },
+  },
+}
+</script>
 
 <style scoped>
 .column-title {
@@ -245,6 +246,30 @@
   @apply px-3;
   @apply py-1;
   @apply font-semibold;
+}
+
+.status-red {
+  @apply text-red-900;
+}
+
+.status-red-inner {
+  @apply bg-red-200;
+}
+
+.status-orange {
+  @apply text-orange-900;
+}
+
+.status-orange-inner {
+  @apply bg-orange-200;
+}
+
+.status-green {
+  @apply text-green-900;
+}
+
+.status-green-inner {
+  @apply bg-green-200;
 }
 
 .nav-button {
