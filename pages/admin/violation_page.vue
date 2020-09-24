@@ -8,6 +8,7 @@
             <div class="flex flex-row mb-1 sm:mb-0">
               <div class="relative ml-4">
                 <select
+                  v-model="perPage"
                   class="appearance-none h-full rounded-l border block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 >
                   <option>5</option>
@@ -30,6 +31,7 @@
               </div>
               <div class="relative ml-4">
                 <select
+                  v-model="selectedStatus"
                   class="appearance-none h-full rounded-r border-t sm:rounded-r-none border-r border-l border-b block w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
                 >
                   <option>הכל</option>
@@ -66,9 +68,9 @@
                 </svg>
               </span>
               <input
+                v-model="filter"
                 placeholder="חפש משתמש"
                 class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
-                v-model="filter"
               />
             </div>
           </div>
@@ -111,7 +113,8 @@
                       "
                     ></td>
                     <td
-                      class="row"
+                      class="row cursor-pointer;"
+                      @click="sendTo(`/course/`)"
                       v-html="
                         highlightMatches([...row.comment].sort().join(', '))
                       "
@@ -147,8 +150,28 @@
                   מראה 1 עד 4 דיווחים מתוך 50
                 </span>
                 <div class="inline-flex mt-2 xs:mt-0">
-                  <button class="nav-button rounded-l ml-2">קודם</button>
-                  <button class="nav-button rounded-r">הבא</button>
+                  <button
+                    v-if="page != 1"
+                    class="nav-button rounded-l ml-2"
+                    @click="page--"
+                  >
+                    קודם
+                  </button>
+                  <button
+                    v-for="pageNumber in pages.slice(page - 1, page + 5)"
+                    :key="pageNumber"
+                    class="nav-button rounded-l rounded-r ml-2"
+                    @click="page = pageNumber"
+                  >
+                    {{ pageNumber }}
+                  </button>
+                  <button
+                    v-if="page < pages.length"
+                    class="nav-button rounded-r"
+                    @click="page++"
+                  >
+                    הבא
+                  </button>
                 </div>
               </div>
             </div>
@@ -161,9 +184,19 @@
 
 <script>
 export default {
+  filters: {
+    trimWords(value) {
+      return value.split(' ').splice(0, 20).join(' ') + '...'
+    },
+  },
   data() {
     return {
+      selectedStatus: 'הכל',
       filter: '',
+      posts: [''],
+      page: 1,
+      perPage: 5,
+      pages: [1, 2, 3],
       rows: [
         {
           name: 'אבי אבן',
@@ -171,7 +204,7 @@ export default {
           date: ['22/02/2020'],
           author: 'שלמה זרעיה',
           comment: ['*תמצית תגובה עם קישור*'],
-          status: ['טופל'],
+          status: 'טופל',
         },
         {
           name: 'שימי שמיים',
@@ -179,7 +212,7 @@ export default {
           date: ['22/02/2020'],
           author: 'שלמה זרעיה',
           comment: ['*תמצית תגובה עם קישור*'],
-          status: ['לא טופל'],
+          status: 'לא טופל',
         },
         {
           name: 'דנה כהן',
@@ -187,22 +220,41 @@ export default {
           date: ['22/02/2020'],
           author: 'שלמה זרעיה',
           comment: ['*תמצית תגובה עם קישור*'],
-          status: ['תלונת שווא'],
+          status: 'תלונת שווא',
         },
       ],
     }
   },
   computed: {
+    rowsInPage() {
+      return this.rows.slice(
+        this.perPage * (this.page - 1),
+        this.perPage * this.page
+      )
+    },
     filteredRows() {
-      return this.rows.filter((row) => {
+      return this.rowsInPage.filter((row) => {
         const name = row.name.toString().toLowerCase()
+        const status = row.status
         const searchTerm = this.filter.toLowerCase()
 
-        return name.includes(searchTerm)
+        if (this.selectedStatus === 'הכל') return name.includes(searchTerm)
+        return name.includes(searchTerm) && status === this.selectedStatus
       })
+    },
+    displayedPosts() {
+      return this.paginate(this.posts)
+    },
+  },
+  watch: {
+    posts() {
+      this.setPages()
     },
   },
   methods: {
+    sendTo(msg) {
+      this.$router.push(msg)
+    },
     highlightMatches(text) {
       const matchExists = text.toLowerCase().includes(this.filter.toLowerCase())
       if (!matchExists) return text
@@ -212,6 +264,19 @@ export default {
         re,
         (matchedText) => `<strong>${matchedText}</strong>`
       )
+    },
+    setPages() {
+      const numberOfPages = Math.ceil(this.posts.length / this.perPage)
+      for (let index = 1; index <= numberOfPages; index++) {
+        this.pages.push(index)
+      }
+    },
+    paginate(posts) {
+      const page = this.page
+      const perPage = this.perPage
+      const from = page * perPage - perPage
+      const to = page * perPage
+      return this.posts.slice(from, to)
     },
   },
 }
