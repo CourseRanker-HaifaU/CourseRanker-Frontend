@@ -190,6 +190,8 @@ export default {
   data() {
     return {
       windowWidth: window.innerWidth,
+      rowsPerPage: 10,
+      after: '',
     }
   },
   computed: {
@@ -224,8 +226,12 @@ export default {
         }
         return dataArray
       },
-      variables: {
-        keywords: '',
+      variables() {
+        return {
+          keywords: '',
+          rowsPerPage: this.rowsPerPage,
+          after: this.after,
+        }
       },
     },
   },
