@@ -7,7 +7,11 @@
     <search-bar class="label__search"></search-bar>
     <hr class="mb-6 w-full border-t-2 bg-blue-200" />
     <h1 class="user-panel-header text-3xl">טבלת הקורסים שלי</h1>
-    <courses-table :which-table="'myCourses'"></courses-table>
+    <courses-table
+      :which-table="'myCourses'"
+      :is-lecturer="false"
+      :is-assist="false"
+    ></courses-table>
   </div>
 </template>
 
