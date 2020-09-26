@@ -4,7 +4,7 @@
     <search-bar class="label__search"></search-bar>
     <br />
     <courses-table
-      :which-table="'myCourses'"
+      :which-table="'courses'"
       :is-lecturer="false"
       :is-assist="false"
     ></courses-table>

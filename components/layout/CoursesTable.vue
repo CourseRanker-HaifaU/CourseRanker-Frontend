@@ -197,15 +197,11 @@ export default {
     },
     isLecturer: {
       type: Boolean,
-      default() {
-        return { isLecturer: false }
-      },
+      default: false,
     },
     isAssist: {
       type: Boolean,
-      default() {
-        return { isAssist: false }
-      },
+      default: false,
     },
   },
   data() {

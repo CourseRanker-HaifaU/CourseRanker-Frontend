@@ -10,8 +10,8 @@
       </h1>
       <courses-table
         :which-table="'myCourses'"
-        :is-lecturer="true"
-        :is-assist="false"
+        :is-lecturer="isLecturer"
+        :is-assist="!isLecturer"
       ></courses-table>
     </div>
   </div>
@@ -24,9 +24,7 @@ export default {
       /* if it's a lecturer page -> isLecturer == true
          if it's a teaching assistant -> isLecturer == false  */
       type: Boolean,
-      default() {
-        return { isLecturer: true }
-      },
+      default: true,
     },
   },
 }
