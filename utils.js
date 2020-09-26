@@ -59,3 +59,31 @@ export const getSemester = ({ name, yearJewish }) => {
 
   return `${semesterName} ${yearJewish}`
 }
+
+export const mergeCurrentSemesterCoursesData = (oldData, newData) => {
+  const ret = { ...newData }
+  ret.__typename = oldData.__typename
+  ret.allSemesters.edges[0].node.coursesemesterSet.edges = [
+    ...oldData.allSemesters.edges[0].node.coursesemesterSet.edges,
+    ...ret.allSemesters.edges[0].node.coursesemesterSet.edges,
+  ]
+  return ret
+}
+
+export const currentSemesterCourseDataTransform = (data) => {
+  const allSemesters = data.allSemesters.edges
+  const dataArray = []
+  const activeSemester = allSemesters[0]
+  const {
+    endCursor,
+    hasNextPage,
+  } = activeSemester.node.coursesemesterSet.pageInfo
+  for (const course of activeSemester.node.coursesemesterSet.edges) {
+    dataArray.push(course.node)
+  }
+  return {
+    dataArray,
+    endCursor,
+    hasNextPage,
+  }
+}

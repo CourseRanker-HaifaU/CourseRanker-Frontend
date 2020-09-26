@@ -2,7 +2,7 @@
   <div class="frame-div flex flex-col w-full items-stretch justify-start">
     <div v-if="isSmall" class="courses-cards">
       <div
-        v-for="listItem in courseList"
+        v-for="listItem in courseList.dataArray"
         :key="listItem.id"
         class="course-card"
         @click="sendTo(`/course/${listItem.course.id}`)"
@@ -90,7 +90,7 @@
       </thead>
 
       <tr
-        v-for="listItem in courseList"
+        v-for="listItem in courseList.dataArray"
         :key="listItem.id"
         class="cursor-pointer border-b border-black text-right hover:bg-gray-200"
         @click="sendTo(`/course/${listItem.course.id}`)"
@@ -177,12 +177,21 @@
         </td>
       </tr>
     </table>
+    <infinite-loading v-if="!$apollo.loading" @infinite="infiniteHandler">
+      <div slot="no-more"></div>
+      <div slot="no-results"></div>
+    </infinite-loading>
   </div>
 </template>
 
 <script>
 import currentSemesterCourses from '@/gql/currentSemesterCourses.gql'
-import { multipleStaffToString, getSemester } from '@/utils'
+import {
+  multipleStaffToString,
+  getSemester,
+  mergeCurrentSemesterCoursesData,
+  currentSemesterCourseDataTransform,
+} from '@/utils'
 
 export default {
   props: {
@@ -203,10 +212,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    keywords: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
       windowWidth: window.innerWidth,
+      rowsPerPage: 10,
+      after: '',
+      endCursor: '',
+      hasNextPage: false,
+      courseList: {
+        dataArray: [],
+      },
     }
   },
   computed: {
@@ -219,31 +239,51 @@ export default {
       this.windowWidth = window.innerWidth
     })
   },
+  apollo: {
+    courseList: {
+      query: currentSemesterCourses,
+      update: (data) => currentSemesterCourseDataTransform(data),
+      variables() {
+        return {
+          keywords: this.keywords,
+          rowsPerPage: this.rowsPerPage,
+          after: '',
+        }
+      },
+      debounce: 300,
+      throttle: 300,
+    },
+  },
   methods: {
     sendTo(msg) {
       this.$router.push(msg)
     },
     getSemester,
     multipleStaffToString,
-  },
-  apollo: {
-    courseList: {
-      query: currentSemesterCourses,
-      update: (data) => {
-        const allSemesters = data.allSemesters.edges
-        const dataArray = []
-        for (const semester of allSemesters) {
-          const semesterCourses = []
-          for (const course of semester.node.coursesemesterSet.edges) {
-            semesterCourses.push(course.node)
-          }
-          dataArray.push(...semesterCourses)
-        }
-        return dataArray
-      },
-      variables: {
-        keywords: '',
-      },
+    infiniteHandler($state) {
+      if (!this.courseList.hasNextPage) {
+        $state.complete()
+      } else {
+        this.$apollo.queries.courseList
+          .fetchMore({
+            query: currentSemesterCourses,
+            variables: {
+              keywords: this.keywords,
+              rowsPerPage: this.rowsPerPage,
+              after: this.courseList.endCursor,
+            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+              const result = mergeCurrentSemesterCoursesData(
+                previousResult,
+                fetchMoreResult
+              )
+              return result
+            },
+          })
+          .then(() => {
+            $state.loaded()
+          })
+      }
     },
   },
 }
