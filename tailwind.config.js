@@ -166,5 +166,6 @@ module.exports = {
   future: {
     // Get rid of that warning. Better explained here: https://tailwindcss.com/docs/upcoming-changes
     removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
   },
 }
