@@ -5,6 +5,9 @@
       <nuxt-link to="/admin/add_course" class="button blue-button ml-2 my-2">
         הוספת קורס חדש
       </nuxt-link>
+      <nuxt-link to="/admin/add_staff" class="button blue-button ml-2 my-2">
+        הוספת איש סגל
+      </nuxt-link>
       <nuxt-link
         to="/admin/add_semester_to_course"
         class="button blue-button ml-2 my-2"
