@@ -5,6 +5,9 @@
       <div style="margin-bottom: 18px">
         <hr class="border-0 bg-gray-500 text-gray-500 h-px" />
       </div>
+      <h1 class="text-xl font-bold">
+        <u>קורסים שהועברו על ידי המרצה:</u>
+      </h1>
       <courses-table
         :which-table="'myCourses'"
         :is-lecturer="true"
