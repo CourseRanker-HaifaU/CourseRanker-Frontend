@@ -1,8 +1,12 @@
-query currentSemesterCourses($keywords: String!) {
+query currentSemesterCourses($keywords: String!, $rowsPerPage: Int!, $after: String!) {
   allSemesters(isCurrent: true) {
     edges {
       node {
-        coursesemesterSet(course_Name_Icontains: $keywords) {
+        coursesemesterSet(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after) {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
           edges {
             node {
               id

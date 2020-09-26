@@ -14,7 +14,9 @@
         type="text"
         class="focus:outline-none"
         placeholder="חיפוש"
+        :value="value"
         @keyup.delete="deleteChip(chipsList.length - 1)"
+        @input="emitInput"
       />
     </div>
     <div class="btn-div">
@@ -39,6 +41,12 @@
 
 <script>
 export default {
+  props: {
+    value: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       chipsList: [],
@@ -52,6 +60,9 @@ export default {
     },
     deleteChip(index) {
       this.chipsList.splice(index, 1)
+    },
+    emitInput(event) {
+      this.$emit('input', event.target.value)
     },
   },
 }
