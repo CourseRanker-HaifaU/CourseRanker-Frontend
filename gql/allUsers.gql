@@ -1,0 +1,13 @@
+query {
+  allUsers {
+    edges {
+      node {
+        id
+        firstName
+        lastName
+        role
+        createdDate
+      }
+    }
+  }
+}
