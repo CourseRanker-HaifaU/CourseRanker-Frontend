@@ -73,7 +73,13 @@
                     {{ row.type }}
                   </div>
                   <div v-if="row.edit">
-                    <input v-model="row.type" type="text" />
+                    <multiselect
+                      v-model="row.type"
+                      :options="typeEditOptions"
+                      :searchable="false"
+                      :show-labels="false"
+                    >
+                    </multiselect>
                   </div>
                 </td>
                 <td class="row">
@@ -154,6 +160,7 @@ export default {
     return {
       perPageOptions: [5, 10, 20],
       typeOptions: ['הכול', 'מנהל', 'עורך תוכן', 'משתמש'],
+      typeEditOptions: ['מנהל', 'עורך תוכן', 'משתמש'],
       selectedType: 'הכול',
       filter: '',
       posts: [''],
