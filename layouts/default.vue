@@ -17,9 +17,16 @@ export default {
   created() {
     this.restoreUserData()
   },
+  beforeMount() {
+    window.addEventListener('scroll', this.updateScrolled)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.updateScrolled)
+  },
   methods: {
     ...mapActions({
       restoreUserData: 'user_data/restoreState',
+      updateScrolled: 'scrolling/changeScrolled',
     }),
   },
 }

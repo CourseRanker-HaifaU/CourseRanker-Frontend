@@ -96,6 +96,7 @@ export default {
         'faBars',
         'faExclamationTriangle',
         'faArrowRight',
+        'faAngleUp',
       ],
       regular: ['faStar'],
     },

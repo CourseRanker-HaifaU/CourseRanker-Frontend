@@ -7,6 +7,7 @@
       :which-table="'courses'"
       :keywords="keywords"
     ></courses-table>
+    <floating-action-button />
   </div>
 </template>
 
