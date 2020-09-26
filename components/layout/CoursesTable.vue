@@ -195,6 +195,10 @@ export default {
         return { whichTable: 'courses' }
       },
     },
+    keywords: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -224,11 +228,13 @@ export default {
       update: (data) => currentSemesterCourseDataTransform(data),
       variables() {
         return {
-          keywords: '',
+          keywords: this.keywords,
           rowsPerPage: this.rowsPerPage,
-          after: this.after,
+          after: '',
         }
       },
+      debounce: 300,
+      throttle: 300,
     },
   },
   methods: {
@@ -245,7 +251,7 @@ export default {
           .fetchMore({
             query: currentSemesterCourses,
             variables: {
-              keywords: '',
+              keywords: this.keywords,
               rowsPerPage: this.rowsPerPage,
               after: this.courseList.endCursor,
             },

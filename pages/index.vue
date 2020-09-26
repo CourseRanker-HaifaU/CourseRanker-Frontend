@@ -1,15 +1,23 @@
 <template>
   <div class="container">
     <welcome-message></welcome-message>
-    <search-bar class="label__search"></search-bar>
+    <search-bar v-model="keywords" class="label__search"></search-bar>
     <br />
-    <courses-table :which-table="'courses'"></courses-table>
+    <courses-table
+      :which-table="'courses'"
+      :keywords="keywords"
+    ></courses-table>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 export default {
+  data() {
+    return {
+      keywords: '',
+    }
+  },
   created() {
     this.restoreFromLocalStorage()
   },
