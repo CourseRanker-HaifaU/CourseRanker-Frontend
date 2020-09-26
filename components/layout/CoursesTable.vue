@@ -15,7 +15,7 @@
           <strong>סמסטר:</strong>
           {{ getSemester(listItem.semester) }}
         </div>
-        <div v-if="!isLecturer">
+        <div v-if="!isLecturer" class="text-right">
           <strong>מרצה:</strong>
           {{
             multipleStaffToString(
@@ -23,7 +23,7 @@
             )
           }}
         </div>
-        <div v-if="!isAssist">
+        <div v-if="!isAssist" class="text-right">
           <strong>מתרגל/ת:</strong>
           {{
             multipleStaffToString(
@@ -42,22 +42,16 @@
             הוספת חוות דעת
           </button>
         </div>
-        <div>
+        <div v-if="isLecturer">
           <strong>חוות דעת מרצה:</strong>
-          <rating
-            v-if="whichTable === 'courses'"
-            :rating="listItem.averageLecturerRating"
-          />
+          <rating :rating="listItem.averageLecturerRating" />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
         </div>
-        <div>
+        <div v-if="isAssist">
           <strong>חוות דעת מתרגל/ת:</strong>
-          <rating
-            v-if="whichTable === 'courses'"
-            :rating="listItem.averageTeachingAssistantRating"
-          />
+          <rating :rating="listItem.averageTeachingAssistantRating" />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
