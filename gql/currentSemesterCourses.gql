@@ -4,7 +4,7 @@ query currentSemesterCourses($keywords: String!, $rowsPerPage: Int!, $after: Str
       node {
         coursesemesterSet(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after) {
           pageInfo {
-            startCursor
+            endCursor
             hasNextPage
           }
           edges {
