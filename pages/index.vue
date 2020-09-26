@@ -5,6 +5,8 @@
     <br />
     <courses-table
       :which-table="'courses'"
+      :is-lecturer="false"
+      :is-assist="false"
       :keywords="keywords"
     ></courses-table>
     <floating-action-button />

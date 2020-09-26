@@ -15,7 +15,7 @@
           <strong>סמסטר:</strong>
           {{ getSemester(listItem.semester) }}
         </div>
-        <div>
+        <div v-if="!isLecturer" class="text-right">
           <strong>מרצה:</strong>
           {{
             multipleStaffToString(
@@ -23,7 +23,7 @@
             )
           }}
         </div>
-        <div>
+        <div v-if="!isAssist" class="text-right">
           <strong>מתרגל/ת:</strong>
           {{
             multipleStaffToString(
@@ -42,22 +42,16 @@
             הוספת חוות דעת
           </button>
         </div>
-        <div>
+        <div v-if="isLecturer">
           <strong>חוות דעת מרצה:</strong>
-          <rating
-            v-if="whichTable === 'courses'"
-            :rating="listItem.averageLecturerRating"
-          />
+          <rating :rating="listItem.averageLecturerRating" />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
         </div>
-        <div>
+        <div v-if="isAssist">
           <strong>חוות דעת מתרגל/ת:</strong>
-          <rating
-            v-if="whichTable === 'courses'"
-            :rating="listItem.averageTeachingAssistantRating"
-          />
+          <rating :rating="listItem.averageTeachingAssistantRating" />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
@@ -69,18 +63,21 @@
         <tr class="border-b-2 border-black">
           <th class="td-style">שם קורס</th>
           <th class="td-style">סמסטר</th>
-          <th class="td-style">מרצה</th>
-          <th class="td-style">מתרגל/ת</th>
+          <th v-if="!isLecturer" class="td-style">מרצה</th>
+          <th v-if="!isAssist" class="td-style">מתרגל/ת</th>
           <th v-if="whichTable != 'myCourses'" class="td-style">
             חוות דעת קורס
           </th>
-          <th v-if="whichTable != 'myCourses'" class="td-style">
+          <th v-if="whichTable != 'myCourses' || isLecturer" class="td-style">
             חוות דעת מרצה
           </th>
-          <th v-if="whichTable != 'myCourses'" class="td-style">
+          <th v-if="whichTable != 'myCourses' || isAssist" class="td-style">
             חוות דעת מתרגל/ת
           </th>
-          <th v-if="whichTable === 'myCourses'" class="td-style">
+          <th
+            v-if="whichTable === 'myCourses' && !isLecturer && !isAssist"
+            class="td-style"
+          >
             מחק מהקורסים שלי
           </th>
         </tr>
@@ -108,6 +105,7 @@
 
         <!-------------------- 3rd col -------------------->
         <td
+          v-if="!isLecturer"
           :class="[whichTable === 'myCourses' ? 'td-my-courses' : 'td-style']"
         >
           {{
@@ -119,6 +117,7 @@
 
         <!-------------------- 4rd col -------------------->
         <td
+          v-if="!isAssist"
           :class="[whichTable === 'myCourses' ? 'td-my-courses' : 'td-style']"
         >
           {{
@@ -141,9 +140,9 @@
         </td>
 
         <!-------------------- 6th col-optional -------------------->
-        <td v-if="whichTable != 'myCourses'" class="td-style">
+        <td v-if="whichTable != 'myCourses' || isLecturer" class="td-style">
           <rating
-            v-if="whichTable === 'courses'"
+            v-if="whichTable === 'courses' || isLecturer"
             :rating="listItem.averageLecturerRating"
           ></rating>
           <button v-if="whichTable === 'feedback'" class="table-btn">
@@ -152,9 +151,9 @@
         </td>
 
         <!-------------------- 7th col-optional -------------------->
-        <td v-if="whichTable != 'myCourses'" class="'td-style'">
+        <td v-if="whichTable != 'myCourses' || isAssist" class="'td-style'">
           <rating
-            v-if="whichTable === 'courses'"
+            v-if="whichTable === 'courses' || isAssist"
             :rating="listItem.averageTeachingAssistantRating"
           ></rating>
           <button v-if="whichTable === 'feedback'" class="table-btn">
@@ -164,7 +163,10 @@
 
         <!-------------------- 8th col-optional -------------------->
         <!-- If table is shown as part of "my_courses.vue" -->
-        <td v-if="whichTable === 'myCourses'" class="td-my-courses">
+        <td
+          v-if="whichTable === 'myCourses' && !isLecturer && !isAssist"
+          class="td-my-courses"
+        >
           <button class="table-btn">מחק קורס</button>
         </td>
       </tr>
@@ -189,11 +191,20 @@ export default {
   props: {
     whichTable: {
       /* in "index.vue" -> courses,
-         in  "my_courses.vue" -> myCourses, feedback */
+         in  "my_courses.vue" -> myCourses, feedback
+         in "staff_page.vue" -> myCourses */
       type: String,
       default() {
         return { whichTable: 'courses' }
       },
+    },
+    isLecturer: {
+      type: Boolean,
+      default: false,
+    },
+    isAssist: {
+      type: Boolean,
+      default: false,
     },
     keywords: {
       type: String,
