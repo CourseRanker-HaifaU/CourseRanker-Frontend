@@ -198,6 +198,7 @@ export default {
       posts: [''],
       perPage: 5,
       allUsers: [],
+      after: '',
     }
   },
   computed: {
@@ -252,6 +253,14 @@ export default {
   apollo: {
     allUsers: {
       query: allUsers,
+      variables() {
+        return {
+          after: this.after,
+          perPage: this.perPage,
+          keywords: this.filter,
+          role: this.selectedType.searchTerm,
+        }
+      },
       update: (data) => {
         const serverData = data.allUsers
         for (const item of serverData.edges) {
@@ -277,6 +286,8 @@ export default {
         }
         return serverData
       },
+      throttle: 300,
+      debounce: 300,
     },
   },
 }

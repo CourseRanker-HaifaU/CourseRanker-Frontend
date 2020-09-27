@@ -1,5 +1,5 @@
-query {
-  allUsers {
+query ($after: String!, $perPage: Int!, $keywords: String!, $role: String!) {
+  allUsers(after: $after, first: $perPage, fullName_Icontains: $keywords, role: $role) {
     edges {
       node {
         id
