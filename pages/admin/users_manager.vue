@@ -244,7 +244,7 @@ export default {
     editOn(index) {
       if (this.allUsers.edges[index].node.isEdit) {
         this.allUsers.edges[index].node.isEdit = false
-        updateUser(index)
+        this.updateUser(index)
       } else {
         this.allUsers.edges[index].node.isEdit = true
       }
@@ -279,13 +279,11 @@ export default {
           input: {
             id: this.allUsers.edges[id].node.id,
             email: this.allUsers.edges[id].node.email,
-            password: '',
             firstName: this.allUsers.edges[id].node.firstName,
             lastName: this.allUsers.edges[id].node.lastName,
           },
         },
       })
-      this.allUsers.edges.splice(id, 1)
       alert('המשתמש עודכן בהצלחה!')
     },
     async deleteUser(id) {

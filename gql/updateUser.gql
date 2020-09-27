@@ -1,11 +1,5 @@
-mutation updateUser($id: String!, $email: String!, $password: String!, $firstName: String, $lastName: String) {
-  updateUser (input: {
-    id: $id
-    email: $email
-    password: $password
-    firstName: $firstName
-    lastName: $lastName
-  }) {
+mutation updateUser($input: UpdateUserInput!) {
+  updateUser (input: $input) {
     user {
       id
     }
