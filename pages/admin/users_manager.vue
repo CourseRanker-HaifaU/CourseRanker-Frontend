@@ -19,6 +19,8 @@
               :options="typeOptions"
               :searchable="false"
               :show-labels="false"
+              label="label"
+              track-by="label"
             >
             </multiselect>
           </div>
@@ -43,7 +45,8 @@
           <table class="min-w-full leading-normal">
             <thead>
               <tr>
-                <th class="column-title">שם המשתמש</th>
+                <th class="column-title">שם פרטי</th>
+                <th class="column-title">שם משפחה</th>
                 <th class="column-title">כתובת מייל</th>
                 <th class="column-title">סוג משתמש</th>
                 <th class="column-title">תאריך יצירה</th>
@@ -51,14 +54,27 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(row, index) in filteredRows" :key="`name-${index}`">
+              <tr
+                v-for="(row, index) in allUsersOptions"
+                :key="`name-${index}`"
+              >
                 <td class="row items-center">
-                  <div v-if="!row.isEdit">{{ fullName(row) }}</div>
+                  <div v-if="!row.isEdit">{{ row.firstName }}</div>
                   <div v-if="row.isEdit">
-                    <input
+                    <input-field
+                      id="firstName"
+                      v-model="row.firstName"
                       type="text"
-                      :value="fullName(row)"
-                      @input="updateName($event, row)"
+                    />
+                  </div>
+                </td>
+                <td class="row items-center">
+                  <div v-if="!row.isEdit">{{ row.lastName }}</div>
+                  <div v-if="row.isEdit">
+                    <input-field
+                      id="lastName"
+                      v-model="row.lastName"
+                      type="text"
                     />
                   </div>
                 </td>
@@ -67,12 +83,12 @@
                     {{ row.email }}
                   </div>
                   <div v-if="row.isEdit">
-                    <input v-model="row.email" type="text" />
+                    <input-field id="email" v-model="row.email" type="email" />
                   </div>
                 </td>
                 <td class="row">
                   <div v-if="!row.isEdit">
-                    {{ roleParser(row.role) }}
+                    {{ row.role.label }}
                   </div>
                   <div v-if="row.isEdit">
                     <multiselect
@@ -80,27 +96,18 @@
                       :options="typeEditOptions"
                       :searchable="false"
                       :show-labels="false"
+                      label="label"
+                      track-by="id"
                     >
                     </multiselect>
                   </div>
                 </td>
                 <td class="row">
-                  <div v-if="!row.isEdit">
-                    {{
-                      DateTime.fromISO(row.createdDate)
-                        .setLocale('he')
-                        .toLocaleString({
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric',
-                          hour: 'numeric',
-                          minute: '2-digit',
-                        })
-                    }}
-                  </div>
-                  <div v-if="row.isEdit">
-                    <input v-model="row.createdDate" type="text" />
-                  </div>
+                  {{
+                    DateTime.fromISO(row.createdDate)
+                      .setLocale('he')
+                      .toLocaleString(DateTime.DATE_SHORT)
+                  }}
                 </td>
                 <td class="row">
                   <button
@@ -179,9 +186,42 @@ export default {
     return {
       DateTime,
       perPageOptions: [5, 10, 20],
-      typeOptions: ['הכול', 'מנהל', 'עורך תוכן', 'משתמש'],
-      typeEditOptions: ['מנהל', 'עורך תוכן', 'משתמש'],
-      selectedType: 'הכול',
+      typeOptions: [
+        {
+          searchTerm: '',
+          label: 'הכול',
+        },
+        {
+          searchTerm: '3',
+          label: 'מנהל',
+        },
+        {
+          searchTerm: '2',
+          label: 'עורך תוכן',
+        },
+        {
+          searchTerm: '1',
+          label: 'משתמש',
+        },
+      ],
+      typeEditOptions: [
+        {
+          id: '1',
+          label: 'משתמש',
+        },
+        {
+          id: '2',
+          label: 'עורך תוכן',
+        },
+        {
+          id: '3',
+          label: 'מנהל',
+        },
+      ],
+      selectedType: {
+        searchTerm: '',
+        label: 'הכול',
+      },
       filter: '',
       posts: [''],
       page: 1,
@@ -219,11 +259,6 @@ export default {
     },
     displayedPosts() {
       return this.paginate(this.posts)
-    },
-  },
-  watch: {
-    posts() {
-      this.setPages()
     },
   },
   methods: {
@@ -281,6 +316,7 @@ export default {
             email: this.allUsers.edges[id].node.email,
             firstName: this.allUsers.edges[id].node.firstName,
             lastName: this.allUsers.edges[id].node.lastName,
+            role: this.allUsers.edges[id].node.role.id,
           },
         },
       })
@@ -306,6 +342,24 @@ export default {
         const serverData = data.allUsers
         for (const item of serverData.edges) {
           item.node.isEdit = false
+          if (typeof item.node.role === 'string') {
+            const roleID = item.node.role.split('_')[1]
+            const rolesMapping = {
+              1: {
+                id: '1',
+                label: 'משתמש',
+              },
+              2: {
+                id: '2',
+                label: 'עורך תוכן',
+              },
+              3: {
+                id: '3',
+                label: 'מנהל',
+              },
+            }
+            item.node.role = rolesMapping[parseInt(roleID, 10)]
+          }
         }
         return serverData
       },
@@ -323,8 +377,8 @@ export default {
 }
 
 .row {
-  @apply px-5;
-  @apply py-5;
+  @apply px-2;
+  @apply py-4;
   @apply border-b;
   @apply border-gray-200;
   @apply bg-white;
@@ -382,6 +436,7 @@ export default {
   @apply text-white;
   @apply bg-primary;
   @apply p-2;
+  @apply my-1;
   @apply rounded;
 }
 .table-btn:active {
