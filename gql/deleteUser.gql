@@ -1,7 +1,5 @@
-mutation deleteUser($id: ID!) {
-  deleteUser (id: $id) {
-    user {
-      id
-    }
+mutation deleteUser($input: DeleteUserInput!) {
+  deleteUser(input: $input) {
+    ok
   }
 }

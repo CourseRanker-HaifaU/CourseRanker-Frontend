@@ -53,28 +53,30 @@
             <tbody>
               <tr v-for="(row, index) in filteredRows" :key="`name-${index}`">
                 <td class="row items-center">
-                  <div v-if="!row.edit">
-                    {{ row.name }}
-                  </div>
-                  <div v-if="row.edit">
-                    <input v-model="row.name" type="text" />
-                  </div>
-                </td>
-                <td class="row">
-                  <div v-if="!row.edit">
-                    {{ row.mail }}
-                  </div>
-                  <div v-if="row.edit">
-                    <input v-model="row.mail" type="text" />
+                  <div v-if="!row.isEdit">{{ fullName(row) }}</div>
+                  <div v-if="row.isEdit">
+                    <input
+                      type="text"
+                      :value="fullName(row)"
+                      @input="updateName($event, row)"
+                    />
                   </div>
                 </td>
                 <td class="row">
-                  <div v-if="!row.edit">
-                    {{ row.type }}
+                  <div v-if="!row.isEdit">
+                    {{ row.email }}
                   </div>
-                  <div v-if="row.edit">
+                  <div v-if="row.isEdit">
+                    <input v-model="row.email" type="text" />
+                  </div>
+                </td>
+                <td class="row">
+                  <div v-if="!row.isEdit">
+                    {{ roleParser(row.role) }}
+                  </div>
+                  <div v-if="row.isEdit">
                     <multiselect
-                      v-model="row.type"
+                      v-model="row.role"
                       :options="typeEditOptions"
                       :searchable="false"
                       :show-labels="false"
@@ -83,29 +85,31 @@
                   </div>
                 </td>
                 <td class="row">
-                  <div v-if="!row.edit">
-                    {{ row.seniority }}
+                  <div v-if="!row.isEdit">
+                    {{ row.createdDate }}
                   </div>
-                  <div v-if="row.edit">
-                    <input v-model="row.seniority" type="text" />
+                  <div v-if="row.isEdit">
+                    <input v-model="row.createdDate" type="text" />
                   </div>
                 </td>
                 <td class="row">
                   <button
-                    v-if="!row.edit"
+                    v-if="!row.isEdit"
                     class="table-btn"
-                    @click="editOn(row)"
+                    @click="editOn(index)"
                   >
                     ערוך
                   </button>
                   <button
-                    v-if="row.edit"
+                    v-if="row.isEdit"
                     class="table-btn"
-                    @click="editOn(row)"
+                    @click="editOn(index)"
                   >
                     שמור
                   </button>
-                  <button class="table-btn">מחק</button>
+                  <button class="table-btn" @click="deleteUser(index)">
+                    מחק
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -146,6 +150,10 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
+import allUsers from '@/gql/allUsers.gql'
+import deleteUser from '@/gql/deleteUser.gql'
+import updateUser from '@/gql/updateUser.gql'
+import { roleParser } from '@/utils'
 
 export default {
   components: {
@@ -167,42 +175,30 @@ export default {
       page: 1,
       perPage: 5,
       pages: [1, 2, 3],
-      rows: [
-        {
-          name: 'יוסי שמר',
-          mail: 'israel@gmail.com',
-          type: 'משתמש',
-          seniority: '22/02/2020',
-          edit: false,
-        },
-        {
-          name: 'ספי עובדיה',
-          mail: 'israel@gmail.com',
-          type: 'מנהל',
-          seniority: '22/02/2020',
-          edit: false,
-        },
-        {
-          name: 'שמרית שושן',
-          mail: 'israel@gmail.com',
-          type: 'עורך תוכן',
-          seniority: '22/02/2020',
-          edit: false,
-        },
-      ],
+      allUsers: [],
+      isEdit: false,
     }
   },
   computed: {
+    allUsersOptions() {
+      if (!('edges' in this.allUsers)) {
+        return []
+      }
+      return this.allUsers.edges.map((item) => item.node)
+    },
     rowsInPage() {
-      return this.rows.slice(
+      return this.allUsersOptions.slice(
         this.perPage * (this.page - 1),
         this.perPage * this.page
       )
     },
     filteredRows() {
       return this.rowsInPage.filter((row) => {
-        const name = row.name.toString().toLowerCase()
-        const type = row.type
+        const name =
+          row.firstName.toString().toLowerCase() +
+          ' ' +
+          row.lastName.toString().toLowerCase()
+        const type = row.role
         const searchTerm = this.filter.toLowerCase()
 
         if (this.selectedType === 'הכול') return name.includes(searchTerm)
@@ -219,11 +215,27 @@ export default {
     },
   },
   methods: {
+    roleParser,
+    fullName(row) {
+      return row.firstName + ' ' + row.lastName
+    },
+    updateName(event, row) {
+      if (event.target.value.includes(' ')) {
+        const sepName = event.target.value.split(' ')
+        row.firstName = sepName[0]
+        row.lastName = sepName[1]
+      }
+    },
     sendTo(msg) {
       this.$router.push(msg)
     },
-    editOn(row) {
-      row.edit = !row.edit
+    editOn(index) {
+      if (this.allUsers.edges[index].node.isEdit) {
+        this.allUsers.edges[index].node.isEdit = false
+        updateUser(index)
+      } else {
+        this.allUsers.edges[index].node.isEdit = true
+      }
     },
     highlightMatches(text) {
       const matchExists = text.toLowerCase().includes(this.filter.toLowerCase())
@@ -247,6 +259,46 @@ export default {
       const from = page * perPage - perPage
       const to = page * perPage
       return this.posts.slice(from, to)
+    },
+    async updateUser(id) {
+      await this.$apollo.mutate({
+        mutation: updateUser,
+        variables: {
+          input: {
+            id: this.allUsers.edges[id].node.id,
+            email: this.allUsers.edges[id].node.email,
+            password: '',
+            firstName: this.allUsers.edges[id].node.firstName,
+            lastName: this.allUsers.edges[id].node.lastName,
+          },
+        },
+      })
+      this.allUsers.edges.splice(id, 1)
+      alert('המשתמש עודכן בהצלחה!')
+    },
+    async deleteUser(id) {
+      await this.$apollo.mutate({
+        mutation: deleteUser,
+        variables: {
+          input: {
+            id: this.allUsers.edges[id].node.id,
+          },
+        },
+      })
+      this.allUsers.edges.splice(id, 1)
+      alert('המשתמש נמחק בהצלחה!')
+    },
+  },
+  apollo: {
+    allUsers: {
+      query: allUsers,
+      update: (data) => {
+        const serverData = data.allUsers
+        for (const item of serverData.edges) {
+          item.node.isEdit = false
+        }
+        return serverData
+      },
     },
   },
 }
