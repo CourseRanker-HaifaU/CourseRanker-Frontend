@@ -131,34 +131,6 @@
               </tr>
             </tbody>
           </table>
-          <div
-            class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between"
-          >
-            <div class="inline-flex mt-2 xs:mt-0">
-              <button
-                v-if="page != 1"
-                class="ml-2 button blue-button"
-                @click="page--"
-              >
-                קודם
-              </button>
-              <button
-                v-for="pageNumber in pages.slice(page - 1, page + 5)"
-                :key="pageNumber"
-                class="ml-2 button blue-button"
-                @click="page = pageNumber"
-              >
-                {{ pageNumber }}
-              </button>
-              <button
-                v-if="page < pages.length"
-                class="rounded-r button blue-button"
-                @click="page++"
-              >
-                הבא
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -224,11 +196,8 @@ export default {
       },
       filter: '',
       posts: [''],
-      page: 1,
       perPage: 5,
-      pages: [1, 2, 3],
       allUsers: [],
-      isEdit: false,
     }
   },
   computed: {
@@ -238,41 +207,9 @@ export default {
       }
       return this.allUsers.edges.map((item) => item.node)
     },
-    rowsInPage() {
-      return this.allUsersOptions.slice(
-        this.perPage * (this.page - 1),
-        this.perPage * this.page
-      )
-    },
-    filteredRows() {
-      return this.rowsInPage.filter((row) => {
-        const name =
-          row.firstName.toString().toLowerCase() +
-          ' ' +
-          row.lastName.toString().toLowerCase()
-        const type = row.role
-        const searchTerm = this.filter.toLowerCase()
-
-        if (this.selectedType === 'הכול') return name.includes(searchTerm)
-        return name.includes(searchTerm) && type === this.selectedType
-      })
-    },
-    displayedPosts() {
-      return this.paginate(this.posts)
-    },
   },
   methods: {
     roleParser,
-    fullName(row) {
-      return row.firstName + ' ' + row.lastName
-    },
-    updateName(event, row) {
-      if (event.target.value.includes(' ')) {
-        const sepName = event.target.value.split(' ')
-        row.firstName = sepName[0]
-        row.lastName = sepName[1]
-      }
-    },
     sendTo(msg) {
       this.$router.push(msg)
     },
@@ -283,29 +220,6 @@ export default {
       } else {
         this.allUsers.edges[index].node.isEdit = true
       }
-    },
-    highlightMatches(text) {
-      const matchExists = text.toLowerCase().includes(this.filter.toLowerCase())
-      if (!matchExists) return text
-
-      const re = new RegExp(this.filter, 'ig')
-      return text.replace(
-        re,
-        (matchedText) => `<strong>${matchedText}</strong>`
-      )
-    },
-    setPages() {
-      const numberOfPages = Math.ceil(this.posts.length / this.perPage)
-      for (let index = 1; index <= numberOfPages; index++) {
-        this.pages.push(index)
-      }
-    },
-    paginate(posts) {
-      const page = this.page
-      const perPage = this.perPage
-      const from = page * perPage - perPage
-      const to = page * perPage
-      return this.posts.slice(from, to)
     },
     async updateUser(id) {
       await this.$apollo.mutate({
