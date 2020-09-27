@@ -1,5 +1,9 @@
 query ($after: String!, $perPage: Int!, $keywords: String!, $role: String!) {
   allUsers(after: $after, first: $perPage, fullName_Icontains: $keywords, role: $role) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
       node {
         id
