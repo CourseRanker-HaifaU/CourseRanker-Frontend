@@ -86,7 +86,17 @@
                 </td>
                 <td class="row">
                   <div v-if="!row.isEdit">
-                    {{ row.createdDate }}
+                    {{
+                      DateTime.fromISO(row.createdDate)
+                        .setLocale('he')
+                        .toLocaleString({
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                          hour: 'numeric',
+                          minute: '2-digit',
+                        })
+                    }}
                   </div>
                   <div v-if="row.isEdit">
                     <input v-model="row.createdDate" type="text" />
@@ -154,6 +164,7 @@ import allUsers from '@/gql/allUsers.gql'
 import deleteUser from '@/gql/deleteUser.gql'
 import updateUser from '@/gql/updateUser.gql'
 import { roleParser } from '@/utils'
+import { DateTime } from 'luxon'
 
 export default {
   components: {
@@ -166,6 +177,7 @@ export default {
   },
   data() {
     return {
+      DateTime,
       perPageOptions: [5, 10, 20],
       typeOptions: ['הכול', 'מנהל', 'עורך תוכן', 'משתמש'],
       typeEditOptions: ['מנהל', 'עורך תוכן', 'משתמש'],
