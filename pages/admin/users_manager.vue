@@ -15,7 +15,7 @@
           >
           </multiselect>
         </div>
-        <div class="block relative">
+        <div class="block relative mt-2 md:mt-0">
           <span class="h-full absolute inset-y-0 left-0 flex items-center pl-2">
             <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-500">
               <path
