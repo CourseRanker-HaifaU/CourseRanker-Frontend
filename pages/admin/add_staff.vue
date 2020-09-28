@@ -49,6 +49,7 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import allUnits from '@/gql/allUnits.gql'
+import addStaff from '@/gql/addStaff.gql'
 
 export default {
   components: {
@@ -88,23 +89,21 @@ export default {
       return this.allUnits.edges.map((item) => item.node)
     },
   },
-  /*
   methods: {
     async onSubmit() {
       await this.$apollo.mutate({
         mutation: addStaff,
         variables: {
           input: {
-            name: this.staffName,
-            unitId: this.unit.id,
-            title: this.staffTitle,
+            firstName: this.staffName.split(' ')[0],
+            lastName: this.staffName.split(' ')[1],
+            title: this.staffTitle.id,
           },
         },
       })
       alert('נוסף בהצלחה!')
     },
   },
-  */
   apollo: {
     allUnits: {
       query: allUnits,
