@@ -32,7 +32,11 @@
       </div>
       <div class="py-4 pb-0 overflow-x-auto">
         <div class="min-w-full shadow rounded-lg overflow-hidden">
-          <table class="min-w-full leading-normal text-right" infinite-wrapper>
+          <table
+            v-if="!isSmall"
+            class="min-w-full leading-normal text-right"
+            infinite-wrapper
+          >
             <thead>
               <tr>
                 <th class="column-title">שם פרטי</th>
@@ -121,6 +125,85 @@
               </tr>
             </tbody>
           </table>
+          <div v-if="isSmall">
+            <div
+              v-for="(row, index) in allUsersOptions"
+              :key="`card-${index}`"
+              class="responsive-card"
+            >
+              <div v-if="row.isEdit">
+                <strong>שם פרטי:</strong>
+                <input-field
+                  id="firstName"
+                  v-model="row.firstName"
+                  type="text"
+                />
+              </div>
+              <div v-else>
+                <strong>שם פרטי:</strong>
+                {{ row.firstName }}
+              </div>
+              <div v-if="row.isEdit">
+                <strong>שם משפחה:</strong>
+                <input-field id="lastName" v-model="row.lastName" type="text" />
+              </div>
+              <div v-else>
+                <strong>שם משפחה:</strong>
+                {{ row.lastName }}
+              </div>
+              <div v-if="row.isEdit">
+                <strong>כתובת מייל:</strong>
+                <input-field id="email" v-model="row.email" type="email" />
+              </div>
+              <div v-else>
+                <strong>כתובת מייל:</strong>
+                {{ row.email }}
+              </div>
+              <div v-if="row.isEdit">
+                <strong>סוג משתמש:</strong>
+                <multiselect
+                  v-model="row.role"
+                  :options="typeEditOptions"
+                  :searchable="false"
+                  :show-labels="false"
+                  label="label"
+                  track-by="id"
+                >
+                </multiselect>
+              </div>
+              <div v-else>
+                <strong>סוג משתמש:</strong>
+                {{ row.role.label }}
+              </div>
+              <div>
+                <strong>תאריך יצירה:</strong>
+                {{
+                  DateTime.fromISO(row.createdDate)
+                    .setLocale('he')
+                    .toLocaleString(DateTime.DATE_SHORT)
+                }}
+              </div>
+              <div>
+                <button
+                  v-if="!row.isEdit"
+                  class="table-btn"
+                  @click="editOn(index)"
+                >
+                  ערוך
+                </button>
+                <button
+                  v-if="row.isEdit"
+                  class="table-btn"
+                  @click="editOn(index)"
+                >
+                  שמור
+                </button>
+                <button class="table-btn mr-2" @click="deleteUser(index)">
+                  מחק
+                </button>
+              </div>
+            </div>
+          </div>
           <infinite-loading
             v-if="!$apollo.loading && allUsersOptions.length > 0"
             :force-use-infinite-wrapper="true"
@@ -137,6 +220,7 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
+import isSmallMixin from '@/mixins/small_width'
 import allUsers from '@/gql/allUsers.gql'
 import deleteUser from '@/gql/deleteUser.gql'
 import updateUser from '@/gql/updateUser.gql'
@@ -152,6 +236,7 @@ export default {
       return value.split(' ').splice(0, 20).join(' ') + '...'
     },
   },
+  mixins: [isSmallMixin],
   data() {
     return {
       DateTime,
