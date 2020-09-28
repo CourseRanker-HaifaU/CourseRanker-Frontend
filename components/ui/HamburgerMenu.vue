@@ -5,6 +5,7 @@
       :key="link.link"
       :to="link.link"
       class="menu-link focus-outline-none"
+      exact-active-class="bg-primary-hover"
       @click.native="emitMenuClose"
     >
       {{ link.label }}
