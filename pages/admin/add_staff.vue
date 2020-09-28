@@ -9,7 +9,7 @@
           :options="titles"
           :searchable="false"
           :show-labels="false"
-          placeholder="בחר את תואר איש הקשר"
+          placeholder="בחר את תואר חבר הסגל"
           label="name"
           track-by="id"
         ></multiselect>

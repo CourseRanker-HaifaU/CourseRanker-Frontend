@@ -1,29 +1,19 @@
 <template>
-  <div class="h-cover w-full text-center">
+  <div class="w-full text-center">
     <panel-page-title title="ניהול משתמשים" back-button />
     <div class="py-8 min-w-full">
-      <div class="my-2 flex sm:flex-row flex-col">
-        <div class="flex flex-row mb-1 sm:mb-0">
-          <div class="relative ml-4">
-            <multiselect
-              v-model="perPage"
-              :options="perPageOptions"
-              :searchable="false"
-              :show-labels="false"
-            >
-            </multiselect>
-          </div>
-          <div class="relative ml-4">
-            <multiselect
-              v-model="selectedType"
-              :options="typeOptions"
-              :searchable="false"
-              :show-labels="false"
-              label="label"
-              track-by="label"
-            >
-            </multiselect>
-          </div>
+      <div class="my-2 flex flex-col items-start justify-start md:flex-row">
+        <div class="md:ml-4">
+          <multiselect
+            v-model="selectedType"
+            :options="typeOptions"
+            :searchable="false"
+            :show-labels="false"
+            label="label"
+            track-by="label"
+            class="min-w-0"
+          >
+          </multiselect>
         </div>
         <div class="block relative">
           <span class="h-full absolute inset-y-0 left-0 flex items-center pl-2">
@@ -40,9 +30,9 @@
           />
         </div>
       </div>
-      <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-        <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-          <table class="min-w-full leading-normal text-right">
+      <div class="py-4 pb-0 overflow-x-auto">
+        <div class="min-w-full shadow rounded-lg overflow-hidden">
+          <table class="min-w-full leading-normal text-right" infinite-wrapper>
             <thead>
               <tr>
                 <th class="column-title">שם פרטי</th>
@@ -131,6 +121,14 @@
               </tr>
             </tbody>
           </table>
+          <infinite-loading
+            v-if="!$apollo.loading && allUsersOptions.length > 0"
+            :force-use-infinite-wrapper="true"
+            @infinite="infiniteHandler"
+          >
+            <div slot="no-more"></div>
+            <div slot="no-results"></div>
+          </infinite-loading>
         </div>
       </div>
     </div>
@@ -197,7 +195,9 @@ export default {
       filter: '',
       posts: [''],
       perPage: 5,
-      allUsers: [],
+      allUsers: {
+        pageInfo: {},
+      },
       after: '',
     }
   },
@@ -207,6 +207,46 @@ export default {
         return []
       }
       return this.allUsers.edges.map((item) => item.node)
+    },
+  },
+  apollo: {
+    allUsers: {
+      query: allUsers,
+      variables() {
+        return {
+          after: '',
+          perPage: this.perPage,
+          keywords: this.filter,
+          role: this.selectedType.searchTerm,
+        }
+      },
+      update: (data) => {
+        const serverData = data.allUsers
+        for (const item of serverData.edges) {
+          item.node.isEdit = false
+          if (typeof item.node.role === 'string') {
+            const roleID = item.node.role.split('_')[1]
+            const rolesMapping = {
+              1: {
+                id: '1',
+                label: 'משתמש',
+              },
+              2: {
+                id: '2',
+                label: 'עורך תוכן',
+              },
+              3: {
+                id: '3',
+                label: 'מנהל',
+              },
+            }
+            item.node.role = rolesMapping[parseInt(roleID, 10)]
+          }
+        }
+        return serverData
+      },
+      throttle: 300,
+      debounce: 300,
     },
   },
   methods: {
@@ -249,45 +289,32 @@ export default {
       this.allUsers.edges.splice(id, 1)
       alert('המשתמש נמחק בהצלחה!')
     },
-  },
-  apollo: {
-    allUsers: {
-      query: allUsers,
-      variables() {
-        return {
-          after: this.after,
-          perPage: this.perPage,
-          keywords: this.filter,
-          role: this.selectedType.searchTerm,
-        }
-      },
-      update: (data) => {
-        const serverData = data.allUsers
-        for (const item of serverData.edges) {
-          item.node.isEdit = false
-          if (typeof item.node.role === 'string') {
-            const roleID = item.node.role.split('_')[1]
-            const rolesMapping = {
-              1: {
-                id: '1',
-                label: 'משתמש',
-              },
-              2: {
-                id: '2',
-                label: 'עורך תוכן',
-              },
-              3: {
-                id: '3',
-                label: 'מנהל',
-              },
-            }
-            item.node.role = rolesMapping[parseInt(roleID, 10)]
-          }
-        }
-        return serverData
-      },
-      throttle: 300,
-      debounce: 300,
+    infiniteHandler($state) {
+      if (!this.allUsers.pageInfo.hasNextPage) {
+        $state.complete()
+      } else {
+        const nextPageCursor = this.allUsers.pageInfo.endCursor
+        this.$apollo.queries.allUsers
+          .fetchMore({
+            query: allUsers,
+            variables: {
+              perPage: this.perPage,
+              keywords: this.filter,
+              role: this.selectedType.searchTerm,
+              after: nextPageCursor,
+            },
+            updateQuery: (prevResult, { fetchMoreResult }) => {
+              const newResult = { ...prevResult }
+              newResult.allUsers.edges = [
+                ...prevResult.allUsers.edges,
+                ...fetchMoreResult.allUsers.edges,
+              ]
+              newResult.allUsers.pageInfo = fetchMoreResult.allUsers.pageInfo
+              return newResult
+            },
+          })
+          .then(() => $state.loaded())
+      }
     },
   },
 }
