@@ -180,6 +180,7 @@
 
 <script>
 import currentSemesterCourses from '@/gql/currentSemesterCourses.gql'
+import SmallWidthMixin from '@/mixins/small_width'
 import {
   multipleStaffToString,
   getSemester,
@@ -188,6 +189,7 @@ import {
 } from '@/utils'
 
 export default {
+  mixins: [SmallWidthMixin],
   props: {
     whichTable: {
       /* in "index.vue" -> courses,
@@ -222,11 +224,6 @@ export default {
         dataArray: [],
       },
     }
-  },
-  computed: {
-    isSmall() {
-      return this.windowWidth <= 640
-    },
   },
   mounted() {
     window.addEventListener('resize', () => {
