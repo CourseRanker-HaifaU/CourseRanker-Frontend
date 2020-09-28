@@ -4,7 +4,7 @@
       <div
         v-for="listItem in courseList.dataArray"
         :key="listItem.id"
-        class="course-card"
+        class="responsive-card cursor-pointer hover:bg-secondary-hover"
         @click="sendTo(`/course/${listItem.course.id}`)"
       >
         <div>
@@ -180,6 +180,7 @@
 
 <script>
 import currentSemesterCourses from '@/gql/currentSemesterCourses.gql'
+import SmallWidthMixin from '@/mixins/small_width'
 import {
   multipleStaffToString,
   getSemester,
@@ -188,6 +189,7 @@ import {
 } from '@/utils'
 
 export default {
+  mixins: [SmallWidthMixin],
   props: {
     whichTable: {
       /* in "index.vue" -> courses,
@@ -222,16 +224,6 @@ export default {
         dataArray: [],
       },
     }
-  },
-  computed: {
-    isSmall() {
-      return this.windowWidth <= 640
-    },
-  },
-  mounted() {
-    window.addEventListener('resize', () => {
-      this.windowWidth = window.innerWidth
-    })
   },
   apollo: {
     courseList: {
@@ -284,36 +276,6 @@ export default {
 </script>
 
 <style scoped>
-.course-card {
-  @apply grid;
-  @apply grid-cols-2;
-  @apply gap-2;
-  @apply mt-2;
-  @apply border;
-  @apply border-primary;
-  @apply rounded;
-  @apply border-solid;
-  @apply p-4;
-  @apply text-center;
-  @apply cursor-pointer;
-}
-
-.course-card:hover {
-  @apply bg-secondary-hover;
-}
-
-.course-card div {
-  @apply inline-flex;
-  @apply flex-row;
-  @apply flex-wrap;
-  @apply items-start;
-  @apply self-center;
-}
-
-.course-card div strong {
-  @apply ml-2;
-}
-
 .td-style {
   @apply py-4;
   @apply px-1;

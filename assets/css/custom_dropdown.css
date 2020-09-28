@@ -45,3 +45,20 @@ span.multiselect__tag,
 span.multiselect__tag .multiselect__tag-icon::after {
   @apply text-white;
 }
+
+.responsive-card .multiselect__select::before {
+  top: 35%;
+}
+
+.responsive-card .multiselect__select {
+  width: 30px;
+}
+
+.responsive-card .multiselect__tags {
+  @apply w-full;
+}
+
+.responsive-card div.multiselect {
+  @apply px-0;
+  @apply max-w-sm;
+}

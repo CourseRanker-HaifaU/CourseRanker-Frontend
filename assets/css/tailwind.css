@@ -124,6 +124,33 @@
     @apply border-accent-border;
     @apply outline-none;
   }
+
+  .responsive-card {
+    @apply grid;
+    @apply grid-cols-2;
+    @apply gap-2;
+    @apply mt-2;
+    @apply border;
+    @apply border-primary;
+    @apply rounded;
+    @apply border-solid;
+    @apply p-4;
+    @apply text-center;
+  }
+
+  .responsive-card div {
+    @apply inline-flex;
+    @apply flex-row;
+    @apply flex-wrap;
+    @apply items-start;
+    @apply self-center;
+    @apply px-1;
+    @apply break-all;
+  }
+
+  .responsive-card div strong {
+    @apply ml-2;
+  }
 }
 
 .page-enter-active, .page-leave-active {

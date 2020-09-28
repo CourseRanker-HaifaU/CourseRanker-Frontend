@@ -2,8 +2,14 @@
   <div>
     <panel-page-title title="פאנל מנהל" />
     <div class="self-start flex flex-row items-start justify-start flex-wrap">
+      <nuxt-link to="/admin/users_manager" class="button blue-button ml-2 my-2">
+        ניהול משתמשים
+      </nuxt-link>
       <nuxt-link to="/admin/add_course" class="button blue-button ml-2 my-2">
         הוספת קורס חדש
+      </nuxt-link>
+      <nuxt-link to="/admin/add_staff" class="button blue-button ml-2 my-2">
+        הוספת איש סגל
       </nuxt-link>
       <nuxt-link
         to="/admin/add_semester_to_course"

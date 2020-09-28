@@ -26,12 +26,24 @@ export default {
           link: '/admin',
         },
         {
+          label: 'ניהול משתמשים',
+          link: '/admin/users_manager',
+        },
+        {
           label: 'הוספת קורס',
           link: '/admin/add_course',
         },
         {
+          label: 'הוספת איש סגל',
+          link: '/admin/add_staff',
+        },
+        {
           label: 'הוספת סמסטר לקורס',
           link: '/admin/add_semester_to_course',
+        },
+        {
+          label: 'דיווחים על תוכן פוגעני',
+          link: '/admin/violation_page',
         },
       ],
       userLinks: [

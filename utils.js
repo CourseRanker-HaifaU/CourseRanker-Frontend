@@ -87,3 +87,16 @@ export const currentSemesterCourseDataTransform = (data) => {
     hasNextPage,
   }
 }
+
+export const roleParser = (toParse) => {
+  switch (toParse) {
+    case 'A_1':
+      return 'משתמש'
+    case 'A_2':
+      return 'עורך תוכן'
+    case 'A_3':
+      return 'מנהל'
+    default:
+      return toParse
+  }
+}
