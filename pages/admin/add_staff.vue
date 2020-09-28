@@ -14,23 +14,32 @@
           track-by="id"
         ></multiselect>
       </div>
-      <label for="staff-name" class="my-auto text-right">שם איש הסגל:</label>
+      <label for="staff-first-name" class="my-auto text-right">שם פרטי:</label>
       <input-field
-        id="staff-name"
-        v-model="staffName"
+        id="staff-first-name"
+        v-model="staffFirstName"
+        type="text"
+        class="text-right min-w-full"
+      />
+      <label for="staff-last-name" class="my-auto text-right">שם משפחה:</label>
+      <input-field
+        id="staff-last-name"
+        v-model="staffLastName"
         type="text"
         class="text-right min-w-full"
       />
       <label for="unit" class="my-auto text-right"
-        >יחידה (פקולטה או חוג):
+        >יחידות (פקולטות או חוגים):
       </label>
       <div id="unit">
         <multiselect
-          v-model="unit"
+          v-model="units"
           :options="allUnitsOptions"
           :searchable="true"
           :show-labels="false"
-          placeholder="בחר יחידה"
+          :multiple="true"
+          :taggable="true"
+          placeholder="בחר יחידה אחת או יותר"
           label="name"
           track-by="id"
         ></multiselect>
@@ -57,7 +66,8 @@ export default {
   },
   data() {
     return {
-      staffName: '',
+      staffFirstName: '',
+      staffLastName: '',
       titles: [
         {
           id: 'MR',
@@ -77,7 +87,7 @@ export default {
         },
       ],
       staffTitle: null,
-      unit: null,
+      units: [],
       allUnits: {},
     }
   },
@@ -95,9 +105,10 @@ export default {
         mutation: addStaff,
         variables: {
           input: {
-            firstName: this.staffName.split(' ')[0],
-            lastName: this.staffName.split(' ')[1],
+            firstName: this.staffFirstName,
+            lastName: this.staffLastName,
             title: this.staffTitle.id,
+            units: this.units.map((unit) => unit.id),
           },
         },
       })
