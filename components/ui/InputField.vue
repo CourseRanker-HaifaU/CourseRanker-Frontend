@@ -6,6 +6,7 @@
       :value="value"
       :type="type"
       :placeholder="label"
+      :disabled="disabled"
       class="form-field"
       :class="{
         'text-accent': error,
@@ -39,6 +40,10 @@ export default {
     value: {
       type: String,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     divClass: {
       type: String,
