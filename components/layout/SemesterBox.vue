@@ -1,99 +1,84 @@
 <template>
   <div>
-    <div
+    <labeled-box-card
       v-for="(edge, index) in data"
       :key="edge.node.id"
-      class="container text-right mb-4"
+      :title="'סמסטר ' + getSemester(edge.node.semester)"
+      :is-shown="edge.isShown"
+      body-class="grid gap-1 grid-cols-2 gap-y-3 border-primary border-b-2 border-l-2 border-r-2 rounded-b-md p-4"
+      @toggle-shown="triggerToggleShown(index)"
     >
-      <div
-        class="flex flex-row bg-primary text-white items-baseline rounded-t-md px-2 pt-2"
-        :class="{ 'rounded-md': !edge.isShown }"
-      >
-        <button class="mx-2" @click="triggerToggleShown(index)">
-          <font-awesome-icon :icon="['fas', edge.isShown ? 'minus' : 'plus']" />
-        </button>
-        <h2 class="text-xl font-bold ml-2 pb-3">
-          {{ 'סמסטר ' + getSemester(edge.node.semester) }}
-        </h2>
+      <div class="items-baseline">
+        <strong>מרצה:</strong>
+        <span>{{
+          multipleStaffToString(
+            edge.node.coursesemesterstaffSet.edges[0].node.lecturers.edges
+          )
+        }}</span>
       </div>
-      <transition name="reveal" mode="out-in">
-        <div
-          v-show="edge.isShown"
-          class="grid gap-1 grid-cols-2 gap-y-3 border-primary border-b-2 border-l-2 border-r-2 rounded-b-md p-4"
-        >
-          <div class="items-baseline">
-            <strong>מרצה:</strong>
-            <span>{{
-              multipleStaffToString(
-                edge.node.coursesemesterstaffSet.edges[0].node.lecturers.edges
-              )
-            }}</span>
-          </div>
-          <div class="items-baseline">
-            <strong>מתרגל/ת:</strong>
-            <span>{{
-              multipleStaffToString(
-                edge.node.coursesemesterstaffSet.edges[0].node
-                  .teachingAssistants.edges
-              )
-            }}</span>
-          </div>
-          <div class="items-baseline">
-            <strong>דירוג מרצה:</strong>
-            <span>
-              <rating
-                :rating="edge.node.averageLecturerRating"
-                class="rating"
-              ></rating>
-            </span>
-          </div>
-          <div class="items-baseline">
-            <strong>דירוג מתרגל/ת:</strong>
-            <span>
-              <rating
-                :rating="edge.node.averageTeachingAssistantRating"
-                class="rating"
-              ></rating>
-            </span>
-          </div>
-          <div class="items-baseline">
-            <strong>דירוג קורס:</strong>
-            <span>
-              <rating
-                :rating="edge.node.averageCourseRating"
-                class="rating"
-              ></rating>
-            </span>
-          </div>
-          <div class="items-baseline">
-            <strong>דירוג קורס + מרצה:</strong>
-            <span>
-              <rating
-                :rating="edge.node.averageCourseAndLecturerRating"
-                class="rating"
-              ></rating>
-            </span>
-          </div>
-          <div class="items-baseline">
-            <strong>דירוג קורס + מתרגל/ת:</strong>
-            <span>
-              <rating
-                :rating="edge.node.averageCourseAndTeachingAssistantRating"
-                class="rating"
-              ></rating>
-            </span>
-          </div>
-          <div class="items-center">
-            <button class="button blue-button ml-2 h-full md:h-auto">
-              הוסף לקורסים שלי
-            </button>
-            <button class="button blue-button h-full md:h-auto">
-              הוסף חוות דעת
-            </button>
-          </div>
-        </div>
-      </transition>
-    </div>
+      <div class="items-baseline">
+        <strong>מתרגל/ת:</strong>
+        <span>{{
+          multipleStaffToString(
+            edge.node.coursesemesterstaffSet.edges[0].node.teachingAssistants
+              .edges
+          )
+        }}</span>
+      </div>
+      <div class="items-baseline">
+        <strong>דירוג מרצה:</strong>
+        <span>
+          <rating
+            :rating="edge.node.averageLecturerRating"
+            class="rating"
+          ></rating>
+        </span>
+      </div>
+      <div class="items-baseline">
+        <strong>דירוג מתרגל/ת:</strong>
+        <span>
+          <rating
+            :rating="edge.node.averageTeachingAssistantRating"
+            class="rating"
+          ></rating>
+        </span>
+      </div>
+      <div class="items-baseline">
+        <strong>דירוג קורס:</strong>
+        <span>
+          <rating
+            :rating="edge.node.averageCourseRating"
+            class="rating"
+          ></rating>
+        </span>
+      </div>
+      <div class="items-baseline">
+        <strong>דירוג קורס + מרצה:</strong>
+        <span>
+          <rating
+            :rating="edge.node.averageCourseAndLecturerRating"
+            class="rating"
+          ></rating>
+        </span>
+      </div>
+      <div class="items-baseline">
+        <strong>דירוג קורס + מתרגל/ת:</strong>
+        <span>
+          <rating
+            :rating="edge.node.averageCourseAndTeachingAssistantRating"
+            class="rating"
+          ></rating>
+        </span>
+      </div>
+      <div class="items-center">
+        <button class="button blue-button ml-2 h-full md:h-auto">
+          הוסף לקורסים שלי
+        </button>
+        <button class="button blue-button h-full md:h-auto">
+          הוסף חוות דעת
+        </button>
+      </div>
+    </labeled-box-card>
   </div>
 </template>
 
