@@ -50,15 +50,15 @@ export default {
       userLinks: [
         {
           label: 'פאנל משתמש',
-          link: '/',
+          link: '/user',
         },
         {
           label: 'הקורסים שלי',
-          link: '/my_courses',
+          link: '/user/courses',
         },
         {
           label: 'חוות הדעת שלי',
-          link: '/',
+          link: '/user/feedbacks',
         },
       ],
     }
