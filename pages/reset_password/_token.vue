@@ -13,7 +13,7 @@
       >
         <input-field
           id="email"
-          v-model="userEmail"
+          v-model="emailByToken"
           type="email"
           label="אימייל"
           div-class="col-span-2"
@@ -51,12 +51,14 @@
 </template>
 
 <script>
-import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+import emailByToken from '@/gql/emailByToken.gql'
+import resetPassword from '@/gql/resetPassword.gql'
 
 export default {
   data() {
     return {
-      userEmail: '',
+      emailByToken: '',
       userPassword: '',
       userRepassword: '',
       emailError: '',
@@ -81,17 +83,24 @@ export default {
       }
     },
   },
-  /*
+  apollo: {
+    emailByToken: {
+      query: emailByToken,
+      variables() {
+        return {
+          resetToken: this.$route.params.token || '',
+        }
+      },
+      errorPolicy: 'all',
+      error(error) {
+        this.$nuxt.error({ statusCode: 400, message: error })
+      },
+    },
+  },
   methods: {
     async onSubmit() {
-      // TODO: Add validation
       this.$v.$touch()
       if (this.$v.$invalid) {
-        // TODO: Notify the user in a better way
-        if (this.$v.userEmail.$invalid) {
-          this.emailError = 'חובה להזין כתובת אימייל תקינה'
-        }
-
         if (this.$v.userPassword.$invalid) {
           this.passwordError = 'חובה להזין סיסמה באורך 6 תווים לפחות'
         }
@@ -100,23 +109,29 @@ export default {
           this.repasswordError = 'שדה זה חייב להיות זהה לסיסמה'
         }
       } else {
-        await this.$apollo.mutate({
-          mutation: newUser,
+        const result = await this.$apollo.mutate({
+          mutation: resetPassword,
           variables: {
-            email: this.userEmail,
-            password: this.userPassword,
+            input: {
+              resetToken: this.$route.params.token || '',
+              newPassword: this.userPassword,
+            },
           },
         })
-        userLogin(this, this.userEmail, this.userPassword)
+        if (
+          'data' in result &&
+          'resetPassword' in result.data &&
+          result.data.resetPassword.ok
+        ) {
+          alert('איפוס סיסמה הושלם.')
+          window.location = '/login'
+        } else {
+          alert('איפוס סיסמה נכשל.')
+        }
       }
     },
   },
-  */
   validations: {
-    userEmail: {
-      required,
-      email,
-    },
     userPassword: {
       required,
       minLength: minLength(6),
