@@ -33,11 +33,11 @@
             value="התחבר"
             class="button blue-button mt-6"
           />
-          <hr class="my-4" style="border-top: 2px solid #c4c6c7" />
-          <nuxt-link to="/forgot_password" class="button green-button">
-            שכחתי סיסמא
+          <nuxt-link to="/forgot_password" class="button red-button mt-4">
+            שכחתי סיסמה
           </nuxt-link>
-          <nuxt-link to="/signup" class="button green-button mt-6">
+          <hr class="my-4" style="border-top: 2px solid #c4c6c7" />
+          <nuxt-link to="/signup" class="button green-button">
             צור חשבון חדש
           </nuxt-link>
         </div>

@@ -6,7 +6,7 @@
         src="~/assets/images/logoranker.png"
         alt="לוגו ועד הסטודנטים"
       />
-      <h1 class="text-primary text-4xl my-6">אפס סיסמא</h1>
+      <h1 class="text-primary text-4xl my-6">איפוס סיסמה</h1>
       <form
         class="grid grid-cols-2 grid-flow-row gap-4 text-right"
         @submit.prevent="onSubmit"
@@ -42,7 +42,7 @@
         <input
           id="reset"
           type="submit"
-          value="איפוס סיסמא"
+          value="איפוס סיסמה"
           class="focus:outline-none w-full button blue-button col-span-2 mt-2"
         />
       </form>

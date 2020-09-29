@@ -6,7 +6,7 @@
         src="~/assets/images/logoranker.png"
         alt="לוגו ועד הסטודנטים"
       />
-      <h1 class="text-primary text-4xl my-6">שחזור סיסמא</h1>
+      <h1 class="text-primary text-4xl my-6">שחזור סיסמה</h1>
       <form class="gap-4 text-center" @submit.prevent="onSubmit">
         <input-field
           id="email"
