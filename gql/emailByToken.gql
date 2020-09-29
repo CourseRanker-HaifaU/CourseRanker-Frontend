@@ -1,0 +1,3 @@
+query ($resetToken: String!) {
+  emailByToken(resetToken: $resetToken)
+}

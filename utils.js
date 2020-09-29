@@ -30,7 +30,7 @@ export async function userLogin(vueInstance, email, password) {
   } catch (error) {
     vueInstance.$nuxt.error({
       statusCode: 401,
-      message: error.graphQLErrors[0].message,
+      message: error,
     })
   }
 }
