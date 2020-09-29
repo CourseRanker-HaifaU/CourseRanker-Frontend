@@ -32,7 +32,7 @@
             )
           }}
         </div>
-        <div>
+        <div v-if="whichTable !== 'myCourses'">
           <strong>חוות דעת קורס:</strong>
           <rating
             v-if="whichTable === 'courses'"
@@ -42,19 +42,22 @@
             הוספת חוות דעת
           </button>
         </div>
-        <div v-if="isLecturer">
+        <div v-if="whichTable !== 'myCourses'">
           <strong>חוות דעת מרצה:</strong>
           <rating :rating="listItem.averageLecturerRating" />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
         </div>
-        <div v-if="isAssist">
+        <div v-if="whichTable !== 'myCourses'">
           <strong>חוות דעת מתרגל/ת:</strong>
           <rating :rating="listItem.averageTeachingAssistantRating" />
           <button v-if="whichTable !== 'courses'" class="button button-blue">
             הוספת חוות דעת
           </button>
+        </div>
+        <div v-if="whichTable === 'myCourses' && !isLecturer && !isAssist">
+          <button class="table-btn">מחק קורס</button>
         </div>
       </div>
     </div>
