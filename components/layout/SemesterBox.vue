@@ -21,7 +21,7 @@
           v-show="edge.isShown"
           class="grid gap-1 grid-cols-2 gap-y-3 border-primary border-b-2 border-l-2 border-r-2 rounded-b-md p-4"
         >
-          <div>
+          <div class="items-baseline">
             <strong>מרצה:</strong>
             <span>{{
               multipleStaffToString(
@@ -29,7 +29,7 @@
               )
             }}</span>
           </div>
-          <div>
+          <div class="items-baseline">
             <strong>מתרגל/ת:</strong>
             <span>{{
               multipleStaffToString(
@@ -38,7 +38,7 @@
               )
             }}</span>
           </div>
-          <div>
+          <div class="items-baseline">
             <strong>דירוג מרצה:</strong>
             <span>
               <rating
@@ -47,7 +47,7 @@
               ></rating>
             </span>
           </div>
-          <div>
+          <div class="items-baseline">
             <strong>דירוג מתרגל/ת:</strong>
             <span>
               <rating
@@ -56,7 +56,7 @@
               ></rating>
             </span>
           </div>
-          <div>
+          <div class="items-baseline">
             <strong>דירוג קורס:</strong>
             <span>
               <rating
@@ -65,7 +65,7 @@
               ></rating>
             </span>
           </div>
-          <div>
+          <div class="items-baseline">
             <strong>דירוג קורס + מרצה:</strong>
             <span>
               <rating
@@ -74,7 +74,7 @@
               ></rating>
             </span>
           </div>
-          <div>
+          <div class="items-baseline">
             <strong>דירוג קורס + מתרגל/ת:</strong>
             <span>
               <rating
@@ -83,9 +83,13 @@
               ></rating>
             </span>
           </div>
-          <div>
-            <button class="button blue-button ml-2">הוסף לקורסים שלי</button>
-            <button class="button blue-button">הוסף חוות דעת</button>
+          <div class="items-center">
+            <button class="button blue-button ml-2 h-full md:h-auto">
+              הוסף לקורסים שלי
+            </button>
+            <button class="button blue-button h-full md:h-auto">
+              הוסף חוות דעת
+            </button>
           </div>
         </div>
       </transition>
@@ -124,7 +128,6 @@ export default {
 div.grid div {
   @apply flex;
   @apply flex-row;
-  @apply items-baseline;
 }
 div.grid div strong {
   @apply ml-2;
