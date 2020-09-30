@@ -1,0 +1,54 @@
+query ($id: ID!){
+  staff(id: $id) {
+    id
+    title
+    firstName
+    lastName
+    averageRatingAsLecturer
+    averageRatingAsTeachingAssistant
+    lecturers {
+      edges {
+        node {
+          courseSemester {
+            course {
+              id
+              name
+              unit {
+                name
+              }
+            }
+            semester {
+              name
+              yearJewish
+            }
+            averageCourseRating
+            averageLecturerRating
+            averageTeachingAssistantRating
+          }
+        }
+      }
+    }
+    teachingAssistants {
+      edges {
+        node {
+          courseSemester {
+            course {
+              id
+              name
+              unit {
+                name
+              }
+            }
+            semester {
+              name
+              yearJewish
+            }
+            averageCourseRating
+            averageLecturerRating
+            averageTeachingAssistantRating
+          }
+        }
+      }
+    }
+  }
+}

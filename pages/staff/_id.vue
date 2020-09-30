@@ -1,18 +1,22 @@
 <template>
-  <div>
+  <div v-if="!$apollo.loading">
     <div class="mt-4 min-w-full">
-      <h1 class="text-3xl font-bold mb-2 text-primary">פרופ' אורן וימן</h1>
+      <h1 class="text-3xl font-bold mb-2 text-primary">
+        {{ staffToString(staffDetails) }}
+      </h1>
       <section
         id="averageRatings"
         class="flex flex-col md:flex-row justify-start text-lg"
       >
         <article class="flex flex-row items-center md:ml-4">
           <span class="ml-2">דירוג ממוצע כמרצה:</span>
-          <rating :rating="4"></rating>
+          <rating :rating="staffDetails.averageRatingAsLecturer"></rating>
         </article>
         <article class="flex lex-row items-center">
           <span class="ml-2">דירוג ממוצע כמתרגל/ת:</span>
-          <rating :rating="4"></rating>
+          <rating
+            :rating="staffDetails.averageRatingAsTeachingAssistant"
+          ></rating>
         </article>
       </section>
       <hr class="border-0 bg-gray-500 text-gray-500 h-px my-8" />
@@ -27,6 +31,9 @@
 </template>
 
 <script>
+import staffDetails from '@/gql/staffDetails.gql'
+import { staffToString } from '@/utils'
+
 export default {
   props: {
     isLecturer: {
@@ -35,6 +42,24 @@ export default {
       type: Boolean,
       default: true,
     },
+  },
+  apollo: {
+    staffDetails: {
+      query: staffDetails,
+      variables() {
+        return {
+          id: this.$route.params.id,
+        }
+      },
+      update: (data) => data.staff,
+      errorPolicy: 'all',
+      error(error) {
+        this.$nuxt.error({ statusCode: 400, message: error })
+      },
+    },
+  },
+  methods: {
+    staffToString,
   },
 }
 </script>
