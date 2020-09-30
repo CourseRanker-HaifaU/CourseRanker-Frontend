@@ -66,7 +66,7 @@
         ></multiselect>
       </div>
       <label for="course-prerequisites" class="my-auto text-right">
-        קדמים
+        קורסי קדם:
       </label>
       <div id="course-prerequisites">
         <multiselect
@@ -158,6 +158,7 @@ export default {
   },
   methods: {
     async onSubmit() {
+      const mappedPrerequisites = this.prerequisites.map((item) => item.id)
       await this.$apollo.mutate({
         mutation: addCourse,
         variables: {
@@ -168,6 +169,7 @@ export default {
             isCompulsory: this.isCompulsory,
             points: this.points,
             classification: this.classification.id,
+            prerequisites: mappedPrerequisites,
           },
         },
       })
