@@ -65,6 +65,23 @@
           track-by="id"
         ></multiselect>
       </div>
+      <label for="course-prerequisites" class="my-auto text-right">
+        קורסי קדם:
+      </label>
+      <div id="course-prerequisites">
+        <multiselect
+          v-model="prerequisites"
+          :options="allPrerequisites.allCourses.edges"
+          :searchable="true"
+          :show-labels="false"
+          :multiple="true"
+          :taggable="true"
+          :hide-selected="true"
+          placeholder="בחר קורסי קדם"
+          label="name"
+          track-by="id"
+        ></multiselect>
+      </div>
       <button
         id="addCourse"
         type="submit"
@@ -80,6 +97,7 @@
 import Multiselect from 'vue-multiselect'
 import allUnits from '@/gql/allUnits.gql'
 import addCourse from '@/gql/addCourse.gql'
+import addSemesterToCourseData from '@/gql/addSemesterToCourseData.gql'
 
 export default {
   components: {
@@ -122,6 +140,12 @@ export default {
       classification: null,
       unit: null,
       allUnits: {},
+      prerequisites: [],
+      allPrerequisites: {
+        allCourses: {
+          edges: [],
+        },
+      },
     }
   },
   computed: {
@@ -134,6 +158,7 @@ export default {
   },
   methods: {
     async onSubmit() {
+      const mappedPrerequisites = this.prerequisites.map((item) => item.id)
       await this.$apollo.mutate({
         mutation: addCourse,
         variables: {
@@ -144,6 +169,7 @@ export default {
             isCompulsory: this.isCompulsory,
             points: this.points,
             classification: this.classification.id,
+            prerequisites: mappedPrerequisites,
           },
         },
       })
@@ -153,6 +179,18 @@ export default {
   apollo: {
     allUnits: {
       query: allUnits,
+    },
+    allPrerequisites: {
+      query: addSemesterToCourseData,
+      update: (data) => {
+        data.allCourses.edges = data.allCourses.edges.map((item) => {
+          if (!('node' in item)) {
+            return item
+          }
+          return item.node
+        })
+        return data
+      },
     },
   },
 }

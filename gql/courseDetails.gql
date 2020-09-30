@@ -8,6 +8,14 @@ query courseDetails($id: ID!) {
     compulsory
     points
     classification
+    prerequisites {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
     averageRating
     coursesemesterSet {
       edges {

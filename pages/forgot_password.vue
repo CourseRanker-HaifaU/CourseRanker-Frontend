@@ -15,7 +15,7 @@
           label="הכנס כתובת אימייל"
         />
         <input
-          id="sign-up"
+          id="send-request"
           type="submit"
           value="שלח בקשת שחזור"
           class="focus:outline-none w-full button blue-button col-span-2 mt-6"

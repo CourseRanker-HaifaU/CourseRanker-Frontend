@@ -25,7 +25,7 @@
           )
         }}</span>
       </div>
-      <div class="items-baseline">
+      <div class="items-baseline justify-between md:justify-start">
         <strong>דירוג מרצה:</strong>
         <span>
           <rating
@@ -34,7 +34,7 @@
           ></rating>
         </span>
       </div>
-      <div class="items-baseline">
+      <div class="items-baseline justify-between md:justify-start">
         <strong>דירוג מתרגל/ת:</strong>
         <span>
           <rating
@@ -43,7 +43,7 @@
           ></rating>
         </span>
       </div>
-      <div class="items-baseline">
+      <div class="items-baseline justify-between md:justify-start">
         <strong>דירוג קורס:</strong>
         <span>
           <rating
@@ -52,7 +52,7 @@
           ></rating>
         </span>
       </div>
-      <div class="items-baseline">
+      <div class="items-baseline justify-between md:justify-start">
         <strong>דירוג קורס + מרצה:</strong>
         <span>
           <rating
@@ -61,7 +61,7 @@
           ></rating>
         </span>
       </div>
-      <div class="items-baseline">
+      <div class="items-baseline justify-between md:justify-start">
         <strong>דירוג קורס + מתרגל/ת:</strong>
         <span>
           <rating
