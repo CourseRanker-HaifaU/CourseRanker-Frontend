@@ -71,7 +71,10 @@
         </span>
       </div>
       <div class="items-center">
-        <button class="button blue-button ml-2 h-full md:h-auto">
+        <button
+          class="button blue-button ml-2 h-full md:h-auto"
+          @click="addToMyCourses(edge.node.id)"
+        >
           הוסף לקורסים שלי
         </button>
         <button class="button blue-button h-full md:h-auto">
@@ -84,6 +87,7 @@
 
 <script>
 import { multipleStaffToString, getSemester } from '@/utils'
+import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
 
 export default {
   props: {
@@ -104,6 +108,16 @@ export default {
     getSemester,
     triggerToggleShown(index) {
       this.$emit('toggle-shown', index)
+    },
+    async addToMyCourses(id) {
+      await this.$apollo.mutate({
+        mutation: addCourseToMyCourses,
+        variables: {
+          id,
+        },
+      })
+      alert('נוסף בהצלחה!')
+      this.$forceUpdate()
     },
   },
 }

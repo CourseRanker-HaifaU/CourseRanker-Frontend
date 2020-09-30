@@ -4,8 +4,13 @@
       <div
         v-for="listItem in courseList.dataArray"
         :key="listItem.id"
-        class="responsive-card cursor-pointer hover:bg-secondary-hover"
-        @click="sendTo(`/course/${listItem.course.id}`)"
+        class="responsive-card hover:bg-secondary-hover"
+        :class="{ 'cursor-pointer': whichTable !== 'myCourses' }"
+        @click="
+          whichTable !== 'myCourses'
+            ? sendTo(`/course/${listItem.course.id}`)
+            : null
+        "
       >
         <div>
           <strong>שם קורס:</strong>
@@ -89,8 +94,13 @@
       <tr
         v-for="listItem in courseList.dataArray"
         :key="listItem.id"
-        class="cursor-pointer border-b border-black text-right hover:bg-gray-200"
-        @click="sendTo(`/course/${listItem.course.id}`)"
+        class="border-b border-black text-right hover:bg-gray-200"
+        :class="{ 'cursor-pointer': whichTable !== 'myCourses' }"
+        @click="
+          whichTable !== 'myCourses'
+            ? sendTo(`/course/${listItem.course.id}`)
+            : null
+        "
       >
         <!-------------------- 1st col -------------------->
         <td
@@ -170,11 +180,13 @@
           v-if="whichTable === 'myCourses' && !isLecturer && !isAssist"
           class="td-my-courses"
         >
-          <button class="table-btn">מחק קורס</button>
+          <button class="table-btn" @click.prevent="removeCourse(listItem.id)">
+            מחק קורס
+          </button>
         </td>
       </tr>
     </table>
-    <infinite-loading v-if="!$apollo.loading" @infinite="infiniteHandler">
+    <infinite-loading v-if="!isLoading" @infinite="infiniteHandler">
       <div slot="no-more"></div>
       <div slot="no-results"></div>
     </infinite-loading>
@@ -182,14 +194,9 @@
 </template>
 
 <script>
-import currentSemesterCourses from '@/gql/currentSemesterCourses.gql'
 import SmallWidthMixin from '@/mixins/small_width'
-import {
-  multipleStaffToString,
-  getSemester,
-  mergeCurrentSemesterCoursesData,
-  currentSemesterCourseDataTransform,
-} from '@/utils'
+import { multipleStaffToString, getSemester } from '@/utils'
+import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
 
 export default {
   mixins: [SmallWidthMixin],
@@ -215,6 +222,20 @@ export default {
       type: String,
       default: '',
     },
+    courseList: {
+      type: Object,
+      default() {
+        return { dataArray: [] }
+      },
+    },
+    isLoading: {
+      type: Boolean,
+      required: true,
+    },
+    infiniteHandler: {
+      type: Function,
+      required: true,
+    },
   },
   data() {
     return {
@@ -223,25 +244,7 @@ export default {
       after: '',
       endCursor: '',
       hasNextPage: false,
-      courseList: {
-        dataArray: [],
-      },
     }
-  },
-  apollo: {
-    courseList: {
-      query: currentSemesterCourses,
-      update: (data) => currentSemesterCourseDataTransform(data),
-      variables() {
-        return {
-          keywords: this.keywords,
-          rowsPerPage: this.rowsPerPage,
-          after: '',
-        }
-      },
-      debounce: 300,
-      throttle: 300,
-    },
   },
   methods: {
     sendTo(msg) {
@@ -249,30 +252,17 @@ export default {
     },
     getSemester,
     multipleStaffToString,
-    infiniteHandler($state) {
-      if (!this.courseList.hasNextPage) {
-        $state.complete()
-      } else {
-        this.$apollo.queries.courseList
-          .fetchMore({
-            query: currentSemesterCourses,
-            variables: {
-              keywords: this.keywords,
-              rowsPerPage: this.rowsPerPage,
-              after: this.courseList.endCursor,
-            },
-            updateQuery: (previousResult, { fetchMoreResult }) => {
-              const result = mergeCurrentSemesterCoursesData(
-                previousResult,
-                fetchMoreResult
-              )
-              return result
-            },
-          })
-          .then(() => {
-            $state.loaded()
-          })
-      }
+    async removeCourse(id) {
+      await this.$apollo.mutate({
+        mutation: removeFromMyCourses,
+        variables: {
+          id,
+        },
+      })
+      const toRemove = this.courseList.dataArray.findIndex(
+        (item) => item.id === id
+      )
+      this.$emit('remove-row', toRemove)
     },
   },
 }
