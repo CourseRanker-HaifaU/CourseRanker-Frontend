@@ -8,6 +8,9 @@
       :is-lecturer="false"
       :is-assist="false"
       :keywords="keywords"
+      :course-list="courseList"
+      :infinite-handler="infiniteHandler"
+      :is-loading="$apollo.loading"
     ></courses-table>
     <floating-action-button />
   </div>
@@ -15,19 +18,68 @@
 
 <script>
 import { mapActions } from 'vuex'
+import currentSemesterCourses from '@/gql/currentSemesterCourses.gql'
+import {
+  currentSemesterCourseDataTransform,
+  mergeCurrentSemesterCoursesData,
+} from '@/utils'
 export default {
   data() {
     return {
       keywords: '',
+      courseList: {
+        dataArray: [],
+      },
+      rowsPerPage: 5,
     }
   },
   created() {
     this.restoreFromLocalStorage()
   },
+  apollo: {
+    courseList: {
+      query: currentSemesterCourses,
+      update: (data) => currentSemesterCourseDataTransform(data),
+      variables() {
+        return {
+          keywords: this.keywords,
+          rowsPerPage: this.rowsPerPage,
+          after: '',
+        }
+      },
+      debounce: 300,
+      throttle: 300,
+    },
+  },
   methods: {
     ...mapActions({
       restoreFromLocalStorage: 'messages/restoreFromLocalStorage',
     }),
+    infiniteHandler($state) {
+      if (!this.courseList.hasNextPage) {
+        $state.complete()
+      } else {
+        this.$apollo.queries.courseList
+          .fetchMore({
+            query: currentSemesterCourses,
+            variables: {
+              keywords: this.keywords,
+              rowsPerPage: this.rowsPerPage,
+              after: this.courseList.endCursor,
+            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+              const result = mergeCurrentSemesterCoursesData(
+                previousResult,
+                fetchMoreResult
+              )
+              return result
+            },
+          })
+          .then(() => {
+            $state.loaded()
+          })
+      }
+    },
   },
 }
 </script>

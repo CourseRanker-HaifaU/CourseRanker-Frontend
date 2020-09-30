@@ -6,6 +6,7 @@
       :to="link.link"
       class="menu-link focus-outline-none"
       exact-active-class="bg-primary-hover"
+      exact
       @click.native="emitMenuClose"
     >
       {{ link.label }}
@@ -58,7 +59,7 @@ export default {
         },
         {
           label: 'חוות הדעת שלי',
-          link: '/',
+          link: '/my_feedbacks',
         },
       ],
     }
