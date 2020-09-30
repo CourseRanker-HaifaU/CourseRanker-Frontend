@@ -8,7 +8,7 @@
       <div style="margin-bottom: 18px">
         <hr class="border-0 bg-gray-500 text-gray-500 h-px" />
       </div>
-      <div class="grid grid-flow-col grid-cols-4 grid-rows-2 gap-2 mb-10">
+      <div class="grid grid-flow-col grid-cols-4 grid-rows-2 gap-2">
         <div>
           <strong>חוג:</strong>
           <span>{{ courseData.unit.name }}</span>
@@ -35,6 +35,19 @@
             <rating :rating="courseData.averageRating" class="rating"></rating>
           </span>
         </div>
+      </div>
+      <div>
+        <strong>קורסי קדם:</strong>
+        <ul class="list-disc pr-4">
+          <li v-for="prereq in prerequisites" :key="prereq.id">
+            <nuxt-link
+              :to="prereq.link"
+              class="underline text-primary hover:text-primary-hover"
+            >
+              {{ prereq.name }}
+            </nuxt-link>
+          </li>
+        </ul>
       </div>
       <semester-box
         :data="dataWithShownProperty"
@@ -86,6 +99,19 @@ export default {
       )
 
       return newData
+    },
+    prerequisites() {
+      if (this.courseData === null) {
+        return []
+      }
+      const ret = this.courseData.prerequisites.edges.map((item) => {
+        return {
+          id: item.node.id,
+          link: `/course/${item.node.id}`,
+          name: item.node.name,
+        }
+      })
+      return ret
     },
   },
   watch: {
