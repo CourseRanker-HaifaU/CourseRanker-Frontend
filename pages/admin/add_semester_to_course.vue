@@ -43,7 +43,6 @@
             :loading="$apollo.loading"
             :options="serverData.allStaff.edges"
             :multiple="true"
-            :taggable="true"
             :hide-selected="true"
             :show-labels="false"
           ></multiselect>
@@ -58,7 +57,6 @@
             track-by="id"
             :options="serverData.allStaff.edges"
             :multiple="true"
-            :taggable="true"
             :hide-selected="true"
             :show-labels="false"
             :loading="$apollo.loading"

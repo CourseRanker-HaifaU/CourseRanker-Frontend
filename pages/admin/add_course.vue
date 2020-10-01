@@ -75,7 +75,6 @@
           :searchable="true"
           :show-labels="false"
           :multiple="true"
-          :taggable="true"
           :hide-selected="true"
           placeholder="בחר קורסי קדם"
           label="name"

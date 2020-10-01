@@ -38,7 +38,6 @@
           :searchable="true"
           :show-labels="false"
           :multiple="true"
-          :taggable="true"
           placeholder="בחר יחידה אחת או יותר"
           label="name"
           track-by="id"
