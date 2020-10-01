@@ -54,6 +54,7 @@ query courseDetails($id: ID!) {
           averageCourseRating
           averageCourseAndLecturerRating
           averageCourseAndTeachingAssistantRating
+          inMyCourses
         }
       }
     }
