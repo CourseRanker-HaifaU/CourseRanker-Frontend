@@ -43,10 +43,13 @@
             :loading="$apollo.loading"
             :options="serverData.allStaff.edges"
             :multiple="true"
-            :taggable="true"
             :hide-selected="true"
             :show-labels="false"
-          ></multiselect>
+          >
+            <template v-slot:noResult>
+              לא נמצאו חברי סגל התואמים את החיפוש
+            </template>
+          </multiselect>
         </div>
         <label for="selectedTeachingAssistants">בחר מתרגלים:</label>
         <div id="selectedTeachingAssistants">
@@ -58,11 +61,14 @@
             track-by="id"
             :options="serverData.allStaff.edges"
             :multiple="true"
-            :taggable="true"
             :hide-selected="true"
             :show-labels="false"
             :loading="$apollo.loading"
-          ></multiselect>
+          >
+            <template v-slot:noResult>
+              לא נמצאו חברי סגל התואמים את החיפוש
+            </template>
+          </multiselect>
         </div>
         <button
           id="addCourse"

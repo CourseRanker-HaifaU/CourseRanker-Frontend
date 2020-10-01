@@ -38,11 +38,14 @@
           :searchable="true"
           :show-labels="false"
           :multiple="true"
-          :taggable="true"
           placeholder="בחר יחידה אחת או יותר"
           label="name"
           track-by="id"
-        ></multiselect>
+        >
+          <template v-slot:noResult>
+            לא נמצאו יחידות התואמות את החיפוש
+          </template>
+        </multiselect>
       </div>
       <button
         id="addCourse"
