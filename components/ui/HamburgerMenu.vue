@@ -69,7 +69,12 @@ export default {
       isAdmin: 'user_data/isAdmin',
     }),
     links() {
-      return this.isAdmin ? this.adminLinks : this.userLinks
+      let ret = []
+      if (this.isAdmin) {
+        ret = [...this.adminLinks]
+      }
+      ret = [...ret, ...this.userLinks]
+      return ret
     },
   },
   methods: {
