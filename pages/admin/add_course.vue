@@ -21,7 +21,11 @@
           placeholder="בחר יחידה"
           label="name"
           track-by="id"
-        ></multiselect>
+        >
+          <template v-slot:noResult>
+            לא נמצאו יחידות התואמות את החיפוש
+          </template>
+        </multiselect>
       </div>
       <label for="course-type" class="my-auto text-right">אופן הוראה:</label>
       <div id="course-type">
@@ -79,7 +83,11 @@
           placeholder="בחר קורסי קדם"
           label="name"
           track-by="id"
-        ></multiselect>
+        >
+          <template v-slot:noResult>
+            לא נמצאו קורסי קדם התואמים לתוצאות החיפוש
+          </template>
+        </multiselect>
       </div>
       <button
         id="addCourse"

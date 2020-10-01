@@ -45,7 +45,11 @@
             :multiple="true"
             :hide-selected="true"
             :show-labels="false"
-          ></multiselect>
+          >
+            <template v-slot:noResult>
+              לא נמצאו חברי סגל התואמים את החיפוש
+            </template>
+          </multiselect>
         </div>
         <label for="selectedTeachingAssistants">בחר מתרגלים:</label>
         <div id="selectedTeachingAssistants">
@@ -60,7 +64,11 @@
             :hide-selected="true"
             :show-labels="false"
             :loading="$apollo.loading"
-          ></multiselect>
+          >
+            <template v-slot:noResult>
+              לא נמצאו חברי סגל התואמים את החיפוש
+            </template>
+          </multiselect>
         </div>
         <button
           id="addCourse"
