@@ -72,10 +72,18 @@
       </div>
       <div class="items-center">
         <button
+          v-if="!edge.node.inMyCourses"
           class="button blue-button ml-2 h-full md:h-auto"
-          @click="addToMyCourses(edge.node.id)"
+          @click="addToMyCourses(edge.node)"
         >
           הוסף לקורסים שלי
+        </button>
+        <button
+          v-else
+          class="button blue-button ml-2 h-full md:h-auto"
+          @click="removeFromMyCourses(edge.node)"
+        >
+          הסר מהקורסים שלי
         </button>
         <button class="button blue-button h-full md:h-auto">
           הוסף חוות דעת
@@ -88,6 +96,7 @@
 <script>
 import { multipleStaffToString, getSemester } from '@/utils'
 import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
+import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
 
 export default {
   props: {
@@ -109,14 +118,26 @@ export default {
     triggerToggleShown(index) {
       this.$emit('toggle-shown', index)
     },
-    async addToMyCourses(id) {
+    async addToMyCourses(node) {
       await this.$apollo.mutate({
         mutation: addCourseToMyCourses,
         variables: {
-          id,
+          id: node.id,
         },
       })
+      node.inMyCourses = true
       alert('נוסף בהצלחה!')
+      this.$forceUpdate()
+    },
+    async removeFromMyCourses(node) {
+      await this.$apollo.mutate({
+        mutation: removeFromMyCourses,
+        variables: {
+          id: node.id,
+        },
+      })
+      node.inMyCourses = false
+      alert('הוסר מהקורסים שלך')
       this.$forceUpdate()
     },
   },

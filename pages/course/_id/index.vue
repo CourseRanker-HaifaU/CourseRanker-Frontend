@@ -83,6 +83,7 @@ export default {
         return data.courseDetails
       },
       errorPolicy: 'all',
+      fetchPolicy: 'no-cache',
     },
   },
   computed: {
