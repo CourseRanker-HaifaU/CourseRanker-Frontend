@@ -1,0 +1,21 @@
+query editCourseDetails($id: ID!) {
+  courseDetails(id: $id) {
+    name
+    unit {
+      id
+      name
+    }
+    courseType
+    compulsory
+    points
+    classification
+    prerequisites {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+}

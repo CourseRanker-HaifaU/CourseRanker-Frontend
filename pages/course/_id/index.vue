@@ -38,7 +38,7 @@
       </div>
       <div>
         <strong>קורסי קדם:</strong>
-        <ul class="list-disc pr-4">
+        <ul v-if="prerequisites.length > 0" class="list-disc pr-4">
           <li v-for="prereq in prerequisites" :key="prereq.id">
             <nuxt-link
               :to="prereq.link"
@@ -48,6 +48,15 @@
             </nuxt-link>
           </li>
         </ul>
+        <span v-if="prerequisites.length === 0">ללא</span>
+      </div>
+      <div v-if="userIsAdmin">
+        <nuxt-link
+          :to="`/admin/course/${this.$route.params.id}`"
+          class="button blue-button"
+        >
+          עריכת קורס
+        </nuxt-link>
       </div>
       <semester-box
         :data="dataWithShownProperty"
@@ -63,6 +72,7 @@
 
 <script>
 import courseDetails from '@/gql/courseDetails.gql'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -87,6 +97,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      userIsAdmin: 'user_data/isAdmin',
+    }),
     dataWithShownProperty() {
       if (this.courseData === null) {
         return []

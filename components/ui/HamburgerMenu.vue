@@ -33,7 +33,7 @@ export default {
         },
         {
           label: 'הוספת קורס',
-          link: '/admin/add_course',
+          link: '/admin/course',
         },
         {
           label: 'הוספת איש סגל',

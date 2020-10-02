@@ -1,6 +1,6 @@
 <template>
   <div class="h-cover w-full text-center">
-    <panel-page-title title="הוספת קורס" back-button />
+    <panel-page-title :title="pageTitle" back-button />
     <form class="min-w-full grid grid-cols-2 gap-4" @submit.prevent="onSubmit">
       <label for="course-name" class="my-auto text-right">שם הקורס:</label>
       <input-field
@@ -94,7 +94,7 @@
         type="submit"
         class="focus:outline-none w-full button blue-button mt-4 col-span-2 md:col-span-1 md:col-start-2"
       >
-        הוסף
+        {{ buttonText }}
       </button>
     </form>
   </div>
@@ -105,6 +105,7 @@ import Multiselect from 'vue-multiselect'
 import allUnits from '@/gql/allUnits.gql'
 import addCourse from '@/gql/addCourse.gql'
 import addSemesterToCourseData from '@/gql/addSemesterToCourseData.gql'
+import editCourseDetails from '@/gql/editCourseDetails.gql'
 
 export default {
   components: {
@@ -162,6 +163,41 @@ export default {
       }
       return this.allUnits.edges.map((item) => item.node)
     },
+    pageTitle() {
+      return this.$route.params.id ? 'עריכת קורס' : 'הוספת קורס'
+    },
+    buttonText() {
+      return this.$route.params.id ? 'שמור שינויים' : 'הוסף'
+    },
+  },
+  created() {
+    if (this.$route.params.id) {
+      this.$apollo
+        .query({
+          query: editCourseDetails,
+          variables: {
+            id: this.$route.params.id,
+          },
+        })
+        .then((response) => {
+          ;({
+            name: this.courseName,
+            compulsory: this.isCompulsory,
+            points: this.points,
+            unit: this.unit,
+          } = response.data.courseDetails)
+          const courseDetails = response.data.courseDetails
+          this.classification = this.classifications.find(
+            (item) => item.id === courseDetails.classification
+          )
+          this.courseType = this.courseTypes.find(
+            (item) => item.id === courseDetails.courseType
+          )
+          this.prerequisites = courseDetails.prerequisites.edges.map(
+            (item) => item.node
+          )
+        })
+    }
   },
   methods: {
     async onSubmit() {
