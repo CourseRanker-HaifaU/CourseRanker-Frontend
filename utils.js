@@ -123,3 +123,7 @@ export const roleParser = (toParse) => {
       return toParse
   }
 }
+
+export const XOR = (a, b) => {
+  return (a || b) && !(a && b)
+}
