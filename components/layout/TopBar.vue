@@ -27,6 +27,9 @@
       </div>
       <div v-if="isLoggedIn" class="bar-block">
         <button class="button red-button bar-btn" @click="isOpen = !isOpen">
+          <span class="ml-2 hidden md:inline">
+            {{ fullName }}
+          </span>
           <font-awesome-icon :icon="['fas', 'bars']" />
         </button>
       </div>
@@ -50,6 +53,7 @@ export default {
   computed: {
     ...mapGetters({
       isAdmin: 'user_data/isAdmin',
+      fullName: 'user_data/fullName',
     }),
     isLoggedIn() {
       return !!this.$apolloHelpers.getToken()
