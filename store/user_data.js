@@ -10,6 +10,9 @@ export const getters = {
   isAdmin(state) {
     return state.userData !== null && state.userData.role !== 'A_1'
   },
+  fullName(state) {
+    return `${state.userData.firstName} ${state.userData.lastName}`
+  },
 }
 
 export const mutations = {
