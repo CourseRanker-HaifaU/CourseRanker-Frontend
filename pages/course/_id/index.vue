@@ -52,11 +52,11 @@
       </div>
       <div class="flex flex-row items-baseline">
         <strong>תגיות:</strong>
-        <ul class="mr-2">
+        <ul class="mr-2 flex flex-col md:flex-row">
           <li
             v-for="tag in courseData.tags.edges"
             :key="tag.node.id"
-            class="p-2 bg-accent hover:bg-accent-hover text-white transition-all duration-200 ease-in rounded mx-2"
+            class="p-2 bg-accent hover:bg-accent-hover text-white transition-all duration-200 ease-in rounded m-1"
           >
             {{ tag.node.name }}
           </li>
