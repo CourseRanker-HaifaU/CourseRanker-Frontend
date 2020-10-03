@@ -1,21 +1,27 @@
 <template>
   <div>
     <welcome-message></welcome-message>
-    <ul class="flex border-b">
-      <li class="-mb-px mr-1">
-        <a v-if="isCourseList" class="clicked-tab" @click="changeToCourses"
+    <ul class="flex border rounded-t-lg min-w-full shadow">
+      <li class="w-1/2 text-center">
+        <a
+          v-if="isCourseList"
+          class="clicked-tab w-full rounded-tr-lg"
+          @click="changeToCourses"
           >קורסים</a
         >
-        <a v-if="!isCourseList" class="not-clicked-tab" @click="changeToCourses"
+        <a
+          v-if="!isCourseList"
+          class="not-clicked-tab w-full rounded-tr-lg"
+          @click="changeToCourses"
           >קורסים</a
         >
       </li>
-      <li class="mr-1">
+      <li class="w-1/2 text-center">
         <a
-          class="not-clicked-tab"
+          class="not-clicked-tab w-full rounded-tl-lg"
           :class="{ 'clicked-tab': !isCourseList }"
           @click="changeToStaff"
-          >מרצים</a
+          >סגל</a
         >
       </li>
     </ul>
@@ -139,30 +145,26 @@ export default {
 */
 
 .clicked-tab {
-  @apply bg-white;
+  @apply bg-primary;
   @apply inline-block;
-  @apply border-l;
-  @apply border-t;
-  @apply border-r;
-  @apply rounded-t;
   @apply py-2;
   @apply px-4;
-  @apply text-blue-700;
+  @apply text-white;
   @apply font-semibold;
-  @apply text-blue-500;
   @apply cursor-pointer;
+  @apply text-xl;
 }
 
 .not-clicked-tab {
-  @apply bg-white;
   @apply inline-block;
   @apply py-2;
   @apply px-4;
   @apply cursor-pointer;
+  @apply text-xl;
 }
 
 .not-clicked-tab:hover {
-  @apply text-blue-800;
-  @apply font-semibold;
+  @apply bg-primary-hover;
+  @apply text-white;
 }
 </style>

@@ -2,38 +2,38 @@
   <div class="frame-div flex flex-col w-full items-stretch justify-start">
     <div v-if="isSmall" class="courses-cards">
       <div
-        v-for="staff in allStaffOptions()"
+        v-for="staff in allStaffOptions"
         :key="staff.id"
         class="cursor-pointer responsive-card hover:bg-secondary-hover"
         @click="sendTo(`/staff/${staff.id}`)"
       >
-        <div>
+        <div class="col-span-2">
           <strong>שם איש הסגל:</strong>
           {{ correctTitle(staff.title) }} {{ staff.firstName }}
           {{ staff.lastName }}
         </div>
         <div>
-          <strong>חוות דעת מרצה:</strong>
-          <rating :rating="staff.averageLecturerRating" />
-          <button class="button button-blue">הוספת חוות דעת</button>
+          <strong>חוות דעת כמרצה:</strong>
+          <rating :rating="staff.averageRatingAsLecturer" />
         </div>
         <div>
-          <strong>חוות דעת מתרגל/ת:</strong>
-          <rating :rating="staff.averageTeachingAssistantRating" />
-          <button class="button button-blue">הוספת חוות דעת</button>
+          <strong>חוות דעת כמתרגל/ת:</strong>
+          <rating :rating="staff.averageRatingAsTeachingAssistant" />
         </div>
+        <button class="button blue-button">הוספת חוות דעת</button>
+        <button class="button blue-button">הוספת חוות דעת</button>
       </div>
     </div>
     <table v-if="!isSmall" class="lg:w-full text-right min-w-full">
       <thead>
         <tr class="border-b-2 border-black">
-          <th class="td-style">שם המרצה</th>
+          <th class="td-style">שם איש הסגל</th>
           <th class="td-style">חוות דעת מרצה</th>
           <th class="td-style">חוות דעת מתרגל/ת</th>
         </tr>
       </thead>
       <tr
-        v-for="staff in allStaffOptions()"
+        v-for="staff in allStaffOptions"
         :key="staff.id"
         class="cursor-pointer border-b border-black text-right hover:bg-gray-200"
         @click="sendTo(`/staff/${staff.id}`)"
@@ -46,10 +46,10 @@
 
         <!-------------------- 2nd col-optional -------------------->
         <td class="td-style">
-          <div class="flex">
+          <div class="flex items-baseline">
             <rating
               class="mt-2 ml-2"
-              :rating="staff.averageLecturerRating"
+              :rating="staff.averageRatingAsLecturer"
             ></rating>
             <button class="table-btn">הוספת חוות דעת</button>
           </div>
@@ -57,10 +57,10 @@
 
         <!-------------------- 3rd col-optional -------------------->
         <td class="td-style">
-          <div class="flex">
+          <div class="flex items-baseline">
             <rating
               class="mt-2 ml-2"
-              :rating="staff.averageTeachingAssistantRating"
+              :rating="staff.averageRatingAsTeachingAssistant"
             ></rating>
             <button class="table-btn">הוספת חוות דעת</button>
           </div>
@@ -103,15 +103,17 @@ export default {
       hasNextPage: false,
     }
   },
-  methods: {
-    sendTo(msg) {
-      this.$router.push(msg)
-    },
+  computed: {
     allStaffOptions() {
       if (!('edges' in this.allStaff)) {
         return []
       }
       return this.allStaff.edges.map((item) => item.node)
+    },
+  },
+  methods: {
+    sendTo(msg) {
+      this.$router.push(msg)
     },
     correctTitle(title) {
       switch (title) {
