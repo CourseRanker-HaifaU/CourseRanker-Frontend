@@ -66,9 +66,13 @@
         <nuxt-link
           :to="`/admin/course/${this.$route.params.id}`"
           class="button blue-button"
+          tag="button"
         >
           עריכת קורס
         </nuxt-link>
+        <button class="button red-button" @click="deleteCourse">
+          מחיקת קורס
+        </button>
       </div>
       <semester-box
         :data="dataWithShownProperty"
@@ -84,6 +88,7 @@
 
 <script>
 import courseDetails from '@/gql/courseDetails.gql'
+import deleteCourse from '@/gql/deleteCourse.gql'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -174,6 +179,15 @@ export default {
       } else {
         this.hidden.push(index)
       }
+    },
+    async deleteCourse() {
+      await this.$apollo.mutate({
+        mutation: deleteCourse,
+        variables: {
+          id: this.$route.params.id,
+        },
+      })
+      alert('נמחק בהצלחה!')
     },
   },
 }
