@@ -17,5 +17,13 @@ query editCourseDetails($id: ID!) {
         }
       }
     }
+    tags {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
   }
 }

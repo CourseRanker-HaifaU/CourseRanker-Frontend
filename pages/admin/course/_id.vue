@@ -89,6 +89,24 @@
           </template>
         </multiselect>
       </div>
+      <label for="course-tags" class="my-auto text-right">תגיות:</label>
+      <div id="course-tags">
+        <multiselect
+          v-model="tags"
+          :options="allTagsOptions"
+          :searchable="true"
+          :show-labels="false"
+          :multiple="true"
+          :hide-selected="true"
+          placeholder="בחר תגיות"
+          label="name"
+          track-by="id"
+        >
+          <template v-slot:noResult>
+            לא נמצאו תגיות התואמות לתוצאות החיפוש
+          </template>
+        </multiselect>
+      </div>
       <button
         id="addCourse"
         type="submit"
@@ -103,7 +121,9 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import allUnits from '@/gql/allUnits.gql'
+import allTags from '@/gql/allTags.gql'
 import addCourse from '@/gql/addCourse.gql'
+import editCourse from '@/gql/editCourse.gql'
 import addSemesterToCourseData from '@/gql/addSemesterToCourseData.gql'
 import editCourseDetails from '@/gql/editCourseDetails.gql'
 
@@ -154,6 +174,10 @@ export default {
           edges: [],
         },
       },
+      allTags: {
+        edges: [],
+      },
+      tags: [],
     }
   },
   computed: {
@@ -162,6 +186,9 @@ export default {
         return []
       }
       return this.allUnits.edges.map((item) => item.node)
+    },
+    allTagsOptions() {
+      return this.allTags.edges.map((item) => item.node)
     },
     pageTitle() {
       return this.$route.params.id ? 'עריכת קורס' : 'הוספת קורס'
@@ -196,16 +223,19 @@ export default {
           this.prerequisites = courseDetails.prerequisites.edges.map(
             (item) => item.node
           )
+          this.tags = courseDetails.tags.edges.map((item) => item.node)
         })
     }
   },
   methods: {
     async onSubmit() {
       const mappedPrerequisites = this.prerequisites.map((item) => item.id)
+      const mappedTags = this.tags.map((item) => item.id)
       await this.$apollo.mutate({
-        mutation: addCourse,
+        mutation: this.$route.params.id ? editCourse : addCourse,
         variables: {
           input: {
+            id: this.$route.params.id,
             name: this.courseName,
             unitId: this.unit.id,
             type: this.courseType.id,
@@ -213,15 +243,23 @@ export default {
             points: this.points,
             classification: this.classification.id,
             prerequisites: mappedPrerequisites,
+            tagIds: mappedTags,
           },
         },
       })
-      alert('נוסף בהצלחה!')
+      if (this.$route.params.id) {
+        alert('עודכן בהצלחה!')
+      } else {
+        alert('נוסף בהצלחה!')
+      }
     },
   },
   apollo: {
     allUnits: {
       query: allUnits,
+    },
+    allTags: {
+      query: allTags,
     },
     allPrerequisites: {
       query: addSemesterToCourseData,
