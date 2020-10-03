@@ -1,6 +1,6 @@
 <template>
   <div class="h-cover w-full text-center">
-    <panel-page-title title="הוספת קורס" back-button />
+    <panel-page-title :title="pageTitle" back-button />
     <form class="min-w-full grid grid-cols-2 gap-4" @submit.prevent="onSubmit">
       <label for="course-name" class="my-auto text-right">שם הקורס:</label>
       <input-field
@@ -89,12 +89,30 @@
           </template>
         </multiselect>
       </div>
+      <label for="course-tags" class="my-auto text-right">תגיות:</label>
+      <div id="course-tags">
+        <multiselect
+          v-model="tags"
+          :options="allTagsOptions"
+          :searchable="true"
+          :show-labels="false"
+          :multiple="true"
+          :hide-selected="true"
+          placeholder="בחר תגיות"
+          label="name"
+          track-by="id"
+        >
+          <template v-slot:noResult>
+            לא נמצאו תגיות התואמות לתוצאות החיפוש
+          </template>
+        </multiselect>
+      </div>
       <button
         id="addCourse"
         type="submit"
         class="focus:outline-none w-full button blue-button mt-4 col-span-2 md:col-span-1 md:col-start-2"
       >
-        הוסף
+        {{ buttonText }}
       </button>
     </form>
   </div>
@@ -103,8 +121,11 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import allUnits from '@/gql/allUnits.gql'
+import allTags from '@/gql/allTags.gql'
 import addCourse from '@/gql/addCourse.gql'
+import editCourse from '@/gql/editCourse.gql'
 import addSemesterToCourseData from '@/gql/addSemesterToCourseData.gql'
+import editCourseDetails from '@/gql/editCourseDetails.gql'
 
 export default {
   components: {
@@ -153,6 +174,10 @@ export default {
           edges: [],
         },
       },
+      allTags: {
+        edges: [],
+      },
+      tags: [],
     }
   },
   computed: {
@@ -162,14 +187,55 @@ export default {
       }
       return this.allUnits.edges.map((item) => item.node)
     },
+    allTagsOptions() {
+      return this.allTags.edges.map((item) => item.node)
+    },
+    pageTitle() {
+      return this.$route.params.id ? 'עריכת קורס' : 'הוספת קורס'
+    },
+    buttonText() {
+      return this.$route.params.id ? 'שמור שינויים' : 'הוסף'
+    },
+  },
+  created() {
+    if (this.$route.params.id) {
+      this.$apollo
+        .query({
+          query: editCourseDetails,
+          variables: {
+            id: this.$route.params.id,
+          },
+        })
+        .then((response) => {
+          ;({
+            name: this.courseName,
+            compulsory: this.isCompulsory,
+            points: this.points,
+            unit: this.unit,
+          } = response.data.courseDetails)
+          const courseDetails = response.data.courseDetails
+          this.classification = this.classifications.find(
+            (item) => item.id === courseDetails.classification
+          )
+          this.courseType = this.courseTypes.find(
+            (item) => item.id === courseDetails.courseType
+          )
+          this.prerequisites = courseDetails.prerequisites.edges.map(
+            (item) => item.node
+          )
+          this.tags = courseDetails.tags.edges.map((item) => item.node)
+        })
+    }
   },
   methods: {
     async onSubmit() {
       const mappedPrerequisites = this.prerequisites.map((item) => item.id)
+      const mappedTags = this.tags.map((item) => item.id)
       await this.$apollo.mutate({
-        mutation: addCourse,
+        mutation: this.$route.params.id ? editCourse : addCourse,
         variables: {
           input: {
+            id: this.$route.params.id,
             name: this.courseName,
             unitId: this.unit.id,
             type: this.courseType.id,
@@ -177,15 +243,23 @@ export default {
             points: this.points,
             classification: this.classification.id,
             prerequisites: mappedPrerequisites,
+            tagIds: mappedTags,
           },
         },
       })
-      alert('נוסף בהצלחה!')
+      if (this.$route.params.id) {
+        alert('עודכן בהצלחה!')
+      } else {
+        alert('נוסף בהצלחה!')
+      }
     },
   },
   apollo: {
     allUnits: {
       query: allUnits,
+    },
+    allTags: {
+      query: allTags,
     },
     allPrerequisites: {
       query: addSemesterToCourseData,

@@ -5,7 +5,7 @@
       <nuxt-link to="/admin/users_manager" class="button blue-button ml-2 my-2">
         ניהול משתמשים
       </nuxt-link>
-      <nuxt-link to="/admin/add_course" class="button blue-button ml-2 my-2">
+      <nuxt-link to="/admin/course" class="button blue-button ml-2 my-2">
         הוספת קורס חדש
       </nuxt-link>
       <nuxt-link to="/admin/add_staff" class="button blue-button ml-2 my-2">

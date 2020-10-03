@@ -38,7 +38,7 @@
       </div>
       <div>
         <strong>קורסי קדם:</strong>
-        <ul class="list-disc pr-4">
+        <ul v-if="prerequisites.length > 0" class="list-disc pr-4">
           <li v-for="prereq in prerequisites" :key="prereq.id">
             <nuxt-link
               :to="prereq.link"
@@ -48,6 +48,31 @@
             </nuxt-link>
           </li>
         </ul>
+        <span v-if="prerequisites.length === 0">ללא</span>
+      </div>
+      <div class="flex flex-row items-baseline">
+        <strong>תגיות:</strong>
+        <ul class="mr-2 flex flex-col md:flex-row">
+          <li
+            v-for="tag in courseData.tags.edges"
+            :key="tag.node.id"
+            class="p-2 bg-accent hover:bg-accent-hover text-white transition-all duration-200 ease-in rounded m-1"
+          >
+            {{ tag.node.name }}
+          </li>
+        </ul>
+      </div>
+      <div v-if="userIsAdmin">
+        <nuxt-link
+          :to="`/admin/course/${this.$route.params.id}`"
+          class="button blue-button"
+          tag="button"
+        >
+          עריכת קורס
+        </nuxt-link>
+        <button class="button red-button" @click="deleteCourse">
+          מחיקת קורס
+        </button>
       </div>
       <semester-box
         :data="dataWithShownProperty"
@@ -63,6 +88,8 @@
 
 <script>
 import courseDetails from '@/gql/courseDetails.gql'
+import deleteCourse from '@/gql/deleteCourse.gql'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -87,6 +114,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      userIsAdmin: 'user_data/isAdmin',
+    }),
     dataWithShownProperty() {
       if (this.courseData === null) {
         return []
@@ -149,6 +179,15 @@ export default {
       } else {
         this.hidden.push(index)
       }
+    },
+    async deleteCourse() {
+      await this.$apollo.mutate({
+        mutation: deleteCourse,
+        variables: {
+          id: this.$route.params.id,
+        },
+      })
+      alert('נמחק בהצלחה!')
     },
   },
 }

@@ -1,68 +1,71 @@
 <template>
   <div class="overall-div">
     <div class="chip-div">
-      <div v-for="(chip, index) in chipsList" :key="chip" class="chip">
+      <div v-for="(chip, index) in filterTags" :key="chip" class="chip">
         {{ chip }}
         <button
           class="delete-btn focus:outline-none"
-          @click.prevent="deleteChip(index)"
+          @click.prevent="deleteTag(index)"
         >
           <font-awesome-icon :icon="['fas', 'times-circle']" />
         </button>
       </div>
       <input
+        ref="textBox"
         type="text"
         class="focus:outline-none"
         placeholder="חיפוש"
-        :value="value"
-        @keyup.delete="deleteChip(chipsList.length - 1)"
+        :value="keywords"
+        @keydown.delete="deleteLastTag"
         @input="emitInput"
       />
     </div>
     <div class="btn-div">
-      <button class="search-btn" @click.prevent="addChip('שנה א')">
-        שנה א'
-      </button>
-      <button class="search-btn" @click.prevent="addChip('שנה ב')">
-        שנה ב'
-      </button>
-      <button class="search-btn" @click.prevent="addChip('שנה ג')">
-        שנה ג'
-      </button>
-      <button class="search-btn" @click.prevent="addChip('קורסי חובה')">
-        קורסי חובה
-      </button>
-      <button class="search-btn" @click.prevent="addChip('קורסי בחירה')">
-        קורסי בחירה
+      <button
+        v-for="tag in allSearchTags"
+        :key="tag"
+        class="search-btn"
+        @click.prevent="addTag(tag)"
+      >
+        {{ tag }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 export default {
-  props: {
-    value: {
-      type: String,
-      default: '',
+  computed: {
+    ...mapGetters({
+      keywords: 'search/keywords',
+      filterTags: 'search/selectedTags',
+      availableTags: 'search/availableTags',
+    }),
+    allSearchTags() {
+      const fromServer = this.availableTags.map((item) => item.name)
+      return [...fromServer, 'קורסי חובה', 'קורסי בחירה']
     },
   },
-  data() {
-    return {
-      chipsList: [],
-    }
+  created() {
+    this.initTagsList(this)
   },
   methods: {
-    addChip(activeChip) {
-      if (!this.chipsList.includes(activeChip)) {
-        this.chipsList.push(activeChip)
-      }
-    },
-    deleteChip(index) {
-      this.chipsList.splice(index, 1)
-    },
+    ...mapMutations({
+      addTag: 'search/addTag',
+      deleteTag: 'search/deleteTag',
+      changeKeywords: 'search/changeKeywords',
+    }),
+    ...mapActions({
+      initTagsList: 'search/initTagsList',
+    }),
     emitInput(event) {
-      this.$emit('input', event.target.value)
+      this.changeKeywords(event.target.value)
+    },
+    deleteLastTag(event) {
+      if (this.$refs.textBox.selectionStart === 0) {
+        this.deleteTag(this.filterTags.length - 1)
+      }
     },
   },
 }

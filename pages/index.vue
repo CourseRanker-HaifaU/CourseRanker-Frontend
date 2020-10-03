@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <welcome-message></welcome-message>
-    <search-bar v-model="keywords" class="label__search"></search-bar>
+    <search-bar class="label__search"></search-bar>
     <br />
     <courses-table
       :which-table="'courses'"
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import currentSemesterCourses from '@/gql/currentSemesterCourses.gql'
 import {
   currentSemesterCourseDataTransform,
@@ -26,12 +26,18 @@ import {
 export default {
   data() {
     return {
-      keywords: '',
       courseList: {
         dataArray: [],
       },
       rowsPerPage: 5,
     }
+  },
+  computed: {
+    ...mapGetters({
+      keywords: 'search/keywords',
+      tags: 'search/filterTags',
+      isCompulsory: 'search/isCompulsory',
+    }),
   },
   created() {
     this.restoreFromLocalStorage()
@@ -45,10 +51,14 @@ export default {
           keywords: this.keywords,
           rowsPerPage: this.rowsPerPage,
           after: '',
+          tags: this.tags,
+          compulsory: this.isCompulsory,
         }
       },
       debounce: 300,
       throttle: 300,
+      fetchPolicy: 'network-only',
+      deep: true,
     },
   },
   methods: {
@@ -66,6 +76,8 @@ export default {
               keywords: this.keywords,
               rowsPerPage: this.rowsPerPage,
               after: this.courseList.endCursor,
+              tags: this.tags,
+              compulsory: this.isCompulsory,
             },
             updateQuery: (previousResult, { fetchMoreResult }) => {
               const result = mergeCurrentSemesterCoursesData(
