@@ -85,8 +85,25 @@
         >
           הסר מהקורסים שלי
         </button>
-        <button class="button blue-button h-full md:h-auto">
+        <button
+          class="button blue-button h-full md:h-auto"
+          :class="{ 'ml-2': isAdmin }"
+        >
           הוסף חוות דעת
+        </button>
+        <nuxt-link
+          v-if="isAdmin"
+          :to="`/admin/course_semester/${edge.node.id}`"
+          tag="button"
+          class="button blue-button h-full ml-2"
+        >
+          ערוך קורס בסמסטר
+        </nuxt-link>
+        <button
+          class="button red-button h-full"
+          @click="deleteCourseSemester(edge.node, index)"
+        >
+          מחק קורס בסמסטר
         </button>
       </div>
     </labeled-box-card>
@@ -97,6 +114,8 @@
 import { multipleStaffToString, getSemester } from '@/utils'
 import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
+import deleteCourseInSemester from '@/gql/deleteCourseInSemester.gql'
+import { mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -111,6 +130,11 @@ export default {
     return {
       showIndices: [0],
     }
+  },
+  computed: {
+    ...mapGetters({
+      isAdmin: 'user_data/isAdmin',
+    }),
   },
   methods: {
     multipleStaffToString,
@@ -139,6 +163,16 @@ export default {
       node.inMyCourses = false
       alert('הוסר מהקורסים שלך')
       this.$forceUpdate()
+    },
+    async deleteCourseSemester(node, index) {
+      await this.$apollo.mutate({
+        mutation: deleteCourseInSemester,
+        variables: {
+          id: node.id,
+        },
+      })
+      alert('נמחק בהצלחה')
+      this.$emit('delete-course-semester', index)
     },
   },
 }

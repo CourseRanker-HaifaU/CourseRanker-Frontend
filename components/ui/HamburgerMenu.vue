@@ -41,7 +41,7 @@ export default {
         },
         {
           label: 'הוספת סמסטר לקורס',
-          link: '/admin/add_semester_to_course',
+          link: '/admin/course_semester',
         },
         {
           label: 'דיווחים על תוכן פוגעני',
