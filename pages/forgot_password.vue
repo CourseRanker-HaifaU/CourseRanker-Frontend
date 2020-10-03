@@ -15,7 +15,7 @@
           label="הכנס כתובת אימייל"
         />
         <input
-          id="sign-up"
+          id="send-request"
           type="submit"
           value="שלח בקשת שחזור"
           class="focus:outline-none w-full button blue-button col-span-2 mt-6"
@@ -27,6 +27,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
+import forgotPassword from '@/gql/forgotPassword.gql'
 
 export default {
   data() {
@@ -42,27 +43,26 @@ export default {
       }
     },
   },
-  /*
   methods: {
     async onSubmit() {
-      // TODO: Add validation
       this.$v.$touch()
       if (this.$v.$invalid) {
-        // TODO: Notify the user in a better way
         if (this.$v.userEmail.$invalid) {
           this.emailError = 'חובה להזין כתובת אימייל תקינה'
         }
       } else {
         await this.$apollo.mutate({
-          mutation: sendResetMail,
+          mutation: forgotPassword,
           variables: {
-            email: this.userEmail,
+            input: {
+              email: this.userEmail,
+            },
           },
         })
-        userLogin(this, this.userEmail, this.userPassword)
+        alert('נשלח מייל לשחזור הסיסמה. יש לעקוב אחר ההוראות המופיעות בו.')
       }
     },
-  }, */
+  },
   validations: {
     userEmail: {
       required,

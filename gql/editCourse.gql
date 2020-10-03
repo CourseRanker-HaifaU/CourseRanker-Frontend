@@ -1,0 +1,7 @@
+mutation editCourse($input: EditCourseInput!) {
+  editCourse(input: $input) {
+    course {
+      id
+    }
+  }
+}

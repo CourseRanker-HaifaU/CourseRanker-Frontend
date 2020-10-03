@@ -1,0 +1,9 @@
+mutation removeFromMyCourses($id: ID!) {
+  removeFromMyCourses(input: {
+    courseSemesterId: $id
+  }) {
+    user {
+      id
+    }
+  }
+}

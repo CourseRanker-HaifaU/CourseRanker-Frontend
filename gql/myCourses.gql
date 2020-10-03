@@ -1,9 +1,7 @@
-query currentSemesterCourses($keywords: String!, $rowsPerPage: Int!, $after: String!, $tags: [ID], $compulsory: Boolean) {
-  allSemesters(isCurrent: true) {
-    edges {
-      node {
-        coursesemesterSet(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after, course_Tags: $tags, course_Compulsory: $compulsory) {
-          pageInfo {
+query myCourses($keywords: String!, $rowsPerPage: Int!, $after: String!) {
+  currentUser {
+    userCourses(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after) {
+      pageInfo {
             endCursor
             hasNextPage
           }
@@ -47,8 +45,6 @@ query currentSemesterCourses($keywords: String!, $rowsPerPage: Int!, $after: Str
               averageCourseRating
             }
           }
-        }
-      }
     }
   }
 }

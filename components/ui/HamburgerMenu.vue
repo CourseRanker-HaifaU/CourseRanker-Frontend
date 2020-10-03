@@ -6,6 +6,7 @@
       :to="link.link"
       class="menu-link focus-outline-none"
       exact-active-class="bg-primary-hover"
+      exact
       @click.native="emitMenuClose"
     >
       {{ link.label }}
@@ -32,7 +33,7 @@ export default {
         },
         {
           label: 'הוספת קורס',
-          link: '/admin/add_course',
+          link: '/admin/course',
         },
         {
           label: 'הוספת איש סגל',
@@ -68,7 +69,12 @@ export default {
       isAdmin: 'user_data/isAdmin',
     }),
     links() {
-      return this.isAdmin ? this.adminLinks : this.userLinks
+      let ret = []
+      if (this.isAdmin) {
+        ret = [...this.adminLinks]
+      }
+      ret = [...ret, ...this.userLinks]
+      return ret
     },
   },
   methods: {

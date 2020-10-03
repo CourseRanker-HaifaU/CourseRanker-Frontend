@@ -30,7 +30,7 @@ export async function userLogin(vueInstance, email, password) {
   } catch (error) {
     vueInstance.$nuxt.error({
       statusCode: 401,
-      message: error.graphQLErrors[0].message,
+      message: error,
     })
   }
 }
@@ -88,6 +88,29 @@ export const currentSemesterCourseDataTransform = (data) => {
   }
 }
 
+export const myCoursesDataTransform = (data) => {
+  const allData = data.currentUser.userCourses
+  const dataArray = allData.edges.map((item) => item.node)
+  const { endCursor, hasNextPage } = allData.pageInfo
+  return {
+    dataArray,
+    endCursor,
+    hasNextPage,
+  }
+}
+
+export const mergeMyCoursesData = (oldData, newData) => {
+  const ret = {
+    ...newData,
+  }
+  ret.__typename = oldData.__typename
+  ret.currentUser.userCourses.edges = [
+    ...oldData.currentUser.userCourses.edges,
+    ...newData.currentUser.userCourses.edges,
+  ]
+  return ret
+}
+
 export const roleParser = (toParse) => {
   switch (toParse) {
     case 'A_1':
@@ -99,4 +122,8 @@ export const roleParser = (toParse) => {
     default:
       return toParse
   }
+}
+
+export const XOR = (a, b) => {
+  return (a || b) && !(a && b)
 }

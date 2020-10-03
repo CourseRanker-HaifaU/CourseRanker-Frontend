@@ -114,7 +114,11 @@ export default {
           query: {
             fetchPolicy: 'no-cache',
           },
+          $query: {
+            fetchPolicy: 'no-cache',
+          },
         },
+        persisting: false,
       },
     },
     authenticationType: 'JWT',
