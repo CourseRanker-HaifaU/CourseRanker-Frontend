@@ -93,7 +93,7 @@
         </button>
         <nuxt-link
           v-if="isAdmin"
-          :to="`admin/course_semester/${edge.node.id}`"
+          :to="`/admin/course_semester/${edge.node.id}`"
           tag="button"
           class="button blue-button h-full ml-2"
         >

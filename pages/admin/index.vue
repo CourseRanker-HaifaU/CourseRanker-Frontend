@@ -12,7 +12,7 @@
         הוספת איש סגל
       </nuxt-link>
       <nuxt-link
-        to="/admin/add_semester_to_course"
+        to="/admin/course_semester"
         class="button blue-button ml-2 my-2"
       >
         הוספת סמסטר לקורס

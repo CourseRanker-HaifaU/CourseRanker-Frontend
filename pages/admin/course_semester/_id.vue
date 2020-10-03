@@ -111,6 +111,11 @@ export default {
       },
     }
   },
+  computed: {
+    isEdit() {
+      return !!this.$route.params.id
+    },
+  },
   methods: {
     addTag(newTag) {
       const tag = {
