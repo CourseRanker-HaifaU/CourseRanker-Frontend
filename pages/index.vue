@@ -1,18 +1,41 @@
 <template>
-  <div class="container">
+  <div>
     <welcome-message></welcome-message>
-    <search-bar class="label__search"></search-bar>
-    <br />
-    <courses-table
-      :which-table="'courses'"
-      :is-lecturer="false"
-      :is-assist="false"
-      :keywords="keywords"
-      :course-list="courseList"
-      :infinite-handler="infiniteHandler"
-      :is-loading="$apollo.loading"
-    ></courses-table>
-    <floating-action-button />
+    <ul class="flex border-b">
+      <li class="-mb-px mr-1">
+        <a
+          class="clicked-tab"
+          :class="{ 'not-clicked-tab': !isCourseList }"
+          @click="changeToCourses"
+          >קורסים</a
+        >
+      </li>
+      <li class="mr-1">
+        <a
+          class="not-clicked-tab"
+          :class="{ 'clicked-tab': !isCourseList }"
+          @click="changeToStaff"
+          >מרצים</a
+        >
+      </li>
+    </ul>
+    <div v-if="isCourseList" class="container">
+      <search-bar class="label__search"></search-bar>
+      <br />
+      <courses-table
+        :which-table="'courses'"
+        :is-lecturer="false"
+        :is-assist="false"
+        :keywords="keywords"
+        :course-list="courseList"
+        :infinite-handler="infiniteHandler"
+        :is-loading="$apollo.loading"
+      ></courses-table>
+      <floating-action-button />
+    </div>
+    <div v-if="!isCourseList">
+      <h2>Here should be a staff table</h2>
+    </div>
   </div>
 </template>
 
@@ -26,6 +49,7 @@ import {
 export default {
   data() {
     return {
+      isCourseList: true,
       courseList: {
         dataArray: [],
       },
@@ -92,6 +116,12 @@ export default {
           })
       }
     },
+    changeToCourses() {
+      this.isCourseList = true
+    },
+    changeToStaff() {
+      this.isCourseList = false
+    },
   },
 }
 </script>
@@ -102,4 +132,30 @@ export default {
 @apply min-h-screen flex justify-center items-center text-center mx-auto;
 }
 */
+
+.clicked-tab {
+  @apply bg-white;
+  @apply inline-block;
+  @apply border-l;
+  @apply border-t;
+  @apply border-r;
+  @apply rounded-t;
+  @apply py-2;
+  @apply px-4;
+  @apply text-blue-700;
+  @apply font-semibold;
+  @apply text-blue-500;
+}
+
+.not-clicked-tab {
+  @apply bg-white;
+  @apply inline-block;
+  @apply py-2;
+  @apply px-4;
+}
+
+.not-clicked-tab:hover {
+  @apply text-blue-800;
+  @apply font-semibold;
+}
 </style>
