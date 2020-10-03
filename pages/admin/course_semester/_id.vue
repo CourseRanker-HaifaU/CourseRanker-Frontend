@@ -1,6 +1,6 @@
 <template>
   <div class="h-cover w-full text-right min-w-full">
-    <panel-page-title title="הוספת סמסטר לקורס" back-button />
+    <panel-page-title :title="pageTitle" back-button />
     <div v-if="serverData != null" class="mx-4 md:max-w-md min-w-full">
       <form
         class="grid grid-cols-2 gap-8 text-right grid-flow-row"
@@ -75,7 +75,7 @@
           type="submit"
           class="w-full button blue-button mt-4 col-start-2 focus:border-accent focus:shadow-outline"
         >
-          הוסף
+          {{ isEdit ? 'שמור' : 'הוסף' }}
         </button>
       </form>
     </div>
@@ -86,6 +86,7 @@
 import Multiselect from 'vue-multiselect'
 import addSemesterToCourseData from '@/gql/addSemesterToCourseData.gql'
 import openCourseInSemester from '@/gql/openCourseInSemester.gql'
+import courseSemesterDetails from '@/gql/courseSemesterDetails.gql'
 import { getSemester, staffToString } from '@/utils'
 
 export default {
@@ -115,6 +116,42 @@ export default {
     isEdit() {
       return !!this.$route.params.id
     },
+    pageTitle() {
+      return this.isEdit ? 'עריכת קורס בסמסטר' : 'הוספת סמסטר לקורס'
+    },
+  },
+  created() {
+    if (this.isEdit) {
+      this.$apollo
+        .query({
+          query: courseSemesterDetails,
+          variables: {
+            id: this.$route.params.id,
+          },
+        })
+        .then((response) => {
+          const results = response.data.courseSemesterDetails
+          this.selectedCourse = results.course
+          this.selectedSemester = {
+            id: results.semester.id,
+            name: getSemester(results.semester),
+          }
+          const {
+            lecturers,
+            teachingAssistants,
+          } = results.coursesemesterstaffSet.edges[0].node
+          this.selectedLecturers = lecturers.edges.map(({ node }) => ({
+            id: node.id,
+            name: staffToString(node),
+          }))
+          this.selectedTeachingAssistants = teachingAssistants.edges.map(
+            ({ node }) => ({
+              id: node.id,
+              name: staffToString(node),
+            })
+          )
+        })
+    }
   },
   methods: {
     addTag(newTag) {
