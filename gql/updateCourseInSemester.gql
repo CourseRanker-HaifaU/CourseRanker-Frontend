@@ -1,0 +1,7 @@
+mutation updateCourseInSemester($input: UpdateCourseSemesterInput!) {
+  updateCourseInSemester(input: $input) {
+    courseSemester {
+      id
+    }
+  }
+}

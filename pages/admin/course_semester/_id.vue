@@ -86,6 +86,7 @@
 import Multiselect from 'vue-multiselect'
 import addSemesterToCourseData from '@/gql/addSemesterToCourseData.gql'
 import openCourseInSemester from '@/gql/openCourseInSemester.gql'
+import updateCourseInSemester from '@/gql/updateCourseInSemester.gql'
 import courseSemesterDetails from '@/gql/courseSemesterDetails.gql'
 import { getSemester, staffToString } from '@/utils'
 
@@ -128,6 +129,7 @@ export default {
           variables: {
             id: this.$route.params.id,
           },
+          fetchPolicy: 'no-cache',
         })
         .then((response) => {
           const results = response.data.courseSemesterDetails
@@ -167,9 +169,10 @@ export default {
     },
     async onSubmit() {
       await this.$apollo.mutate({
-        mutation: openCourseInSemester,
+        mutation: this.isEdit ? updateCourseInSemester : openCourseInSemester,
         variables: {
           input: {
+            id: this.$route.params.id,
             courseId: this.selectedCourse.id,
             semesterId: this.selectedSemester.id,
             lecturerIds: this.getIds(this.selectedLecturers),
@@ -177,7 +180,7 @@ export default {
           },
         },
       })
-      alert('נוסף בהצלחה!')
+      alert(this.isEdit ? 'עודכן בהצלחה!' : 'נוסף בהצלחה!')
     },
   },
   apollo: {
