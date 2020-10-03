@@ -3,10 +3,10 @@
     <welcome-message></welcome-message>
     <ul class="flex border-b">
       <li class="-mb-px mr-1">
-        <a
-          class="clicked-tab"
-          :class="{ 'not-clicked-tab': !isCourseList }"
-          @click="changeToCourses"
+        <a v-if="isCourseList" class="clicked-tab" @click="changeToCourses"
+          >קורסים</a
+        >
+        <a v-if="!isCourseList" class="not-clicked-tab" @click="changeToCourses"
           >קורסים</a
         >
       </li>
@@ -34,7 +34,12 @@
       <floating-action-button />
     </div>
     <div v-if="!isCourseList">
-      <h2>Here should be a staff table</h2>
+      <staff-table
+        :keywords="keywords"
+        :staff-list="courseList"
+        :infinite-handler="infiniteHandler"
+        :is-loading="$apollo.loading"
+      ></staff-table>
     </div>
   </div>
 </template>

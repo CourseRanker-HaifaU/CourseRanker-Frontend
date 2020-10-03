@@ -12,11 +12,6 @@
           {{ listItem.staff.name }}
         </div>
         <div>
-          <strong>חוות דעת קורס:</strong>
-          <rating :rating="listItem.averageCourseRating" />
-          <button class="button button-blue">הוספת חוות דעת</button>
-        </div>
-        <div>
           <strong>חוות דעת מרצה:</strong>
           <rating :rating="listItem.averageLecturerRating" />
           <button class="button button-blue">הוספת חוות דעת</button>
@@ -50,17 +45,11 @@
 
         <!-------------------- 2nd col-optional -------------------->
         <td class="td-style">
-          <rating :rating="listItem.averageCourseRating"></rating>
-          <button class="table-btn">הוספת חוות דעת</button>
-        </td>
-
-        <!-------------------- 3rd col-optional -------------------->
-        <td class="td-style">
           <rating :rating="listItem.averageLecturerRating"></rating>
           <button class="table-btn">הוספת חוות דעת</button>
         </td>
 
-        <!-------------------- 4th col-optional -------------------->
+        <!-------------------- 3rd col-optional -------------------->
         <td class="'td-style'">
           <rating :rating="listItem.averageTeachingAssistantRating"></rating>
           <button class="table-btn">הוספת חוות דעת</button>
@@ -76,9 +65,6 @@
 
 <script>
 import SmallWidthMixin from '@/mixins/small_width'
-import { multipleStaffToString } from '@/utils'
-import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
-
 export default {
   mixins: [SmallWidthMixin],
   props: {
@@ -113,19 +99,6 @@ export default {
   methods: {
     sendTo(msg) {
       this.$router.push(msg)
-    },
-    multipleStaffToString,
-    async removeCourse(id) {
-      await this.$apollo.mutate({
-        mutation: removeFromMyCourses,
-        variables: {
-          id,
-        },
-      })
-      const toRemove = this.courseList.dataArray.findIndex(
-        (item) => item.id === id
-      )
-      this.$emit('remove-row', toRemove)
     },
   },
 }
