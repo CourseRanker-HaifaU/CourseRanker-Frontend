@@ -28,8 +28,8 @@
       <thead>
         <tr class="border-b-2 border-black">
           <th class="td-style">שם איש הסגל</th>
-          <th class="td-style">חוות דעת מרצה</th>
-          <th class="td-style">חוות דעת מתרגל/ת</th>
+          <th class="td-style">חוות דעת כמרצה</th>
+          <th class="td-style">חוות דעת כמתרגל/ת</th>
         </tr>
       </thead>
       <tr
