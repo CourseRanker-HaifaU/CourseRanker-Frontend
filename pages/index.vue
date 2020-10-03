@@ -150,6 +150,7 @@ export default {
   @apply text-blue-700;
   @apply font-semibold;
   @apply text-blue-500;
+  @apply cursor-pointer;
 }
 
 .not-clicked-tab {
@@ -157,6 +158,7 @@ export default {
   @apply inline-block;
   @apply py-2;
   @apply px-4;
+  @apply cursor-pointer;
 }
 
 .not-clicked-tab:hover {
