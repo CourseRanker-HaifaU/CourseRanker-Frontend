@@ -8,7 +8,7 @@
       body-class="grid gap-1 grid-cols-2 gap-y-3 border-primary border-b-2 border-l-2 border-r-2 rounded-b-md p-4"
       @toggle-shown="triggerToggleShown(index)"
     >
-      <div class="items-baseline">
+      <div class="items-baseline flex-row">
         <strong>מרצה:</strong>
         <span>{{
           multipleStaffToString(
@@ -16,7 +16,7 @@
           )
         }}</span>
       </div>
-      <div class="items-baseline">
+      <div class="flex items-baseline flex-row">
         <strong>מתרגל/ת:</strong>
         <span>{{
           multipleStaffToString(
@@ -25,7 +25,9 @@
           )
         }}</span>
       </div>
-      <div class="items-baseline justify-between md:justify-start">
+      <div
+        class="flex items-baseline flex-row justify-between md:justify-start"
+      >
         <strong>דירוג מרצה:</strong>
         <span>
           <rating
@@ -34,7 +36,9 @@
           ></rating>
         </span>
       </div>
-      <div class="items-baseline justify-between md:justify-start">
+      <div
+        class="flex items-baseline flex-row justify-between md:justify-start"
+      >
         <strong>דירוג מתרגל/ת:</strong>
         <span>
           <rating
@@ -43,7 +47,9 @@
           ></rating>
         </span>
       </div>
-      <div class="items-baseline justify-between md:justify-start">
+      <div
+        class="flex items-baseline flex-row justify-between md:justify-start"
+      >
         <strong>דירוג קורס:</strong>
         <span>
           <rating
@@ -52,7 +58,9 @@
           ></rating>
         </span>
       </div>
-      <div class="items-baseline justify-between md:justify-start">
+      <div
+        class="flex items-baseline flex-row justify-between md:justify-start"
+      >
         <strong>דירוג קורס + מרצה:</strong>
         <span>
           <rating
@@ -61,7 +69,9 @@
           ></rating>
         </span>
       </div>
-      <div class="items-baseline justify-between md:justify-start">
+      <div
+        class="flex items-baseline flex-row justify-between md:justify-start"
+      >
         <strong>דירוג קורס + מתרגל/ת:</strong>
         <span>
           <rating
@@ -70,24 +80,68 @@
           ></rating>
         </span>
       </div>
-      <div class="items-center">
+      <div
+        v-if="edge.node.coursesemesterexamSet.edges.length > 0"
+        class="flex items-baseline flex-row justify-start"
+      >
+        <strong>ממוצע ציונים:</strong>
+        <ul>
+          <li
+            v-for="examEdge in edge.node.coursesemesterexamSet.edges"
+            :key="examEdge.node.id"
+          >
+            {{ examEdge.node.moed }}: {{ examEdge.node.average }}
+          </li>
+        </ul>
+      </div>
+      <div
+        v-if="edge.node.coursesemesterexamSet.edges.length > 0"
+        class="flex flex-row items-baseline justify-start col-span-2"
+      >
+        <strong>נבחנו:</strong>
+        <ul>
+          <li
+            v-for="examEdge in edge.node.coursesemesterexamSet.edges"
+            :key="examEdge.node.id"
+          >
+            {{ examEdge.node.moed }}:
+            {{
+              examEdge.node.histogram.reduce(
+                (accumulator, currentValue) => accumulator + currentValue,
+                0
+              )
+            }}
+          </li>
+        </ul>
+      </div>
+      <div
+        v-if="edge.node.coursesemesterexamSet.edges.length > 0"
+        class="col-span-2 items-start justify-items-stretch flex flex-col md:flex-row"
+      >
+        <strong>התפלגות ציונים:</strong>
+        <bar-chart
+          :exam-edges="edge.node.coursesemesterexamSet.edges"
+          class="w-full md:w-3/4 lg:w-full max-w-full"
+        />
+      </div>
+      <div class="flex flex-col items-stretch md:flex-row md:items-center">
         <button
           v-if="!edge.node.inMyCourses"
-          class="button blue-button ml-2 h-full md:h-auto"
+          class="button blue-button mb-2 md:mb-0 md:ml-2 h-full"
           @click="addToMyCourses(edge.node)"
         >
           הוסף לקורסים שלי
         </button>
         <button
           v-else
-          class="button blue-button ml-2 h-full md:h-auto"
+          class="button blue-button mb-2 md:mb-0 md:ml-2 h-full"
           @click="removeFromMyCourses(edge.node)"
         >
           הסר מהקורסים שלי
         </button>
         <button
-          class="button blue-button h-full md:h-auto"
-          :class="{ 'ml-2': isAdmin }"
+          class="button blue-button h-full"
+          :class="{ 'mb-2 md:mb-0 md:ml-2': isAdmin }"
         >
           הוסף חוות דעת
         </button>
@@ -95,7 +149,7 @@
           v-if="isAdmin"
           :to="`/admin/course_semester/${edge.node.id}`"
           tag="button"
-          class="button blue-button h-full ml-2"
+          class="button blue-button h-full mb-2 md:mb-0 md:ml-2"
         >
           ערוך קורס בסמסטר
         </nuxt-link>
@@ -179,10 +233,6 @@ export default {
 </script>
 
 <style scoped>
-div.grid div {
-  @apply flex;
-  @apply flex-row;
-}
 div.grid div strong {
   @apply ml-2;
 }

@@ -57,6 +57,16 @@ query courseDetails($id: ID!) {
               }
             }
           }
+          coursesemesterexamSet {
+            edges {
+              node {
+                id
+                moed
+                average
+                histogram
+              }
+            }
+          }
           averageLecturerRating
           averageTeachingAssistantRating
           averageCourseRating
