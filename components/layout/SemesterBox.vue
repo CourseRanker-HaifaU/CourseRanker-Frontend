@@ -99,7 +99,12 @@
         >
           ערוך קורס בסמסטר
         </nuxt-link>
-        <button class="button red-button h-full">מחק קורס בסמסטר</button>
+        <button
+          class="button red-button h-full"
+          @click="deleteCourseSemester(edge.node, index)"
+        >
+          מחק קורס בסמסטר
+        </button>
       </div>
     </labeled-box-card>
   </div>
@@ -109,6 +114,7 @@
 import { multipleStaffToString, getSemester } from '@/utils'
 import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
+import deleteCourseInSemester from '@/gql/deleteCourseInSemester.gql'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -157,6 +163,16 @@ export default {
       node.inMyCourses = false
       alert('הוסר מהקורסים שלך')
       this.$forceUpdate()
+    },
+    async deleteCourseSemester(node, index) {
+      await this.$apollo.mutate({
+        mutation: deleteCourseInSemester,
+        variables: {
+          id: node.id,
+        },
+      })
+      alert('נמחק בהצלחה')
+      this.$emit('delete-course-semester', index)
     },
   },
 }

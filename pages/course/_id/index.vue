@@ -77,6 +77,7 @@
       <semester-box
         :data="dataWithShownProperty"
         @toggle-shown="toggleShown"
+        @delete-course-semester="deleteCourseSemester"
       ></semester-box>
     </div>
     <error-message
@@ -188,6 +189,9 @@ export default {
         },
       })
       alert('נמחק בהצלחה!')
+    },
+    deleteCourseSemester(index) {
+      this.courseData.coursesemesterSet.edges.splice(index, 1)
     },
   },
 }
