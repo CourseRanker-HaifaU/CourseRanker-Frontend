@@ -9,8 +9,7 @@
       >
         <div class="col-span-2">
           <strong>שם איש הסגל:</strong>
-          {{ correctTitle(staff.title) }} {{ staff.firstName }}
-          {{ staff.lastName }}
+          {{ staffToString(staff) }}
         </div>
         <div>
           <strong>חוות דעת כמרצה:</strong>
@@ -40,8 +39,7 @@
       >
         <!-------------------- 1st col -------------------->
         <td class="td-style">
-          {{ correctTitle(staff.title) }} {{ staff.firstName }}
-          {{ staff.lastName }}
+          {{ staffToString(staff) }}
         </td>
 
         <!-------------------- 2nd col-optional -------------------->
@@ -77,6 +75,7 @@
 <script>
 import SmallWidthMixin from '@/mixins/small_width'
 import allStaff from '@/gql/allStaff.gql'
+import { staffToString } from '@/utils'
 export default {
   mixins: [SmallWidthMixin],
   props: {
@@ -112,22 +111,9 @@ export default {
     },
   },
   methods: {
+    staffToString,
     sendTo(msg) {
       this.$router.push(msg)
-    },
-    correctTitle(title) {
-      switch (title) {
-        case 'MR':
-          return "מר'"
-        case 'MS':
-          return "גב'"
-        case 'DR':
-          return 'ד"ר'
-        case 'PR':
-          return "פרופ'"
-        default:
-          return ''
-      }
     },
   },
   apollo: {
