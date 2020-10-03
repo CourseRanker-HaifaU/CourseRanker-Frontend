@@ -1,0 +1,21 @@
+query {
+  allStaff {
+    edges {
+      node {
+        id
+        firstName
+        lastName
+        title
+        averageRatingAsLecturer
+        averageRatingAsTeachingAssistant
+        units {
+          edges {
+            node {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}

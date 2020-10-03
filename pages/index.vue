@@ -33,7 +33,7 @@
       ></courses-table>
       <floating-action-button />
     </div>
-    <div v-if="!isCourseList">
+    <div v-if="!isCourseList" class="container">
       <staff-table
         :keywords="keywords"
         :staff-list="courseList"

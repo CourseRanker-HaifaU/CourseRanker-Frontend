@@ -2,23 +2,24 @@
   <div class="frame-div flex flex-col w-full items-stretch justify-start">
     <div v-if="isSmall" class="courses-cards">
       <div
-        v-for="listItem in courseList.dataArray"
-        :key="listItem.id"
+        v-for="staff in allStaffOptions()"
+        :key="staff.id"
         class="cursor-pointer responsive-card hover:bg-secondary-hover"
-        @click="sendTo(`/staff/${listItem.staff.id}`)"
+        @click="sendTo(`/staff/${staff.id}`)"
       >
         <div>
           <strong>שם איש הסגל:</strong>
-          {{ listItem.staff.name }}
+          {{ correctTitle(staff.title) }} {{ staff.firstName }}
+          {{ staff.lastName }}
         </div>
         <div>
           <strong>חוות דעת מרצה:</strong>
-          <rating :rating="listItem.averageLecturerRating" />
+          <rating :rating="staff.averageLecturerRating" />
           <button class="button button-blue">הוספת חוות דעת</button>
         </div>
         <div>
           <strong>חוות דעת מתרגל/ת:</strong>
-          <rating :rating="listItem.averageTeachingAssistantRating" />
+          <rating :rating="staff.averageTeachingAssistantRating" />
           <button class="button button-blue">הוספת חוות דעת</button>
         </div>
       </div>
@@ -31,28 +32,38 @@
           <th class="td-style">חוות דעת מתרגל/ת</th>
         </tr>
       </thead>
-
       <tr
-        v-for="listItem in courseList.dataArray"
-        :key="listItem.id"
+        v-for="staff in allStaffOptions()"
+        :key="staff.id"
         class="cursor-pointer border-b border-black text-right hover:bg-gray-200"
-        @click="sendTo(`/staff/${listItem.staff.id}`)"
+        @click="sendTo(`/staff/${staff.id}`)"
       >
         <!-------------------- 1st col -------------------->
         <td class="td-style">
-          {{ listItem.staff.firstName }} {{ listItem.staff.lastName }}
+          {{ correctTitle(staff.title) }} {{ staff.firstName }}
+          {{ staff.lastName }}
         </td>
 
         <!-------------------- 2nd col-optional -------------------->
         <td class="td-style">
-          <rating :rating="listItem.averageLecturerRating"></rating>
-          <button class="table-btn">הוספת חוות דעת</button>
+          <div class="flex">
+            <rating
+              class="mt-2 ml-2"
+              :rating="staff.averageLecturerRating"
+            ></rating>
+            <button class="table-btn">הוספת חוות דעת</button>
+          </div>
         </td>
 
         <!-------------------- 3rd col-optional -------------------->
-        <td class="'td-style'">
-          <rating :rating="listItem.averageTeachingAssistantRating"></rating>
-          <button class="table-btn">הוספת חוות דעת</button>
+        <td class="td-style">
+          <div class="flex">
+            <rating
+              class="mt-2 ml-2"
+              :rating="staff.averageTeachingAssistantRating"
+            ></rating>
+            <button class="table-btn">הוספת חוות דעת</button>
+          </div>
         </td>
       </tr>
     </table>
@@ -65,18 +76,13 @@
 
 <script>
 import SmallWidthMixin from '@/mixins/small_width'
+import allStaff from '@/gql/allStaff.gql'
 export default {
   mixins: [SmallWidthMixin],
   props: {
     keywords: {
       type: String,
       default: '',
-    },
-    staffList: {
-      type: Object,
-      default() {
-        return { dataArray: [] }
-      },
     },
     isLoading: {
       type: Boolean,
@@ -89,6 +95,7 @@ export default {
   },
   data() {
     return {
+      allStaff: {},
       windowWidth: window.innerWidth,
       rowsPerPage: 10,
       after: '',
@@ -99,6 +106,31 @@ export default {
   methods: {
     sendTo(msg) {
       this.$router.push(msg)
+    },
+    allStaffOptions() {
+      if (!('edges' in this.allStaff)) {
+        return []
+      }
+      return this.allStaff.edges.map((item) => item.node)
+    },
+    correctTitle(title) {
+      switch (title) {
+        case 'MR':
+          return "מר'"
+        case 'MS':
+          return "גב'"
+        case 'DR':
+          return 'ד"ר'
+        case 'PR':
+          return "פרופ'"
+        default:
+          return ''
+      }
+    },
+  },
+  apollo: {
+    allStaff: {
+      query: allStaff,
     },
   },
 }
