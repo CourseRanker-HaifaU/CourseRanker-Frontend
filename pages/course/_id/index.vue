@@ -50,6 +50,18 @@
         </ul>
         <span v-if="prerequisites.length === 0">ללא</span>
       </div>
+      <div class="flex flex-row items-baseline">
+        <strong>תגיות:</strong>
+        <ul class="mr-2">
+          <li
+            v-for="tag in courseData.tags.edges"
+            :key="tag.node.id"
+            class="p-2 bg-accent hover:bg-accent-hover text-white transition-all duration-200 ease-in rounded mx-2"
+          >
+            {{ tag.node.name }}
+          </li>
+        </ul>
+      </div>
       <div v-if="userIsAdmin">
         <nuxt-link
           :to="`/admin/course/${this.$route.params.id}`"

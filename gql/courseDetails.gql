@@ -17,6 +17,14 @@ query courseDetails($id: ID!) {
       }
     }
     averageRating
+    tags {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
     coursesemesterSet {
       edges {
         node {
