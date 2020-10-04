@@ -1,7 +1,32 @@
 <template>
   <div class="menu-div">
+    <button
+      v-if="isAdmin"
+      class="menu-link-title focus:outline-none text-right"
+      @click="sendTo('/admin')"
+    >
+      פאנל מנהל
+    </button>
     <nuxt-link
       v-for="link in links"
+      :key="link.link"
+      :to="link.link"
+      class="menu-link focus-outline-none"
+      exact-active-class="bg-primary-hover"
+      exact
+      @click.native="emitMenuClose"
+    >
+      {{ link.label }}
+    </nuxt-link>
+    <button
+      class="menu-link-title focus:outline-none text-right"
+      :class="{ 'upper-line': isAdmin }"
+      @click="sendTo('/user')"
+    >
+      פאנל משתמש
+    </button>
+    <nuxt-link
+      v-for="link in userLinks"
       :key="link.link"
       :to="link.link"
       class="menu-link focus-outline-none"
@@ -23,10 +48,6 @@ export default {
   data() {
     return {
       adminLinks: [
-        {
-          label: 'פאנל מנהל',
-          link: '/admin',
-        },
         {
           label: 'ניהול משתמשים',
           link: '/admin/users_manager',
@@ -50,10 +71,6 @@ export default {
       ],
       userLinks: [
         {
-          label: 'פאנל משתמש',
-          link: '/user',
-        },
-        {
           label: 'הקורסים שלי',
           link: '/user/courses',
         },
@@ -73,7 +90,6 @@ export default {
       if (this.isAdmin) {
         ret = [...this.adminLinks]
       }
-      ret = [...ret, ...this.userLinks]
       return ret
     },
   },
@@ -83,6 +99,9 @@ export default {
     }),
     emitMenuClose() {
       this.$emit('menu-close')
+    },
+    sendTo(msg) {
+      this.$router.push(msg)
     },
     logOut() {
       this.emitMenuClose()
@@ -118,7 +137,26 @@ export default {
   @apply w-full;
 }
 
+.menu-link-title {
+  @apply text-white;
+  @apply text-xl;
+  @apply font-bold;
+  @apply py-4;
+  @apply px-3;
+  @apply w-full;
+
+  border-bottom: 1px solid black;
+}
+
+.upper-line {
+  border-top: 3px solid white;
+}
+
 .menu-link:hover {
+  @apply bg-primary-hover;
+}
+
+.menu-link-title:hover {
   @apply bg-primary-hover;
 }
 
