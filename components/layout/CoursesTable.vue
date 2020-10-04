@@ -197,6 +197,7 @@
 import SmallWidthMixin from '@/mixins/small_width'
 import { multipleStaffToString, getSemester } from '@/utils'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
+import { mapMutations } from 'vuex'
 
 export default {
   mixins: [SmallWidthMixin],
@@ -247,7 +248,11 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      changeKeywords: 'search/changeKeywords',
+    }),
     sendTo(msg) {
+      this.changeKeywords('')
       this.$router.push(msg)
     },
     getSemester,
