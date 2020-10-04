@@ -1,4 +1,4 @@
-query ($id: ID!){
+query ($id: ID!, $lecturersPerPage: Int!, $lecturersAfter: String, $teachingAssistantsPerPage: Int!, $teachingAssistantsAfter: String){
   staff(id: $id) {
     id
     title
@@ -6,10 +6,15 @@ query ($id: ID!){
     lastName
     averageRatingAsLecturer
     averageRatingAsTeachingAssistant
-    lecturers {
+    lecturers(first: $lecturersPerPage, after: $lecturersAfter) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           courseSemester {
+            id
             course {
               id
               name
@@ -28,10 +33,15 @@ query ($id: ID!){
         }
       }
     }
-    teachingAssistants {
+    teachingAssistants(first: $teachingAssistantsPerPage, after: $teachingAssistantsAfter) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           courseSemester {
+            id
             course {
               id
               name

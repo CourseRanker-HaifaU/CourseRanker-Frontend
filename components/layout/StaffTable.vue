@@ -61,7 +61,11 @@
         </td>
       </tr>
     </table>
-    <infinite-loading v-if="!isLoading" @infinite="infiniteHandler">
+    <infinite-loading
+      v-if="!isLoading"
+      identifier="staff-table"
+      @infinite="infiniteHandler"
+    >
       <div slot="no-more"></div>
       <div slot="no-results"></div>
     </infinite-loading>
@@ -71,6 +75,8 @@
 <script>
 import SmallWidthMixin from '@/mixins/small_width'
 import { staffToString } from '@/utils'
+import { mapMutations } from 'vuex'
+
 export default {
   mixins: [SmallWidthMixin],
   props: {
@@ -109,8 +115,12 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      changeKeywords: 'search/changeKeywords',
+    }),
     staffToString,
     sendTo(msg) {
+      this.changeKeywords('')
       this.$router.push(msg)
     },
   },

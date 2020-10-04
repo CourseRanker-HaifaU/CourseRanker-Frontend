@@ -39,7 +39,6 @@
         :infinite-handler="infiniteHandlerCourses"
         :is-loading="$apollo.queries.courseList.loading"
       ></courses-table>
-      <floating-action-button />
     </div>
     <div v-if="!isCourseList" class="container">
       <staff-table
@@ -49,6 +48,7 @@
         :is-loading="$apollo.queries.allStaff.loading"
       ></staff-table>
     </div>
+    <floating-action-button />
   </div>
 </template>
 
