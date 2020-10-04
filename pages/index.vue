@@ -29,7 +29,7 @@
       class="label__search"
       :display-tag-buttons="isCourseList"
     ></search-bar>
-    <div v-if="isCourseList" class="container">
+    <div v-if="isCourseList" class="container min-w-full w-full">
       <courses-table
         :which-table="'courses'"
         :is-lecturer="false"
@@ -40,7 +40,7 @@
         :is-loading="$apollo.queries.courseList.loading"
       ></courses-table>
     </div>
-    <div v-if="!isCourseList" class="container">
+    <div v-if="!isCourseList" class="container min-w-full w-full">
       <staff-table
         :keywords="keywords"
         :staff-list="allStaff"
