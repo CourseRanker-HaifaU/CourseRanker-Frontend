@@ -19,8 +19,6 @@
           <strong>חוות דעת כמתרגל/ת:</strong>
           <rating :rating="staff.averageRatingAsTeachingAssistant" />
         </div>
-        <button class="button blue-button">הוספת חוות דעת</button>
-        <button class="button blue-button">הוספת חוות דעת</button>
       </div>
     </div>
     <table v-if="!isSmall" class="lg:w-full text-right min-w-full">
@@ -49,7 +47,6 @@
               class="mt-2 ml-2"
               :rating="staff.averageRatingAsLecturer"
             ></rating>
-            <button class="table-btn">הוספת חוות דעת</button>
           </div>
         </td>
 
@@ -60,7 +57,6 @@
               class="mt-2 ml-2"
               :rating="staff.averageRatingAsTeachingAssistant"
             ></rating>
-            <button class="table-btn">הוספת חוות דעת</button>
           </div>
         </td>
       </tr>
