@@ -59,6 +59,9 @@ export const mutations = {
   setIsCompulsory(state, isCompulsory) {
     state.isCompulsory = isCompulsory
   },
+  clearSelectedTags(state) {
+    state.selectedTags = []
+  },
 }
 
 export const actions = {

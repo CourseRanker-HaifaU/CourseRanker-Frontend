@@ -25,38 +25,42 @@
         >
       </li>
     </ul>
+    <search-bar
+      class="label__search"
+      :display-tag-buttons="isCourseList"
+    ></search-bar>
     <div v-if="isCourseList" class="container">
-      <search-bar class="label__search"></search-bar>
-      <br />
       <courses-table
         :which-table="'courses'"
         :is-lecturer="false"
         :is-assist="false"
         :keywords="keywords"
         :course-list="courseList"
-        :infinite-handler="infiniteHandler"
-        :is-loading="$apollo.loading"
+        :infinite-handler="infiniteHandlerCourses"
+        :is-loading="$apollo.queries.courseList.loading"
       ></courses-table>
       <floating-action-button />
     </div>
     <div v-if="!isCourseList" class="container">
       <staff-table
         :keywords="keywords"
-        :staff-list="courseList"
-        :infinite-handler="infiniteHandler"
-        :is-loading="$apollo.loading"
+        :staff-list="allStaff"
+        :infinite-handler="infiniteHandlerStaff"
+        :is-loading="$apollo.queries.allStaff.loading"
       ></staff-table>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import currentSemesterCourses from '@/gql/currentSemesterCourses.gql'
+import allStaff from '@/gql/allStaff.gql'
 import {
   currentSemesterCourseDataTransform,
   mergeCurrentSemesterCoursesData,
 } from '@/utils'
+
 export default {
   data() {
     return {
@@ -95,12 +99,27 @@ export default {
       fetchPolicy: 'network-only',
       deep: true,
     },
+    allStaff: {
+      query: allStaff,
+      variables() {
+        return {
+          search: this.keywords,
+          first: this.rowsPerPage,
+          after: '',
+        }
+      },
+      debounce: 300,
+      throttle: 300,
+    },
   },
   methods: {
     ...mapActions({
       restoreFromLocalStorage: 'messages/restoreFromLocalStorage',
     }),
-    infiniteHandler($state) {
+    ...mapMutations({
+      clearTags: 'search/clearSelectedTags',
+    }),
+    infiniteHandlerCourses($state) {
       if (!this.courseList.hasNextPage) {
         $state.complete()
       } else {
@@ -127,11 +146,39 @@ export default {
           })
       }
     },
+    infiniteHandlerStaff($state) {
+      if (!this.allStaff.pageInfo.hasNextPage) {
+        $state.complete()
+      } else {
+        const endCursor = this.allStaff.pageInfo.endCursor
+        this.$apollo.queries.allStaff
+          .fetchMore({
+            query: allStaff,
+            variables: {
+              search: this.keywords,
+              first: this.rowsPerPage,
+              after: endCursor,
+            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+              const ret = { ...fetchMoreResult }
+              ret.allStaff.edges = [
+                ...previousResult.allStaff.edges,
+                ...fetchMoreResult.allStaff.edges,
+              ]
+              return ret
+            },
+          })
+          .then(() => {
+            $state.loaded()
+          })
+      }
+    },
     changeToCourses() {
       this.isCourseList = true
     },
     changeToStaff() {
       this.isCourseList = false
+      this.clearTags()
     },
   },
 }

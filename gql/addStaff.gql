@@ -1,4 +1,4 @@
-mutation addCourse($input: AddStaffInput!) {
+mutation addStaff($input: AddStaffInput!) {
   addStaff(input: $input) {
     staff {
       id

@@ -1,5 +1,9 @@
-query {
-  allStaff {
+query($search: String!, $first: Int!, $after: String) {
+  allStaff(search: $search, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
     edges {
       node {
         id

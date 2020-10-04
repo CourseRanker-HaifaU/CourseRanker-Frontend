@@ -74,7 +74,6 @@
 
 <script>
 import SmallWidthMixin from '@/mixins/small_width'
-import allStaff from '@/gql/allStaff.gql'
 import { staffToString } from '@/utils'
 export default {
   mixins: [SmallWidthMixin],
@@ -91,10 +90,13 @@ export default {
       type: Function,
       required: true,
     },
+    staffList: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
-      allStaff: {},
       windowWidth: window.innerWidth,
       rowsPerPage: 10,
       after: '',
@@ -104,21 +106,16 @@ export default {
   },
   computed: {
     allStaffOptions() {
-      if (!('edges' in this.allStaff)) {
+      if (!('edges' in this.staffList)) {
         return []
       }
-      return this.allStaff.edges.map((item) => item.node)
+      return this.staffList.edges.map((item) => item.node)
     },
   },
   methods: {
     staffToString,
     sendTo(msg) {
       this.$router.push(msg)
-    },
-  },
-  apollo: {
-    allStaff: {
-      query: allStaff,
     },
   },
 }
