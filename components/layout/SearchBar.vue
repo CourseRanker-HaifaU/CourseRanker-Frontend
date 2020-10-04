@@ -20,7 +20,7 @@
         @input="emitInput"
       />
     </div>
-    <div class="btn-div">
+    <div v-if="displayTagButtons" class="btn-div">
       <button
         v-for="tag in allSearchTags"
         :key="tag"
@@ -36,6 +36,12 @@
 <script>
 import { mapMutations, mapGetters, mapActions } from 'vuex'
 export default {
+  props: {
+    displayTagButtons: {
+      type: Boolean,
+      default: true,
+    },
+  },
   computed: {
     ...mapGetters({
       keywords: 'search/keywords',
