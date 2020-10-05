@@ -88,7 +88,7 @@ import addSemesterToCourseData from '@/gql/addSemesterToCourseData.gql'
 import openCourseInSemester from '@/gql/openCourseInSemester.gql'
 import updateCourseInSemester from '@/gql/updateCourseInSemester.gql'
 import courseSemesterDetails from '@/gql/courseSemesterDetails.gql'
-import { getSemester, staffToString } from '@/utils'
+import { getSemester, staffToString, showSuccessToast } from '@/utils'
 
 export default {
   components: {
@@ -180,7 +180,11 @@ export default {
           },
         },
       })
-      alert(this.isEdit ? 'עודכן בהצלחה!' : 'נוסף בהצלחה!')
+      showSuccessToast(
+        this,
+        this.isEdit ? 'עודכן בהצלחה!' : 'נוסף בהצלחה!',
+        `/course/${this.selectedCourse.id}`
+      )
     },
   },
   apollo: {
