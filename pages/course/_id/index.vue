@@ -91,6 +91,7 @@
 import courseDetails from '@/gql/courseDetails.gql'
 import deleteCourse from '@/gql/deleteCourse.gql'
 import { mapGetters } from 'vuex'
+import { showSuccessToast } from '@/utils'
 
 export default {
   data() {
@@ -188,7 +189,7 @@ export default {
           id: this.$route.params.id,
         },
       })
-      alert('נמחק בהצלחה!')
+      showSuccessToast(this, 'נמחק בהצלחה', '/')
     },
     deleteCourseSemester(index) {
       this.courseData.coursesemesterSet.edges.splice(index, 1)

@@ -126,6 +126,7 @@ import addCourse from '@/gql/addCourse.gql'
 import editCourse from '@/gql/editCourse.gql'
 import addSemesterToCourseData from '@/gql/addSemesterToCourseData.gql'
 import editCourseDetails from '@/gql/editCourseDetails.gql'
+import { showSuccessToast } from '@/utils'
 
 export default {
   components: {
@@ -231,7 +232,7 @@ export default {
     async onSubmit() {
       const mappedPrerequisites = this.prerequisites.map((item) => item.id)
       const mappedTags = this.tags.map((item) => item.id)
-      await this.$apollo.mutate({
+      const response = await this.$apollo.mutate({
         mutation: this.$route.params.id ? editCourse : addCourse,
         variables: {
           input: {
@@ -247,11 +248,14 @@ export default {
           },
         },
       })
-      if (this.$route.params.id) {
-        alert('עודכן בהצלחה!')
-      } else {
-        alert('נוסף בהצלחה!')
-      }
+      const courseID = this.$route.params.id
+        ? this.$route.params.id
+        : response.data.addCourse.course.id
+      showSuccessToast(
+        this,
+        this.$route.params.id ? 'עודכן בהצלחה' : 'נוסף בהצלחה',
+        `/course/${courseID}`
+      )
     },
   },
   apollo: {

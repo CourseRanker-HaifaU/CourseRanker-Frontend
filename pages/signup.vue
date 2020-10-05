@@ -65,7 +65,7 @@
 
 <script>
 import newUser from '@/gql/newUser.gql'
-import { userLogin } from '@/utils'
+import { userLogin, showSuccessToast } from '@/utils'
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
 
 export default {
@@ -125,7 +125,14 @@ export default {
             lastName: this.lastName,
           },
         })
-        userLogin(this, this.userEmail, this.userPassword)
+        showSuccessToast(
+          this,
+          'המשתמש נוצר בהצלחה. המערכת כעת תיכנס בתור המשתמש החדש',
+          null,
+          () => {
+            userLogin(this, this.userEmail, this.userPassword)
+          }
+        )
       }
     },
   },

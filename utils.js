@@ -127,3 +127,43 @@ export const roleParser = (toParse) => {
 export const XOR = (a, b) => {
   return (a || b) && !(a && b)
 }
+
+export const showSuccessToast = (
+  vm,
+  message,
+  link = null,
+  onCompleteHook = null
+) => {
+  vm.$toast.success(message, {
+    position: 'bottom-left',
+    duration: 1500,
+    onComplete: () => {
+      if (onCompleteHook !== null) {
+        onCompleteHook()
+      }
+      if (link !== null) {
+        vm.$router.push(link)
+      }
+    },
+  })
+}
+
+export const showErrorToast = (
+  vm,
+  message,
+  link = null,
+  onCompleteHook = null
+) => {
+  vm.$toast.error(message, {
+    position: 'bottom-left',
+    duration: 3000,
+    onComplete: () => {
+      if (onCompleteHook !== null) {
+        onCompleteHook()
+      }
+      if (link !== null) {
+        vm.$router.push(link)
+      }
+    },
+  })
+}

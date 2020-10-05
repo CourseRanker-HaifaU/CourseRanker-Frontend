@@ -28,6 +28,7 @@
 <script>
 import { required, email } from 'vuelidate/lib/validators'
 import forgotPassword from '@/gql/forgotPassword.gql'
+import { showSuccessToast } from '@/utils'
 
 export default {
   data() {
@@ -59,7 +60,10 @@ export default {
             },
           },
         })
-        alert('נשלח מייל לשחזור הסיסמה. יש לעקוב אחר ההוראות המופיעות בו.')
+        showSuccessToast(
+          this,
+          'נשלח מייל לשחזור הסיסמה. יש לעקוב אחר ההוראות המופיעות בו'
+        )
       }
     },
   },

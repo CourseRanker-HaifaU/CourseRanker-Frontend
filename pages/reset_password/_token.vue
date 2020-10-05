@@ -54,6 +54,7 @@
 import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 import emailByToken from '@/gql/emailByToken.gql'
 import resetPassword from '@/gql/resetPassword.gql'
+import { showSuccessToast, showErrorToast } from '@/utils'
 
 export default {
   data() {
@@ -123,10 +124,11 @@ export default {
           'resetPassword' in result.data &&
           result.data.resetPassword.ok
         ) {
-          alert('איפוס סיסמה הושלם.')
-          window.location = '/login'
+          showSuccessToast(this, 'איפוס סיסמה הושלם', null, () => {
+            window.location = '/login'
+          })
         } else {
-          alert('איפוס סיסמה נכשל.')
+          showErrorToast(this, 'איפוס סיסמה נכשל')
         }
       }
     },

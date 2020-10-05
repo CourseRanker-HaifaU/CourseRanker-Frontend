@@ -224,7 +224,7 @@ import isSmallMixin from '@/mixins/small_width'
 import allUsers from '@/gql/allUsers.gql'
 import deleteUser from '@/gql/deleteUser.gql'
 import updateUser from '@/gql/updateUser.gql'
-import { roleParser } from '@/utils'
+import { roleParser, showSuccessToast } from '@/utils'
 import { DateTime } from 'luxon'
 
 export default {
@@ -360,7 +360,7 @@ export default {
           },
         },
       })
-      alert('המשתמש עודכן בהצלחה!')
+      showSuccessToast(this, 'המשתמש עודכן בהצלחה')
     },
     async deleteUser(id) {
       await this.$apollo.mutate({
@@ -371,8 +371,9 @@ export default {
           },
         },
       })
-      this.allUsers.edges.splice(id, 1)
-      alert('המשתמש נמחק בהצלחה!')
+      showSuccessToast(this, 'המשתמש נמחק בהצלחה', null, () => {
+        this.allUsers.edges.splice(id, 1)
+      })
     },
     infiniteHandler($state) {
       if (!this.allUsers.pageInfo.hasNextPage) {

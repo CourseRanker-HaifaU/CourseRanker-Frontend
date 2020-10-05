@@ -62,6 +62,7 @@
 import Multiselect from 'vue-multiselect'
 import allUnits from '@/gql/allUnits.gql'
 import addStaff from '@/gql/addStaff.gql'
+import { showSuccessToast } from '@/utils'
 
 export default {
   components: {
@@ -104,7 +105,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      await this.$apollo.mutate({
+      const response = await this.$apollo.mutate({
         mutation: addStaff,
         variables: {
           input: {
@@ -115,7 +116,11 @@ export default {
           },
         },
       })
-      alert('נוסף בהצלחה!')
+      showSuccessToast(
+        this,
+        'נוסף בהצלחה',
+        `/staff/${response.data.addStaff.staff.id}`
+      )
     },
   },
   apollo: {
