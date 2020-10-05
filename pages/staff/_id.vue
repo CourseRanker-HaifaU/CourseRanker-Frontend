@@ -23,6 +23,16 @@
           ></rating>
         </article>
       </section>
+      <section v-if="fullPermissions" class="flex flex-row items-center mt-2">
+        <nuxt-link
+          :to="`/admin/staff/${$route.params.id}`"
+          tag="button"
+          class="button blue-button ml-2"
+        >
+          עריכה
+        </nuxt-link>
+        <button class="button red-button" @click="deleteStaff">מחיקה</button>
+      </section>
       <hr class="border-0 bg-gray-500 text-gray-500 h-px my-8" />
       <h2 class="text-xl font-bold">קורסים שהועברו על ידי חבר/ת הסגל:</h2>
       <courses-by-staff-table
@@ -38,7 +48,9 @@
 
 <script>
 import staffDetails from '@/gql/staffDetails.gql'
-import { staffToString } from '@/utils'
+import deleteStaff from '@/gql/deleteStaff.gql'
+import { staffToString, showSuccessToast } from '@/utils'
+import { mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -69,6 +81,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      fullPermissions: 'user_data/fullPermissions',
+    }),
     staffCourseList() {
       if (!this.staffDetails || !this.staffDetails.lecturers) {
         return undefined
@@ -146,6 +161,15 @@ export default {
             $state.loaded()
           })
       }
+    },
+    async deleteStaff() {
+      await this.$apollo.mutate({
+        mutation: deleteStaff,
+        variables: {
+          id: this.$route.params.id,
+        },
+      })
+      showSuccessToast(this, 'נמחק בהצלחה', '/')
     },
   },
 }
