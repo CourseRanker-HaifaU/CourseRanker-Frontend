@@ -13,6 +13,9 @@ export const getters = {
   fullName(state) {
     return `${state.userData.firstName} ${state.userData.lastName}`
   },
+  fullPermissions(state) {
+    return state.userData !== null && state.userData.role === 'A_3'
+  },
 }
 
 export const mutations = {

@@ -58,7 +58,7 @@ export default {
         },
         {
           label: 'הוספת איש סגל',
-          link: '/admin/add_staff',
+          link: '/admin/staff',
         },
         {
           label: 'הוספת סמסטר לקורס',

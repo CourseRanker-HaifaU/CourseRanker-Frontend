@@ -1,0 +1,7 @@
+mutation deleteStaff($id: ID!) {
+  deleteStaff(input: {
+    id: $id
+  }) {
+    ok
+  }
+}
