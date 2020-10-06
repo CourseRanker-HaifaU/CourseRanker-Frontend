@@ -17,6 +17,9 @@
       >
         הוספת סמסטר לקורס
       </nuxt-link>
+      <nuxt-link to="/admin/questions" class="button blue-button ml-2 my-2"
+        >שאלות דירוג</nuxt-link
+      >
       <nuxt-link
         to="/admin/violation_page"
         class="button blue-button ml-2 my-2"
