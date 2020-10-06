@@ -62,3 +62,7 @@ span.multiselect__tag .multiselect__tag-icon::after {
   @apply px-0;
   @apply max-w-sm;
 }
+
+.multiselect--above .multiselect__content-wrapper {
+  bottom: auto;
+}
