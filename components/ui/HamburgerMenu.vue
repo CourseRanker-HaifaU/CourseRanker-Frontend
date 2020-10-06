@@ -65,6 +65,10 @@ export default {
           link: '/admin/course_semester',
         },
         {
+          label: 'שאלות דירוג',
+          link: '/admin/questions',
+        },
+        {
           label: 'דיווחים על תוכן פוגעני',
           link: '/admin/violation_page',
         },
