@@ -1,0 +1,9 @@
+mutation addQuestion($input: AddQuestionInput!) {
+  addQuestion (input: $input) {
+    question {
+      id
+      question
+      classification
+    }
+  }
+}
