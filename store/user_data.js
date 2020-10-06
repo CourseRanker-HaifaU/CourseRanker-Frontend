@@ -11,10 +11,16 @@ export const getters = {
     return state.userData !== null && state.userData.role !== 'A_1'
   },
   fullName(state) {
+    if (state.userData === null) {
+      return null
+    }
     return `${state.userData.firstName} ${state.userData.lastName}`
   },
   fullPermissions(state) {
     return state.userData !== null && state.userData.role === 'A_3'
+  },
+  isLoggedIn(state) {
+    return state.userData !== null
   },
 }
 

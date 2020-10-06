@@ -124,7 +124,10 @@
           class="w-full md:w-3/4 lg:w-full max-w-full"
         />
       </div>
-      <div class="flex flex-col items-stretch md:flex-row md:items-center">
+      <div
+        v-if="isLoggedIn"
+        class="flex flex-col items-stretch md:flex-row md:items-center"
+      >
         <button
           v-if="!edge.node.inMyCourses"
           class="button blue-button mb-2 md:mb-0 md:ml-2 h-full"
@@ -154,6 +157,7 @@
           ערוך קורס בסמסטר
         </nuxt-link>
         <button
+          v-if="isAdmin"
           class="button red-button h-full"
           @click="deleteCourseSemester(edge.node, index)"
         >
@@ -188,6 +192,7 @@ export default {
   computed: {
     ...mapGetters({
       isAdmin: 'user_data/isAdmin',
+      isLoggedIn: 'user_data/isLoggedIn',
     }),
   },
   methods: {
