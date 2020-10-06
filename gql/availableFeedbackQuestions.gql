@@ -1,0 +1,15 @@
+query($perPage: Int!, $after: String, $keywords: String) {
+  availableFeedbackQuestions(first: $perPage, after: $after, question_Icontains: $keywords) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        question
+        classification
+      }
+    }
+  }
+}
