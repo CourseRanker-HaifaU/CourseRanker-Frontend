@@ -106,6 +106,7 @@ export default {
     },
     sendTo(msg) {
       this.$router.push(msg)
+      this.emitMenuClose()
     },
     logOut() {
       this.emitMenuClose()
