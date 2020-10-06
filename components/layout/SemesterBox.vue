@@ -142,12 +142,13 @@
         >
           הסר מהקורסים שלי
         </button>
-        <button
-          class="button blue-button h-full"
-          :class="{ 'mb-2 md:mb-0 md:ml-2': isAdmin }"
+        <nuxt-link
+          class="button blue-button h-full md:h-auto"
+          :class="{ 'ml-2': isAdmin }"
+          :to="`/feedback/${edge.node.id}`"
         >
           הוסף חוות דעת
-        </button>
+        </nuxt-link>
         <nuxt-link
           v-if="isAdmin"
           :to="`/admin/course_semester/${edge.node.id}`"
