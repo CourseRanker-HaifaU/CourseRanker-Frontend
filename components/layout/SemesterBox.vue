@@ -145,7 +145,10 @@
         <nuxt-link
           class="button blue-button h-full md:h-auto"
           :class="{ 'ml-2': isAdmin }"
-          :to="`/feedback/${edge.node.id}`"
+          :to="{
+            path: '/feedback/${edge.node.id}',
+            props: { viewMode: true },
+          }"
         >
           הוסף חוות דעת
         </nuxt-link>
@@ -165,6 +168,7 @@
           מחק קורס בסמסטר
         </button>
       </div>
+      <feedback-preview></feedback-preview>
     </labeled-box-card>
   </div>
 </template>
