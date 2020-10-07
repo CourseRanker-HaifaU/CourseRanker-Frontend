@@ -38,6 +38,8 @@ query courseDetails($id: ID!) {
               node {
                 id
                 generalFeedback
+                lecturerFeedback
+                teachingAssistantFeedback
                 averageCourseRating
                 averageLecturerRating
                 averageTeachingAssistantRating

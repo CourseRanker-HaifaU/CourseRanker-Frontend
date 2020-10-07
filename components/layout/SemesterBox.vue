@@ -169,6 +169,7 @@
         <feedback-preview
           :avatar="avatar()"
           :course-id="edge.node.id"
+          :feedbacks="edge.node.userfeedbackSet"
         ></feedback-preview>
       </div>
     </labeled-box-card>

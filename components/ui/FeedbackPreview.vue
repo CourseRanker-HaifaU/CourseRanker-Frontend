@@ -3,7 +3,6 @@
     <table class="min-w-full leading-normal">
       <thead>
         <tr>
-          <th class="column-title">כותב הביקורת</th>
           <th class="column-title">ביקורת מילולית על הקורס</th>
           <th class="column-title">דירוג קורס</th>
           <th class="column-title">דירוג מרצה</th>
@@ -12,20 +11,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr @click="sendTo(`/feedback/${courseId}`)">
-          <td class="row items-center">
-            <div class="flex flex-row col-span-2">
-              <img :src="avatar" alt="" height="50" width="50" />
-              <h1 class="mt-4">שגיא גוילי</h1>
-            </div>
-          </td>
-          <td class="row">אחלה בחלה של קורס</td>
+        <tr
+          v-for="edge in feedbacks.edges"
+          :key="edge.node.id"
+          @click="sendTo(`/feedback/${edge.node.id}`)"
+        >
+          <td class="row">{{ edge.node.generalFeedback }}</td>
           <td class="row">
-            <rating class="rating"></rating>
+            <rating :rating="edge.node.averageCourseRating"></rating>
           </td>
-          <td class="row"><rating class="rating"></rating></td>
           <td class="row">
-            <rating class="rating"></rating>
+            <rating :rating="edge.node.averageLecturerRating"></rating>
+          </td>
+          <td class="row">
+            <rating :rating="edge.node.averageTeachingAssistantRating"></rating>
           </td>
           <td class="row">07.10.2020</td>
         </tr>
@@ -48,6 +47,10 @@ export default {
       default() {
         return ''
       },
+    },
+    feedbacks: {
+      type: Array,
+      required: true,
     },
   },
   data() {
