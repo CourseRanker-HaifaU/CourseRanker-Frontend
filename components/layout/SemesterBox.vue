@@ -168,7 +168,7 @@
           מחק קורס בסמסטר
         </button>
       </div>
-      <feedback-preview></feedback-preview>
+      <feedback-preview :avatar="avatar()"></feedback-preview>
     </labeled-box-card>
   </div>
 </template>
@@ -203,6 +203,18 @@ export default {
   methods: {
     multipleStaffToString,
     getSemester,
+    randomWord() {
+      const num = Math.floor(Math.random() * 10)
+      const word = Math.random().toString(36).substring(num)
+      return word
+    },
+    avatar() {
+      return (
+        'https://api.adorable.io/avatars/48/' +
+        this.randomWord() +
+        '@adorable.io.png'
+      )
+    },
     triggerToggleShown(index) {
       this.$emit('toggle-shown', index)
     },

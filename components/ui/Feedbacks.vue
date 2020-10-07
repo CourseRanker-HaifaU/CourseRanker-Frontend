@@ -45,25 +45,37 @@ export default {
           name: 'שומו שמיים',
           message: 'שלום לכולם',
           date: '07/10/2020',
-          avatar: 'd',
+          avatar: this.avatar(),
         },
         shubi: {
           name: 'זאב ערבות',
           message: 'זו בדיקה',
           date: '07/10/2020',
-          avatar: 'sami',
+          avatar: this.avatar(),
         },
         dubi: {
           name: 'שוקי נגר',
           message: 'וזו עוד בדיקה',
           date: '07/10/2020',
-          avatar: 'sali',
+          avatar: this.avatar(),
         },
       },
       data: {},
     }
   },
   methods: {
+    randomWord() {
+      const num = Math.floor(Math.random() * 10)
+      const word = Math.random().toString(36).substring(num)
+      return word
+    },
+    avatar() {
+      return (
+        'https://api.adorable.io/avatars/48/' +
+        this.randomWord() +
+        '@adorable.io.png'
+      )
+    },
     submit() {},
   },
 }

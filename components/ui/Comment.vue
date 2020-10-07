@@ -1,6 +1,6 @@
 <template>
   <li transition="slide">
-    <div class="profile"><img :src="avatar" alt="" /></div>
+    <div class="profile"><img :src="comment.avatar" alt="" /></div>
     <div class="msg">
       <div class="msg-body">
         <p class="name">
@@ -20,25 +20,6 @@ export default {
       default() {
         return null
       },
-    },
-  },
-  computed: {
-    avatar() {
-      return (
-        'https://api.adorable.io/avatars/48/' +
-        this.randomWord
-          .toString()
-          .toLowerCase()
-          .trim()
-          .replace(/[\s\W-]+/g, '-') +
-        '@adorable.io.png'
-      )
-    },
-  },
-  methods: {
-    randomWord() {
-      const num = Math.floor(Math.random() * 10)
-      return Math.random().toString(36).substring(num)
     },
   },
 }
