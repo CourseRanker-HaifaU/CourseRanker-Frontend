@@ -1,9 +1,7 @@
 <template>
   <!-- component -->
   <!-- comment form -->
-  <div
-    class="flex mx-auto items-center justify-center shadow-lg mt-2 mx-2 mb-4 max-w-lg"
-  >
+  <div class="flex">
     <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2">
       <div class="flex flex-wrap -mx-3 mb-6">
         <div class="profile">

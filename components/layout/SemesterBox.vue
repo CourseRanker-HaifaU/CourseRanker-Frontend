@@ -145,10 +145,7 @@
         <nuxt-link
           class="button blue-button h-full md:h-auto"
           :class="{ 'ml-2': isAdmin }"
-          :to="{
-            path: '/feedback/${edge.node.id}',
-            props: { viewMode: true },
-          }"
+          :to="`/feedback/${edge.node.id}?edit=1`"
         >
           הוסף חוות דעת
         </nuxt-link>
@@ -168,7 +165,42 @@
           מחק קורס בסמסטר
         </button>
       </div>
-      <feedback-preview :avatar="avatar()"></feedback-preview>
+      <div class="flex flex-row col-span-2 items-center">
+        <feedback-preview :avatar="avatar()"></feedback-preview>
+        <button
+          class="button blue-button"
+          @click="sendTo(`/feedback/${edge.node.id}`)"
+        >
+          מעבר לדף הביקורת
+        </button>
+      </div>
+      <div class="flex flex-row col-span-2 items-center">
+        <feedback-preview :avatar="avatar()"></feedback-preview>
+        <button
+          class="button blue-button"
+          @click="sendTo('/feedback/${edge.node.id}')"
+        >
+          מעבר לדף הביקורת
+        </button>
+      </div>
+      <div class="flex flex-row col-span-2 items-center">
+        <feedback-preview :avatar="avatar()"></feedback-preview>
+        <button
+          class="button blue-button"
+          @click="sendTo('/feedback/${edge.node.id}')"
+        >
+          מעבר לדף הביקורת
+        </button>
+      </div>
+      <div class="flex flex-row col-span-2 items-center">
+        <feedback-preview :avatar="avatar()"></feedback-preview>
+        <button
+          class="button blue-button"
+          @click="sendTo(`/feedback/${edge.node.id}`)"
+        >
+          מעבר לדף הביקורת
+        </button>
+      </div>
     </labeled-box-card>
   </div>
 </template>
@@ -203,6 +235,9 @@ export default {
   methods: {
     multipleStaffToString,
     getSemester,
+    sendTo(msg) {
+      this.$router.push(msg)
+    },
     randomWord() {
       const num = Math.floor(Math.random() * 10)
       const word = Math.random().toString(36).substring(num)

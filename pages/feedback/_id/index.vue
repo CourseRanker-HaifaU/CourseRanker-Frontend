@@ -1,30 +1,24 @@
 <template>
   <div v-if="courseData !== null" class="min-w-full items-stretch">
-    <panel-page-title title="לשייך לשם המתאים"></panel-page-title>
+    <panel-page-title v-if="viewMode" title="חוות דעת על"></panel-page-title>
+    <panel-page-title
+      v-if="!viewMode"
+      title="הוספת חוות דעת על"
+    ></panel-page-title>
     <div>
-      <h2>שאלות כלליות {{ viewMode }}</h2>
+      <h2>שאלות כלליות</h2>
       <div
         v-for="question in generalQuestions"
         :key="question.id"
         class="items-baseline"
       >
-        <div v-if="!viewMode">
+        <div>
           <div class="text-lg mb-2">
             {{ question.content }}
           </div>
-          <span>הדירוג שלי:</span>
+          <span v-if="!viewMode">הדירוג שלי:</span>
           <rating
-            editable
-            :rating="question.currentRating"
-            @rating-set="ratingSet"
-          />
-        </div>
-        <div v-if="viewMode">
-          <div class="text-lg mb-2">
-            {{ question.content }}
-          </div>
-          <rating
-            editable
+            :editable="!viewMode"
             :rating="question.currentRating"
             @rating-set="ratingSet"
           />
@@ -45,28 +39,18 @@
     <div class="paragraph-comp">
       <h2>שאלות מרצה</h2>
       <div
-        v-for="question in lecturerQuestions"
-        :key="question.id"
+        v-for="item in lecturerQuestions"
+        :key="item.id"
         class="items-baseline"
       >
-        <div v-if="!viewMode">
+        <div>
           <div class="text-lg mb-2">
-            {{ question.content }}
+            {{ item.question }}
           </div>
-          <span>הדירוג שלי:</span>
+          <span v-if="!viewMode">הדירוג שלי:</span>
           <rating
-            editable
-            :rating="question.currentRating"
-            @rating-set="ratingSet"
-          />
-        </div>
-        <div v-if="viewMode">
-          <div class="text-lg mb-2">
-            {{ question.content }}
-          </div>
-          <rating
-            editable
-            :rating="question.currentRating"
+            :editable="!viewMode"
+            :rating="item.currentRating"
             @rating-set="ratingSet"
           />
         </div>
@@ -90,23 +74,13 @@
         :key="question.id"
         class="items-baseline"
       >
-        <div v-if="!viewMode">
+        <div>
           <div class="text-lg mb-2">
             {{ question.content }}
           </div>
-          <span>הדירוג שלי:</span>
+          <span v-if="!viewMode">הדירוג שלי:</span>
           <rating
-            editable
-            :rating="question.currentRating"
-            @rating-set="ratingSet"
-          />
-        </div>
-        <div v-if="viewMode">
-          <div class="text-lg mb-2">
-            {{ question.content }}
-          </div>
-          <rating
-            editable
+            :editable="!viewMode"
             :rating="question.currentRating"
             @rating-set="ratingSet"
           />
@@ -127,7 +101,7 @@
     <div v-if="!viewMode" class="submit">
       <button class="button red-button">הוסף ביקורת</button>
     </div>
-    <div v-if="!viewMode">
+    <div v-if="viewMode">
       <feedbacks @commented="updateComment"></feedbacks>
     </div>
   </div>
@@ -169,14 +143,6 @@ h2 {
 import availableFeedbackQuestions from '@/gql/availableFeedbackQuestions.gql'
 import courseDetails from '@/gql/courseDetails.gql'
 export default {
-  props: {
-    viewMode: {
-      type: Boolean,
-      default() {
-        return false
-      },
-    },
-  },
   data() {
     return {
       generalQuestions: [
@@ -196,15 +162,33 @@ export default {
           currentRating: 1,
         },
       ],
-      lecturerQuestions: [],
-      taQuestions: [],
+      availableFeedbackQuestions: {},
       generalFreeContent: '',
       lecturerFreeContent: '',
       taFreeContent: '',
-      question: 'What you think about Vue.js',
       comments: [],
       loading: false,
     }
+  },
+  computed: {
+    viewMode() {
+      return !this.$route.query.edit
+    },
+    lecturerQuestions() {
+      const qList = []
+      if (!('edges' in this.availableFeedbackQuestions)) {
+        return []
+      }
+      for (const item in this.availableFeedbackQuestions.edges) {
+        if (item.node.classification === 'A_1') {
+          qList.push(item)
+        }
+      }
+      return qList
+    },
+    taQuestions() {
+      return []
+    },
   },
   methods: {
     toggleShown(index) {
@@ -225,13 +209,8 @@ export default {
       errorPolicy: 'all',
       fetchPolicy: 'no-cache',
     },
-    lecturerQuestions: {
+    availableFeedbackQuestions: {
       query: availableFeedbackQuestions,
-      variables() {
-        return {
-          classification: 'A_1',
-        }
-      },
     },
   },
 }
