@@ -1,0 +1,39 @@
+{
+  feedbackFormCourseSemester(id: $id) {
+    feedbackForm {
+      id
+      questionfeedbackSet {
+        edges {
+          node {
+            question {
+              id
+              question
+              classification
+            }
+          }
+        }
+      }
+    }
+  }
+  myFeedbacks {
+    edges {
+      node {
+       questionuserfeedbackSet {
+        edges {
+          node {
+            question {
+              id
+            }
+            ranking
+            userFeedback {
+              feedback {
+                id
+              }
+            }
+          }
+        }
+      } 
+      }
+    }
+  }
+}

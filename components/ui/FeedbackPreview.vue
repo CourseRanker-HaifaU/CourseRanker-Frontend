@@ -1,23 +1,36 @@
 <template>
-  <!-- component -->
-  <!-- comment form -->
   <div class="flex">
-    <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2">
-      <div class="flex flex-wrap -mx-3 mb-6">
-        <div class="profile">
-          <img :src="avatar" alt="" height="50" width="50" />
-        </div>
-        <div class="w-full md:w-full px-3 mb-2 mt-2">
-          <textarea
-            class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
-            name="body"
-            placeholder="מלל חופשי של הכותב"
-            required
-            :disabled="true"
-          ></textarea>
-        </div>
-      </div>
-    </form>
+    <table class="min-w-full leading-normal">
+      <thead>
+        <tr>
+          <th class="column-title">כותב הביקורת</th>
+          <th class="column-title">ביקורת מילולית על הקורס</th>
+          <th class="column-title">דירוג קורס</th>
+          <th class="column-title">דירוג מרצה</th>
+          <th class="column-title">דירוג מתרגל</th>
+          <th class="column-title">נשלח בתאריך</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr @click="sendTo(`/feedback/${courseId}`)">
+          <td class="row items-center">
+            <div class="flex flex-row col-span-2">
+              <img :src="avatar" alt="" height="50" width="50" />
+              <h1 class="mt-4">שגיא גוילי</h1>
+            </div>
+          </td>
+          <td class="row">אחלה בחלה של קורס</td>
+          <td class="row">
+            <rating class="rating"></rating>
+          </td>
+          <td class="row"><rating class="rating"></rating></td>
+          <td class="row">
+            <rating class="rating"></rating>
+          </td>
+          <td class="row">07.10.2020</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -30,6 +43,12 @@ export default {
         return ''
       },
     },
+    courseId: {
+      type: String,
+      default() {
+        return ''
+      },
+    },
   },
   data() {
     return {
@@ -37,10 +56,32 @@ export default {
       data: {},
     }
   },
+  methods: {
+    sendTo(msg) {
+      this.$router.push(msg)
+    },
+  },
 }
 </script>
 
 <style>
+.column-title {
+  @apply px-5;
+  @apply py-3;
+  @apply bg-primary;
+  @apply text-white;
+}
+
+.row {
+  @apply px-5;
+  @apply py-5;
+  @apply border-b;
+  @apply border-gray-200;
+  @apply bg-white;
+  @apply text-sm;
+  @apply cursor-pointer;
+}
+
 .comment-box {
   width: 100%;
   margin: auto;

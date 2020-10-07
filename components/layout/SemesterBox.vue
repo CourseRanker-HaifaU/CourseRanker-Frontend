@@ -166,40 +166,10 @@
         </button>
       </div>
       <div class="flex flex-row col-span-2 items-center">
-        <feedback-preview :avatar="avatar()"></feedback-preview>
-        <button
-          class="button blue-button"
-          @click="sendTo(`/feedback/${edge.node.id}`)"
-        >
-          מעבר לדף הביקורת
-        </button>
-      </div>
-      <div class="flex flex-row col-span-2 items-center">
-        <feedback-preview :avatar="avatar()"></feedback-preview>
-        <button
-          class="button blue-button"
-          @click="sendTo('/feedback/${edge.node.id}')"
-        >
-          מעבר לדף הביקורת
-        </button>
-      </div>
-      <div class="flex flex-row col-span-2 items-center">
-        <feedback-preview :avatar="avatar()"></feedback-preview>
-        <button
-          class="button blue-button"
-          @click="sendTo('/feedback/${edge.node.id}')"
-        >
-          מעבר לדף הביקורת
-        </button>
-      </div>
-      <div class="flex flex-row col-span-2 items-center">
-        <feedback-preview :avatar="avatar()"></feedback-preview>
-        <button
-          class="button blue-button"
-          @click="sendTo(`/feedback/${edge.node.id}`)"
-        >
-          מעבר לדף הביקורת
-        </button>
+        <feedback-preview
+          :avatar="avatar()"
+          :course-id="edge.node.id"
+        ></feedback-preview>
       </div>
     </labeled-box-card>
   </div>
@@ -235,9 +205,6 @@ export default {
   methods: {
     multipleStaffToString,
     getSemester,
-    sendTo(msg) {
-      this.$router.push(msg)
-    },
     randomWord() {
       const num = Math.floor(Math.random() * 10)
       const word = Math.random().toString(36).substring(num)

@@ -140,7 +140,7 @@ h2 {
 </style>
 
 <script>
-import availableFeedbackQuestions from '@/gql/availableFeedbackQuestions.gql'
+import feedbackFormCourseSemester from '@/gql/semesterFeedbacks.gql'
 import courseDetails from '@/gql/courseDetails.gql'
 export default {
   data() {
@@ -210,7 +210,10 @@ export default {
       fetchPolicy: 'no-cache',
     },
     availableFeedbackQuestions: {
-      query: availableFeedbackQuestions,
+      query: feedbackFormCourseSemester,
+      variables() {
+        return [this.$route.params.id]
+      },
     },
   },
 }
