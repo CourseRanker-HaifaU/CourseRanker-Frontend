@@ -50,7 +50,7 @@ export default {
       },
     },
     feedbacks: {
-      type: Array,
+      type: Object,
       required: true,
     },
   },
