@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div v-if="feedbacks.edges.length > 0" class="flex">
     <table class="min-w-full leading-normal">
       <thead>
         <tr>
@@ -26,7 +26,7 @@
           <td class="row">
             <rating :rating="edge.node.averageTeachingAssistantRating"></rating>
           </td>
-          <td class="row">07.10.2020</td>
+          <td class="row">{{ getDate(edge.node.timestamp) }}</td>
         </tr>
       </tbody>
     </table>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { getDate } from '@/utils'
 export default {
   props: {
     avatar: {
@@ -60,6 +61,7 @@ export default {
     }
   },
   methods: {
+    getDate,
     sendTo(msg) {
       this.$router.push(msg)
     },

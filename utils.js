@@ -1,4 +1,5 @@
 import login from '@/gql/login.gql'
+import { DateTime } from 'luxon'
 
 export const calculateExpiresIn = (timestamp) =>
   (timestamp - Math.floor(Date.now() / 1000)) / (3600 * 24)
@@ -167,3 +168,6 @@ export const showErrorToast = (
     },
   })
 }
+
+export const getDate = (date) =>
+  DateTime.fromISO(date).setLocale('he').toLocaleString(DateTime.DATE_SHORT)

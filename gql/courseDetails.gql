@@ -37,6 +37,7 @@ query courseDetails($id: ID!) {
             edges {
               node {
                 id
+                timestamp
                 generalFeedback
                 lecturerFeedback
                 teachingAssistantFeedback
