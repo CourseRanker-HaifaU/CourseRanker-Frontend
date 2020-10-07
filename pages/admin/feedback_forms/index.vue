@@ -1,13 +1,15 @@
 <template>
   <div class="w-full text-center">
     <panel-page-title title="שאלונים" back-button />
-    <nuxt-link
-      tag="button"
-      class="button blue-button mb-2"
-      to="/admin/feedback_forms/editor"
-    >
-      יצירת שאלון חדש
-    </nuxt-link>
+    <div class="flex w-full items-start">
+      <nuxt-link
+        tag="button"
+        class="button blue-button mb-2"
+        to="/admin/feedback_forms/editor"
+      >
+        יצירת שאלון חדש
+      </nuxt-link>
+    </div>
     <table class="min-w-full w-full leading-normal text-right">
       <thead>
         <tr>
