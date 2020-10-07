@@ -209,11 +209,7 @@ export default {
       return word
     },
     avatar() {
-      return (
-        'https://api.adorable.io/avatars/48/' +
-        this.randomWord() +
-        '@adorable.io.png'
-      )
+      return 'https://robohash.org/' + this.randomWord() + '?set=set2'
     },
     triggerToggleShown(index) {
       this.$emit('toggle-shown', index)

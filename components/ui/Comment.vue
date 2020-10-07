@@ -6,7 +6,7 @@
         <p class="name">
           {{ comment.name }} <span class="date">{{ comment.time }}</span>
         </p>
-        <p v-html="comment.message"></p>
+        <p>{{ comment.message }}</p>
       </div>
     </div>
   </li>
