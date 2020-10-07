@@ -69,6 +69,10 @@ export default {
           link: '/admin/questions',
         },
         {
+          label: 'שאלונים',
+          link: '/admin/feedback_forms',
+        },
+        {
           label: 'דיווחים על תוכן פוגעני',
           link: '/admin/violation_page',
         },
