@@ -26,7 +26,7 @@ export default {
     avatar() {
       return (
         'https://api.adorable.io/avatars/48/' +
-        this.comment.avatar
+        this.randomWord
           .toString()
           .toLowerCase()
           .trim()
@@ -35,5 +35,17 @@ export default {
       )
     },
   },
+  methods: {
+    randomWord() {
+      const num = Math.floor(Math.random() * 10)
+      return Math.random().toString(36).substring(num)
+    },
+  },
 }
 </script>
+
+<style scoped>
+img {
+  border-radius: 50%;
+}
+</style>
