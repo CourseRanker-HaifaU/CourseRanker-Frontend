@@ -1,4 +1,4 @@
-{
+query semesterFeedbacks($id: ID!) {
   feedbackFormCourseSemester(id: $id) {
     feedbackForm {
       id
@@ -32,7 +32,7 @@
             }
           }
         }
-      } 
+      }
       }
     }
   }

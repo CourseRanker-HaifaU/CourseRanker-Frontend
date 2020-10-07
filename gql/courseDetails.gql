@@ -33,6 +33,17 @@ query courseDetails($id: ID!) {
             name
             yearJewish
           }
+          userfeedbackSet {
+            edges {
+              node {
+                id
+                generalFeedback
+                averageCourseRating
+                averageLecturerRating
+                averageTeachingAssistantRating
+              }
+            }
+          }
           coursesemesterstaffSet {
             edges {
               node {
