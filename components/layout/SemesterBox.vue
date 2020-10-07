@@ -146,6 +146,7 @@
           class="button blue-button h-full md:h-auto"
           :class="{ 'ml-2': isAdmin }"
           :to="`/feedback/${edge.node.id}?edit=1`"
+          tag="button"
         >
           הוסף חוות דעת
         </nuxt-link>
