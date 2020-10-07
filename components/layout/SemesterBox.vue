@@ -143,8 +143,7 @@
           הסר מהקורסים שלי
         </button>
         <nuxt-link
-          class="button blue-button h-full md:h-auto"
-          :class="{ 'ml-2': isAdmin }"
+          class="button blue-button h-full md:h-auto mb-2 md:mb-0 md:ml-2"
           :to="`/feedback/${edge.node.id}?edit=1`"
           tag="button"
         >
