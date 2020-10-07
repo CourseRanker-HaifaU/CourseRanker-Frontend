@@ -71,6 +71,9 @@
       </div>
       <div
         class="flex items-baseline flex-row justify-between md:justify-start"
+        :class="{
+          'col-span-2': edge.node.coursesemesterexamSet.edges.length === 0,
+        }"
       >
         <strong>דירוג קורס + מתרגל/ת:</strong>
         <span>
