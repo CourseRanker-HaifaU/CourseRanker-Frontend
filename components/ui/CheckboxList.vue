@@ -66,8 +66,14 @@ export default {
           classification: this.classification,
         }
       },
+      fetchPolicy: 'no-cache',
       throttle: 300,
       debounce: 300,
+    },
+  },
+  watch: {
+    value(oldVal, newVal) {
+      this.selectedIDs = [...this.value]
     },
   },
   created() {

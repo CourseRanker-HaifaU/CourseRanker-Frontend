@@ -12,7 +12,7 @@
       <thead>
         <tr>
           <th class="column-title rounded-tr-lg">כותרת</th>
-          <th class="column-title rounded-tl-lg">תאריך יצירה</th>
+          <th class="column-title rounded-tl-lg">תאריך יצירה/עדכון</th>
         </tr>
       </thead>
       <tbody>
@@ -47,6 +47,7 @@ export default {
   apollo: {
     allFeedbackForms: {
       query: allFeedbackForms,
+      fetchPolicy: 'network-only',
     },
   },
   methods: {
