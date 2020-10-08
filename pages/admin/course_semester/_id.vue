@@ -155,7 +155,6 @@ export default {
           fetchPolicy: 'no-cache',
         })
         .then((response) => {
-          console.log(response)
           const results = response.data.courseSemesterDetails
           this.selectedCourse = results.course
           this.selectedSemester = {
