@@ -151,6 +151,30 @@
   .responsive-card div strong {
     @apply ml-2;
   }
+
+  .column-title {
+    @apply px-4;
+    @apply py-3;
+    @apply bg-primary;
+    @apply text-white;
+  }
+
+  .row {
+    @apply border-b;
+    @apply border-gray-200;
+    @apply bg-white;
+    @apply text-sm;
+    @apply cursor-pointer;
+  }
+
+  .row td {
+    @apply px-4;
+    @apply py-4;
+  }
+
+  .row:hover {
+    @apply bg-secondary-hover;
+  }
 }
 
 .page-enter-active, .page-leave-active {
