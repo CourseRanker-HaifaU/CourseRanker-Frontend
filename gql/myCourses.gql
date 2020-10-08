@@ -40,6 +40,13 @@ query myCourses($keywords: String!, $rowsPerPage: Int!, $after: String!) {
               }
             }
           }
+          feedbackformSet {
+            edges {
+              node {
+                id
+              }
+            }
+          }
           averageLecturerRating
           averageTeachingAssistantRating
           averageCourseRating
