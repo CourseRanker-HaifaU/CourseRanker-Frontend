@@ -1,0 +1,7 @@
+mutation editFeedbackForm($input: EditFeedbackFormInput!) {
+  editFeedbackForm(input: $input) {
+    feedbackForm {
+      id
+    }
+  }
+}

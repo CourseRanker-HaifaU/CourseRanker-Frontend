@@ -21,6 +21,12 @@
         >שאלות דירוג</nuxt-link
       >
       <nuxt-link
+        to="/admin/feedback_forms"
+        class="button blue-button ml-2 my-2"
+      >
+        שאלונים
+      </nuxt-link>
+      <nuxt-link
         to="/admin/violation_page"
         class="button blue-button ml-2 my-2"
       >

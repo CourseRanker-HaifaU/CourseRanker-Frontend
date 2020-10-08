@@ -1,0 +1,11 @@
+query {
+  allFeedbackForms {
+    edges {
+      node {
+        id
+        label
+        timeCreated
+      }
+    }
+  }
+}
