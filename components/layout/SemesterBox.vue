@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import { multipleStaffToString, getSemester } from '@/utils'
+import { multipleStaffToString, getSemester, showSuccessToast } from '@/utils'
 import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
 import deleteCourseInSemester from '@/gql/deleteCourseInSemester.gql'
@@ -229,7 +229,7 @@ export default {
         },
       })
       node.inMyCourses = true
-      alert('נוסף בהצלחה!')
+      showSuccessToast(this, 'נוסף לקורסים שלי', null)
       this.$forceUpdate()
     },
     async removeFromMyCourses(node) {
@@ -240,7 +240,7 @@ export default {
         },
       })
       node.inMyCourses = false
-      alert('הוסר מהקורסים שלך')
+      showSuccessToast(this, 'הוסר מהקורסים שלי', null)
       this.$forceUpdate()
     },
     async deleteCourseSemester(node, index) {
@@ -250,7 +250,7 @@ export default {
           id: node.id,
         },
       })
-      alert('נמחק בהצלחה')
+      showSuccessToast(this, 'נמחק בהצלחה', '/')
       this.$emit('delete-course-semester', index)
     },
   },
