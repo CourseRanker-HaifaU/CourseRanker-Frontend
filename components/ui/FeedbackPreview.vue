@@ -14,7 +14,9 @@
         <tr
           v-for="edge in feedbacks.edges"
           :key="edge.node.id"
-          @click="sendTo(`/feedback/${edge.node.id}`)"
+          @click="
+            sendTo(`/feedback/${courseSemesterId}?feedbackId=${edge.node.id}`)
+          "
         >
           <td class="row">{{ edge.node.generalFeedback }}</td>
           <td class="row">
@@ -43,7 +45,7 @@ export default {
         return ''
       },
     },
-    courseId: {
+    courseSemesterId: {
       type: String,
       default() {
         return ''

@@ -171,7 +171,7 @@
       <div class="flex flex-row col-span-2 items-center">
         <feedback-preview
           :avatar="avatar()"
-          :course-id="edge.node.id"
+          :course-semester-id="edge.node.id"
           :feedbacks="edge.node.userfeedbackSet"
         ></feedback-preview>
       </div>

@@ -1,9 +1,12 @@
 <template>
   <div v-if="courseData !== null" class="min-w-full items-stretch">
-    <panel-page-title v-if="viewMode" title="חוות דעת על"></panel-page-title>
+    <panel-page-title
+      v-if="viewMode"
+      :title="` חוות דעת על ${courseSemesterDetails.course.name}`"
+    ></panel-page-title>
     <panel-page-title
       v-if="!viewMode"
-      title="הוספת חוות דעת על"
+      :title="`הוספת חוות דעת על ${courseSemesterDetails.course.name}`"
     ></panel-page-title>
     <div>
       <h2>שאלות כלליות</h2>
@@ -141,7 +144,7 @@ h2 {
 
 <script>
 import feedbackFormCourseSemester from '@/gql/semesterFeedbacks.gql'
-import courseDetails from '@/gql/courseDetails.gql'
+import courseSemesterDetails from '@/gql/courseSemesterDetails.gql'
 export default {
   data() {
     return {
@@ -168,6 +171,11 @@ export default {
       taFreeContent: '',
       comments: [],
       loading: false,
+      courseSemesterDetails: {
+        course: {
+          name: '',
+        },
+      },
     }
   },
   computed: {
@@ -199,8 +207,8 @@ export default {
     },
   },
   apollo: {
-    courseData: {
-      query: courseDetails,
+    courseSemesterDetails: {
+      query: courseSemesterDetails,
       variables() {
         return {
           id: this.$route.params.id,
@@ -212,7 +220,9 @@ export default {
     availableFeedbackQuestions: {
       query: feedbackFormCourseSemester,
       variables() {
-        return [this.$route.params.id]
+        return {
+          id: this.$route.params.id,
+        }
       },
     },
   },
