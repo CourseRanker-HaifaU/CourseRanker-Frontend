@@ -9,7 +9,18 @@
       >
         <font-awesome-icon :icon="['fas', 'arrow-right']" size="2x" />
       </nuxt-link>
-      <h1 class="text-primary text-4xl" :class="{ 'mr-4': backButton }">
+      <nuxt-link
+        v-if="courseId != ''"
+        :to="`/course/${courseId}`"
+        class="text-primary"
+        aria-label="חזרה לקורס"
+      >
+        <font-awesome-icon :icon="['fas', 'arrow-right']" size="2x" />
+      </nuxt-link>
+      <h1
+        class="text-primary text-4xl"
+        :class="{ 'mr-4': backButton || courseId != '' }"
+      >
         {{ title }}
       </h1>
     </div>
@@ -28,6 +39,10 @@ export default {
     backButton: {
       type: Boolean,
       default: false,
+    },
+    courseId: {
+      type: String,
+      default: '',
     },
   },
 }
