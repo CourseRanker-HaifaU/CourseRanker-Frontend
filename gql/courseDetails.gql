@@ -97,6 +97,8 @@ query courseDetails($id: ID!) {
           averageCourseAndLecturerRating
           averageCourseAndTeachingAssistantRating
           inMyCourses
+          wroteFeedback
+          feedbackId
         }
       }
     }
