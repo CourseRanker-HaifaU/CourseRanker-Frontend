@@ -15,16 +15,17 @@
         :key="question.id"
         class="items-baseline"
       >
-        <div>
+        <div class="grid grid-cols-2">
           <div class="text-lg mb-2">
-            {{ question.content }}
+            {{ question.question }}
           </div>
-          <span v-if="!viewMode">הדירוג שלי:</span>
-          <rating
-            :editable="!viewMode"
-            :rating="question.currentRating"
-            @rating-set="ratingSet"
-          />
+          <div class="text-lg mb-2">
+            <rating
+              :editable="!viewMode"
+              :rating="question.currentRating"
+              @rating-set="ratingSet"
+            />
+          </div>
         </div>
       </div>
       <div class="grid grid-rows gap-1 text-lg">
@@ -42,20 +43,21 @@
     <div class="paragraph-comp">
       <h2>שאלות מרצה</h2>
       <div
-        v-for="item in lecturerQuestions"
-        :key="item.id"
+        v-for="question in lecturerQuestions"
+        :key="question.id"
         class="items-baseline"
       >
-        <div>
+        <div class="grid grid-cols-2">
           <div class="text-lg mb-2">
-            {{ item.question }}
+            {{ question.question }}
           </div>
-          <span v-if="!viewMode">הדירוג שלי:</span>
-          <rating
-            :editable="!viewMode"
-            :rating="item.currentRating"
-            @rating-set="ratingSet"
-          />
+          <div class="text-lg mb-2">
+            <rating
+              :editable="!viewMode"
+              :rating="question.currentRating"
+              @rating-set="ratingSet"
+            />
+          </div>
         </div>
       </div>
       <div class="grid grid-rows gap-1 text-lg">
@@ -73,20 +75,21 @@
     <div class="paragraph-comp">
       <h2>שאלות מתרגל</h2>
       <div
-        v-for="question in generalQuestions"
+        v-for="question in taQuestions"
         :key="question.id"
         class="items-baseline"
       >
-        <div>
+        <div class="grid grid-cols-2">
           <div class="text-lg mb-2">
-            {{ question.content }}
+            {{ question.question }}
           </div>
-          <span v-if="!viewMode">הדירוג שלי:</span>
-          <rating
-            :editable="!viewMode"
-            :rating="question.currentRating"
-            @rating-set="ratingSet"
-          />
+          <div class="text-lg mb-2">
+            <rating
+              :editable="!viewMode"
+              :rating="question.currentRating"
+              @rating-set="ratingSet"
+            />
+          </div>
         </div>
       </div>
       <div class="grid grid-rows gap-1 text-lg">
@@ -139,6 +142,7 @@ h2 {
   @apply text-xl;
   @apply font-bold;
   @apply underline;
+  @apply pb-2;
 }
 </style>
 
@@ -148,23 +152,6 @@ import courseSemesterDetails from '@/gql/courseSemesterDetails.gql'
 export default {
   data() {
     return {
-      generalQuestions: [
-        {
-          id: 0,
-          content: 'תוכן שאלה 1',
-          currentRating: 1,
-        },
-        {
-          id: 1,
-          content: 'תוכן שאלה 2',
-          currentRating: 1,
-        },
-        {
-          id: 2,
-          content: 'תוכן שאלה 3',
-          currentRating: 1,
-        },
-      ],
       availableFeedbackQuestions: {
         questions: {
           edges: [],
@@ -186,21 +173,41 @@ export default {
     viewMode() {
       return !this.$route.query.edit
     },
-    lecturerQuestions() {
-      const qList = []
+    generalQuestions() {
+      const gqList = []
       if (!('edges' in this.availableFeedbackQuestions.questions)) {
         return []
       }
       for (const item of this.availableFeedbackQuestions.questions.edges) {
-        console.log(item.node.question)
-        if (item.node.classification === 'A_1') {
-          qList.push(item.node)
+        if (item.node.classification === 'A_3') {
+          gqList.push(item.node)
         }
       }
-      return qList
+      return gqList
+    },
+    lecturerQuestions() {
+      const lqList = []
+      if (!('edges' in this.availableFeedbackQuestions.questions)) {
+        return []
+      }
+      for (const item of this.availableFeedbackQuestions.questions.edges) {
+        if (item.node.classification === 'A_1') {
+          lqList.push(item.node)
+        }
+      }
+      return lqList
     },
     taQuestions() {
-      return []
+      const tqList = []
+      if (!('edges' in this.availableFeedbackQuestions.questions)) {
+        return []
+      }
+      for (const item of this.availableFeedbackQuestions.questions.edges) {
+        if (item.node.classification === 'A_2') {
+          tqList.push(item.node)
+        }
+      }
+      return tqList
     },
   },
   methods: {
