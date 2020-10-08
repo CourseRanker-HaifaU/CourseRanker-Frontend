@@ -35,5 +35,15 @@ query courseSemesterDetails($id: ID!){
         }
       }
     }
+    feedbackformcoursesemesterSet {
+      edges {
+        node {
+          feedbackForm {
+            id
+            label
+          }
+        }
+      }
+    }
   }
 }
