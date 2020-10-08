@@ -3,10 +3,12 @@
     <panel-page-title
       v-if="viewMode"
       :title="` חוות דעת על ${courseSemesterDetails.course.name}`"
+      :course-id="`${courseSemesterDetails.course.id}`"
     ></panel-page-title>
     <panel-page-title
       v-if="!viewMode"
       :title="`הוספת חוות דעת על ${courseSemesterDetails.course.name}`"
+      :course-id="`${courseSemesterDetails.course.id}`"
     ></panel-page-title>
     <div>
       <h2>שאלות כלליות</h2>
