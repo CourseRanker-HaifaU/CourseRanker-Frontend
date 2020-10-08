@@ -102,7 +102,7 @@
       <button class="button red-button">הוסף ביקורת</button>
     </div>
     <div v-if="viewMode">
-      <feedbacks @commented="updateComment"></feedbacks>
+      <comments @commented="updateComment"></comments>
     </div>
   </div>
 </template>
