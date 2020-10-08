@@ -1,0 +1,14 @@
+query($id: ID!) {
+  feedbackForm(id: $id) {
+    label
+    questions {
+      edges {
+        node {
+          id
+          question
+          classification
+        }
+      }
+    }
+  }
+}

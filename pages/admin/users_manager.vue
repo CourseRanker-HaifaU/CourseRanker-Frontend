@@ -97,11 +97,7 @@
                   </div>
                 </td>
                 <td class="row">
-                  {{
-                    DateTime.fromISO(row.createdDate)
-                      .setLocale('he')
-                      .toLocaleString(DateTime.DATE_SHORT)
-                  }}
+                  {{ getDate(row.createdDate) }}
                 </td>
                 <td class="row">
                   <button
@@ -177,11 +173,7 @@
               </div>
               <div>
                 <strong>תאריך יצירה:</strong>
-                {{
-                  DateTime.fromISO(row.createdDate)
-                    .setLocale('he')
-                    .toLocaleString(DateTime.DATE_SHORT)
-                }}
+                {{ getDate(row.createdDate) }}
               </div>
               <div>
                 <button
@@ -224,8 +216,7 @@ import isSmallMixin from '@/mixins/small_width'
 import allUsers from '@/gql/allUsers.gql'
 import deleteUser from '@/gql/deleteUser.gql'
 import updateUser from '@/gql/updateUser.gql'
-import { roleParser, showSuccessToast } from '@/utils'
-import { DateTime } from 'luxon'
+import { roleParser, showSuccessToast, getDate } from '@/utils'
 
 export default {
   components: {
@@ -239,7 +230,6 @@ export default {
   mixins: [isSmallMixin],
   data() {
     return {
-      DateTime,
       perPageOptions: [5, 10, 20],
       typeOptions: [
         {
@@ -336,6 +326,7 @@ export default {
   },
   methods: {
     roleParser,
+    getDate,
     sendTo(msg) {
       this.$router.push(msg)
     },

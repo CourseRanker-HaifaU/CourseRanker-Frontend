@@ -70,6 +70,25 @@
             </template>
           </multiselect>
         </div>
+        <label for="selectedFeedbackForms">בחר טופסי חוות דעת למילוי:</label>
+        <div id="selectedFeedbackFroms">
+          <multiselect
+            v-model="selectedFeedbackForms"
+            tag-placeholder="בחר טופסי חוות דעת"
+            placeholder="חפש טפסים"
+            label="label"
+            track-by="id"
+            :options="serverData.allFeedbackForms.edges"
+            :multiple="true"
+            :hide-selected="true"
+            :show-labels="false"
+            :loading="$apollo.loading"
+          >
+            <template v-slot:noResult>
+              לא נמצאו חברי סגל התואמים את החיפוש
+            </template>
+          </multiselect>
+        </div>
         <button
           id="addCourse"
           type="submit"
@@ -100,6 +119,7 @@ export default {
       selectedSemester: null,
       selectedLecturers: [],
       selectedTeachingAssistants: [],
+      selectedFeedbackForms: [],
       serverData: {
         allCourses: {
           edges: [],
@@ -108,6 +128,9 @@ export default {
           edges: [],
         },
         allSemesters: {
+          edges: [],
+        },
+        allFeedbackForms: {
           edges: [],
         },
       },
@@ -132,6 +155,7 @@ export default {
           fetchPolicy: 'no-cache',
         })
         .then((response) => {
+          console.log(response)
           const results = response.data.courseSemesterDetails
           this.selectedCourse = results.course
           this.selectedSemester = {
@@ -150,6 +174,12 @@ export default {
             ({ node }) => ({
               id: node.id,
               name: staffToString(node),
+            })
+          )
+          this.selectedFeedbackForms = results.feedbackformcoursesemesterSet.edges.map(
+            ({ node }) => ({
+              id: node.feedbackForm.id,
+              label: node.feedbackForm.label,
             })
           )
         })
@@ -177,6 +207,7 @@ export default {
             semesterId: this.selectedSemester.id,
             lecturerIds: this.getIds(this.selectedLecturers),
             otherStaffIds: this.getIds(this.selectedTeachingAssistants),
+            feedbackFormIds: this.getIds(this.selectedFeedbackForms),
           },
         },
       })
@@ -215,6 +246,17 @@ export default {
             name: staffToString(item.node),
           }
         })
+        data.allFeedbackForms.edges = data.allFeedbackForms.edges.map(
+          (item) => {
+            if (!('node' in item)) {
+              return item
+            }
+            return {
+              id: item.node.id,
+              label: item.node.label,
+            }
+          }
+        )
         return data
       },
     },
