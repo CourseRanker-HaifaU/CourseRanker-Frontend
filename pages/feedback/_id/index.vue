@@ -143,7 +143,7 @@ h2 {
 </style>
 
 <script>
-import feedbackFormCourseSemester from '@/gql/semesterFeedbacks.gql'
+import feedbackForm from '@/gql/editFeedbackFormDetails.gql'
 import courseSemesterDetails from '@/gql/courseSemesterDetails.gql'
 export default {
   data() {
@@ -165,7 +165,11 @@ export default {
           currentRating: 1,
         },
       ],
-      availableFeedbackQuestions: {},
+      availableFeedbackQuestions: {
+        questions: {
+          edges: [],
+        },
+      },
       generalFreeContent: '',
       lecturerFreeContent: '',
       taFreeContent: '',
@@ -184,12 +188,13 @@ export default {
     },
     lecturerQuestions() {
       const qList = []
-      if (!('edges' in this.availableFeedbackQuestions)) {
+      if (!('edges' in this.availableFeedbackQuestions.questions)) {
         return []
       }
-      for (const item in this.availableFeedbackQuestions.edges) {
+      for (const item of this.availableFeedbackQuestions.questions.edges) {
+        console.log(item.node.question)
         if (item.node.classification === 'A_1') {
-          qList.push(item)
+          qList.push(item.node)
         }
       }
       return qList
@@ -218,12 +223,13 @@ export default {
       fetchPolicy: 'no-cache',
     },
     availableFeedbackQuestions: {
-      query: feedbackFormCourseSemester,
+      query: feedbackForm,
       variables() {
         return {
-          id: this.$route.params.id,
+          id: this.$route.query.feedbackId,
         }
       },
+      update: (data) => data.feedbackForm,
     },
   },
 }

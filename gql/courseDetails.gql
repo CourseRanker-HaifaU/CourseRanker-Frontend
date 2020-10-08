@@ -33,6 +33,16 @@ query courseDetails($id: ID!) {
             name
             yearJewish
           }
+          feedbackformcoursesemesterSet {
+            edges {
+              node {
+                feedbackForm {
+                  id
+                  label
+                }
+              }
+            }
+          }
           userfeedbackSet {
             edges {
               node {

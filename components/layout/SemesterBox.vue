@@ -146,8 +146,9 @@
           הסר מהקורסים שלי
         </button>
         <nuxt-link
+          v-if="edge.node.feedbackformcoursesemesterSet.edges.length > 0"
           class="button blue-button h-full md:h-auto mb-2 md:mb-0 md:ml-2"
-          :to="`/feedback/${edge.node.id}?edit=1`"
+          :to="`/feedback/${edge.node.id}?edit=1&feedbackId=${edge.node.feedbackformcoursesemesterSet.edges[0].node.feedbackForm.id}`"
           tag="button"
         >
           הוסף חוות דעת
