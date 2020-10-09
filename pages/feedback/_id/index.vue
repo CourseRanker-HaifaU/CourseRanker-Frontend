@@ -10,6 +10,29 @@
       :title="`הוספת חוות דעת על ${feedbackFormDetails.course.name}`"
       :course-id="`${feedbackFormDetails.course.id}`"
     ></panel-page-title>
+    <div v-if="!viewMode" class="grid grid-cols-2 gap-4">
+      <h2 class="col-span-2">סגל הקורס</h2>
+      <label for="selectedLecturer">מרצה:</label>
+      <multiselect
+        id="selectedLecturer"
+        v-model="selectedLecturer"
+        :options="lecturersList"
+        :searchable="false"
+        :show-labels="false"
+        label="label"
+        track-by="id"
+      />
+      <label for="selectedteachingAssistant">מתרגל/ת:</label>
+      <multiselect
+        id="selectedteachingAssistant"
+        v-model="selectedTeachingAssistant"
+        :options="teachingAssistantsList"
+        :searchable="false"
+        :show-labels="false"
+        label="label"
+        track-by="id"
+      />
+    </div>
     <div>
       <h2>שאלות כלליות</h2>
       <div
@@ -17,7 +40,7 @@
         :key="question.id"
         class="items-baseline"
       >
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-2">
           <div class="text-lg mb-2">
             {{ question.question }}
           </div>
@@ -37,7 +60,7 @@
           v-model="generalFreeContent"
           placeholder="מלל חופשי על הקורס..."
           rows="5"
-          class="free-text"
+          class="form-field h-24"
           :disabled="viewMode"
         ></textarea>
       </div>
@@ -47,13 +70,15 @@
       <div
         v-for="question in lecturerQuestions"
         :key="question.id"
-        class="items-baseline"
+        class="items-center"
       >
-        <div class="grid grid-cols-2">
+        <div
+          class="grid grid-cols-2 gap-2 border-b border-input-border border-solid py-2"
+        >
           <div class="text-lg mb-2">
             {{ question.question }}
           </div>
-          <div class="text-lg mb-2">
+          <div class="text-lg mb-2 flex items-center">
             <rating
               :editable="!viewMode"
               :rating="question.id in ratings ? ratings[question.id] : 0"
@@ -69,19 +94,19 @@
           v-model="lecturerFreeContent"
           placeholder="מלל חופשי על מרצה הקורס..."
           rows="5"
-          class="free-text"
+          class="form-field h-24"
           :disabled="viewMode"
         ></textarea>
       </div>
     </div>
-    <div class="paragraph-comp">
+    <div>
       <h2>שאלות מתרגל</h2>
       <div
         v-for="question in taQuestions"
         :key="question.id"
         class="items-baseline"
       >
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-2">
           <div class="text-lg mb-2">
             {{ question.question }}
           </div>
@@ -94,14 +119,14 @@
           </div>
         </div>
       </div>
-      <div class="grid grid-rows gap-1 text-lg">
+      <div class="grid grid-rows gap-2">
         <label for="taFreeContent" class="font-bold">מלל חופשי</label>
         <textarea
           id="taFreeContent"
           v-model="taFreeContent"
           placeholder="מלל חופשי על מתרגלי הקורס..."
           rows="5"
-          class="free-text"
+          class="form-field h-24"
           :disabled="viewMode"
         ></textarea>
       </div>
@@ -109,7 +134,7 @@
     <div v-if="!viewMode" class="submit">
       <button class="button red-button">הוסף ביקורת</button>
     </div>
-    <div v-if="viewMode" class="flex justify-center pt-4 ml-24">
+    <div v-if="viewMode" class="flex justify-center pt-4">
       <div class="flex">
         <button class="button red-button" @click="toggleDislike">
           <font-awesome-icon
@@ -196,15 +221,19 @@ img {
 </style>
 
 <script>
+import Multiselect from 'vue-multiselect'
 import feedbackForm from '@/gql/editFeedbackFormDetails.gql'
 import feedbackFormDetails from '@/gql/feedbackFormDetails.gql'
 import userFeedback from '@/gql/userFeedback.gql'
 import likeUserFeedback from '@/gql/likeUserFeedback.gql'
 import dislikeUserFeedback from '@/gql/dislikeUserFeedback.gql'
-import { showSuccessToast } from '@/utils'
+import { showSuccessToast, staffToString } from '@/utils'
 import Vue from 'vue'
 
 export default {
+  components: {
+    Multiselect,
+  },
   data() {
     return {
       availableFeedbackQuestions: {
@@ -227,6 +256,8 @@ export default {
       liked: false,
       disliked: false,
       ratings: {},
+      selectedLecturer: null,
+      selectedTeachingAssistant: null,
     }
   },
   computed: {
@@ -271,6 +302,36 @@ export default {
         }
       }
       return tqList
+    },
+    lecturersList() {
+      if (!('coursesemesterstaffSet' in this.feedbackFormDetails)) {
+        return []
+      }
+      return this.feedbackFormDetails.coursesemesterstaffSet.edges[0].node.lecturers.edges.map(
+        ({ node }) => ({
+          ...node,
+          label: staffToString(node),
+        })
+      )
+    },
+    teachingAssistantsList() {
+      if (!('coursesemesterstaffSet' in this.feedbackFormDetails)) {
+        return []
+      }
+      return this.feedbackFormDetails.coursesemesterstaffSet.edges[0].node.teachingAssistants.edges.map(
+        ({ node }) => ({
+          ...node,
+          label: staffToString(node),
+        })
+      )
+    },
+  },
+  watch: {
+    lecturersList(oldVal, newVal) {
+      this.selectedLecturer = this.lecturersList[0]
+    },
+    teachingAssistantsList(oldVal, newVal) {
+      this.selectedTeachingAssistant = this.teachingAssistantsList[0]
     },
   },
   created() {
