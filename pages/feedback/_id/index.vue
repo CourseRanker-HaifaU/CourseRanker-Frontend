@@ -109,6 +109,28 @@
     <div v-if="!viewMode" class="submit">
       <button class="button red-button">הוסף ביקורת</button>
     </div>
+    <div v-if="viewMode" class="flex justify-center pt-4">
+      <div class="flex">
+        <div class="ml-4 mt-2">{{ dislikes }}</div>
+        <img
+          class="like-button"
+          width="100"
+          height="100"
+          src="~/assets/images/Dislike.png"
+          alt="Dislike"
+        />
+      </div>
+      <div class="flex mr-16">
+        <div class="ml-4 mt-2">{{ likes }}</div>
+        <img
+          class="like-button"
+          width="100"
+          height="100"
+          src="~/assets/images/‏‏Like.png"
+          alt="Like"
+        />
+      </div>
+    </div>
     <div v-if="viewMode">
       <comments @commented="updateComment"></comments>
     </div>
@@ -140,11 +162,29 @@
   @apply pb-6;
 }
 
+.like-button {
+  opacity: 0.8;
+
+  @apply cursor-pointer;
+}
+
+.like-button:active {
+  transform: translateY(4px);
+}
+
+.like-button:hover {
+  opacity: 1;
+}
+
 h2 {
   @apply text-xl;
   @apply font-bold;
   @apply underline;
   @apply pb-2;
+}
+
+img {
+  border-radius: 0;
 }
 </style>
 
@@ -210,6 +250,12 @@ export default {
         }
       }
       return tqList
+    },
+    likes() {
+      return 0
+    },
+    dislikes() {
+      return 0
     },
   },
   methods: {
