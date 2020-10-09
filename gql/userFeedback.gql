@@ -41,6 +41,15 @@ query ($id: ID!){
         }
       }
     }
+    commentSet {
+      edges {
+        node {
+          id
+          authorName
+          content
+        }
+      }
+    }
     generalFeedback
     lecturerFeedback
     teachingAssistantFeedback

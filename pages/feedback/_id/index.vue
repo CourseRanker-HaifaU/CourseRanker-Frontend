@@ -128,7 +128,7 @@
       </div>
     </div>
     <div v-if="viewMode">
-      <comments @commented="updateComment"></comments>
+      <comments :comments="comments" @commented="updateComment"></comments>
     </div>
   </div>
 </template>
@@ -283,6 +283,7 @@ export default {
           this.dislikes = serverData.dislikesCount
           this.liked = serverData.liked
           this.disliked = serverData.disliked
+          this.comments = serverData.commentSet.edges
         })
     }
   },

@@ -7,9 +7,9 @@
       <span v-show="loading" class="spinner"></span>
       <ul>
         <comment
-          v-for="comment in comments"
-          :key="comment.message"
-          :comment="comment"
+          v-for="{ node } in comments"
+          :key="node.id"
+          :comment="node"
         ></comment>
       </ul>
     </div>
@@ -41,29 +41,15 @@ import editComment from '@/gql/editComment.gql'
 import addComment from '@/gql/addComment.gql'
 import { showSuccessToast } from '@/utils'
 export default {
+  props: {
+    comments: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       loading: false,
-      comments: {
-        sagi_com: {
-          name: 'שומו שמיים',
-          message: 'שלום לכולם',
-          date: '07/10/2020',
-          avatar: this.avatar(),
-        },
-        shubi: {
-          name: 'זאב ערבות',
-          message: 'זו בדיקה',
-          date: '07/10/2020',
-          avatar: this.avatar(),
-        },
-        dubi: {
-          name: 'שוקי נגר',
-          message: 'וזו עוד בדיקה',
-          date: '07/10/2020',
-          avatar: this.avatar(),
-        },
-      },
       data: {
         name: '',
         message: '',
@@ -71,14 +57,6 @@ export default {
     }
   },
   methods: {
-    randomWord() {
-      const num = Math.floor(Math.random() * 10)
-      const word = Math.random().toString(36).substring(num)
-      return word
-    },
-    avatar() {
-      return 'https://robohash.org/' + this.randomWord() + '?set=set2'
-    },
     async addComment() {
       await this.$apollo.mutate({
         mutation: addComment,

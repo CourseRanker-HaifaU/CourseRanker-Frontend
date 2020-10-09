@@ -1,12 +1,14 @@
 <template>
   <li transition="slide">
-    <div class="profile"><img :src="comment.avatar" alt="" /></div>
+    <div class="profile">
+      <img :src="avatar" alt="תמונה אקראית כאווטאר לכותב/ת התגובה" />
+    </div>
     <div class="msg">
       <div class="msg-body">
         <p class="name">
-          {{ comment.name }} <span class="date">{{ comment.time }}</span>
+          {{ comment.authorName }}
         </p>
-        <p>{{ comment.message }}</p>
+        <p>{{ comment.content }}</p>
       </div>
     </div>
   </li>
@@ -20,6 +22,16 @@ export default {
       default() {
         return null
       },
+    },
+  },
+  computed: {
+    randomWord() {
+      const num = Math.floor(Math.random() * 10)
+      const word = Math.random().toString(36).substring(num)
+      return word
+    },
+    avatar() {
+      return 'https://robohash.org/' + this.randomWord + '?set=set2'
     },
   },
 }
