@@ -84,7 +84,6 @@ export default {
         mutation: addComment,
         variables: {
           input: {
-            author: this.data.name,
             content: this.data.message,
           },
         },
@@ -100,7 +99,6 @@ export default {
         variables: {
           input: {
             id: currentNode.id,
-            author: currentNode.author,
             content: currentNode.content,
           },
         },
