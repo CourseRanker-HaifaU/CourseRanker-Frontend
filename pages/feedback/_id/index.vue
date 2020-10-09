@@ -111,24 +111,18 @@
     </div>
     <div v-if="viewMode" class="flex justify-center pt-4 ml-24">
       <div class="flex">
-        <div class="ml-4 mt-2">{{ dislikes }}</div>
-        <img
-          class="dislike-button"
-          width="100"
-          height="100"
-          src="~/assets/images/Dislike.png"
-          alt="Dislike"
-        />
+        <button class="button red-button">
+          <font-awesome-icon :icon="['fas', 'thumbs-down']" />
+          לא אהבתי
+        </button>
+        <div class="mr-4 mt-2">{{ dislikes }}</div>
       </div>
       <div class="flex mr-16">
-        <div class="ml-4 mt-2">{{ likes }}</div>
-        <img
-          class="like-button"
-          width="100"
-          height="100"
-          src="~/assets/images/‏‏Like.png"
-          alt="Like"
-        />
+        <button class="button green-button">
+          <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+          אהבתי
+        </button>
+        <div class="mr-4 mt-2">{{ likes }}</div>
       </div>
     </div>
     <div v-if="viewMode">
