@@ -36,6 +36,10 @@
 </template>
 
 <script>
+import deleteComment from '@/gql/deleteComment.gql'
+import editComment from '@/gql/editComment.gql'
+import addComment from '@/gql/addComment.gql'
+import { showSuccessToast } from '@/utils'
 export default {
   data() {
     return {
@@ -60,7 +64,10 @@ export default {
           avatar: this.avatar(),
         },
       },
-      data: {},
+      data: {
+        name: '',
+        message: '',
+      },
     }
   },
   methods: {
@@ -72,7 +79,50 @@ export default {
     avatar() {
       return 'https://robohash.org/' + this.randomWord() + '?set=set2'
     },
-    submit() {},
+    async addComment() {
+      await this.$apollo.mutate({
+        mutation: addComment,
+        variables: {
+          input: {
+            author: this.data.name,
+            content: this.data.message,
+          },
+        },
+      })
+      showSuccessToast(this, 'התגובה נוספה בהצלחה')
+      this.$apollo.queries.comments.refetch()
+      this.clearNewComment()
+    },
+    async editComment(index) {
+      const currentNode = this.comments.edges[index].node
+      await this.$apollo.mutate({
+        mutation: editComment,
+        variables: {
+          input: {
+            id: currentNode.id,
+            author: currentNode.author,
+            content: currentNode.content,
+          },
+        },
+      })
+      showSuccessToast(this, 'התגובה נערכה בהצלחה')
+    },
+    async deleteComment(index) {
+      const { id } = this.comments.edges[index].node
+      await this.$apollo.mutate({
+        mutation: deleteComment,
+        variables: {
+          id,
+        },
+      })
+      showSuccessToast(this, 'התגובה נמחקה בהצלחה', null, () => {
+        this.comments.edges.splice(index, 1)
+      })
+    },
+    clearNewComment() {
+      this.data.name = ''
+      this.data.message = ''
+    },
   },
 }
 </script>
