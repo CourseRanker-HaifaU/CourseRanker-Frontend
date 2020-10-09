@@ -2,7 +2,6 @@ mutation addComment($input: AddCommentInput!) {
   addComment (input: $input) {
     comment {
       id
-      author
       content
     }
   }
