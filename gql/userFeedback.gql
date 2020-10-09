@@ -1,33 +1,17 @@
 query ($id: ID!){
   userFeedback(id: $id) {
     id
-    courseSemester {
-      coursesemesterstaffSet {
-        edges {
-          node {
-            lecturers {
-              edges {
-                node {
-                  id
-                  firstName
-                  lastName
-                  title
-                }
-              }
-            }
-            teachingAssistants {
-              edges {
-                node {
-                  id
-                  firstName
-                  lastName
-                  title
-                }
-              }
-            }
-          }
-        }
-      }
+    lecturer {
+      id
+      title
+      firstName
+      lastName
+    }
+    teachingAssistant {
+      id
+      title
+      firstName
+      lastName
     }
     questionuserfeedbackSet {
       edges {
