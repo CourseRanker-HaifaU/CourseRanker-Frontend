@@ -5,6 +5,7 @@ mutation addComment($input: AddCommentInput!) {
       authorName
       content
       canEdit
+      isAnonymous
     }
   }
 }
