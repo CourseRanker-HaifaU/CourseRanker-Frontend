@@ -111,15 +111,17 @@
     </div>
     <div v-if="viewMode" class="flex justify-center pt-4 ml-24">
       <div class="flex">
-        <button class="button red-button">
-          <font-awesome-icon :icon="['fas', 'thumbs-down']" />
+        <button class="button red-button" @click="toggleDislike">
+          <font-awesome-icon
+            :icon="[disliked ? 'fas' : 'far', 'thumbs-down']"
+          />
           לא אהבתי
         </button>
         <div class="mr-4 mt-2">{{ dislikes }}</div>
       </div>
       <div class="flex mr-16">
-        <button class="button green-button">
-          <font-awesome-icon :icon="['fas', 'thumbs-up']" />
+        <button class="button green-button" @click="toggleLike">
+          <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'thumbs-up']" />
           אהבתי
         </button>
         <div class="mr-4 mt-2">{{ likes }}</div>
@@ -191,6 +193,11 @@ img {
 <script>
 import feedbackForm from '@/gql/editFeedbackFormDetails.gql'
 import courseSemesterDetails from '@/gql/courseSemesterDetails.gql'
+import userFeedback from '@/gql/userFeedback.gql'
+import likeUserFeedback from '@/gql/likeUserFeedback.gql'
+import dislikeUserFeedback from '@/gql/dislikeUserFeedback.gql'
+import { showSuccessToast } from '@/utils'
+
 export default {
   data() {
     return {
@@ -209,6 +216,10 @@ export default {
           name: '',
         },
       },
+      likes: 0,
+      dislikes: 0,
+      liked: false,
+      disliked: false,
     }
   },
   computed: {
@@ -251,12 +262,29 @@ export default {
       }
       return tqList
     },
-    likes() {
-      return 0
-    },
-    dislikes() {
-      return 0
-    },
+  },
+  created() {
+    if (this.$route.query.feedbackId) {
+      this.$apollo
+        .query({
+          query: userFeedback,
+          variables: {
+            id: this.$route.query.feedbackId,
+          },
+          fetchPolicy: 'no-cache',
+        })
+        .then((response) => {
+          console.log(response.data)
+          const serverData = response.data.userFeedback
+          this.generalFreeContent = serverData.generalFeedback
+          this.lecturerFreeContent = serverData.lecturerFeedback
+          this.taFreeContent = serverData.teachingAssistantFeedback
+          this.likes = serverData.likesCount
+          this.dislikes = serverData.dislikesCount
+          this.liked = serverData.liked
+          this.disliked = serverData.disliked
+        })
+    }
   },
   methods: {
     toggleShown(index) {
@@ -264,6 +292,56 @@ export default {
     },
     updateComment(comment) {
       this.comments.push(comment)
+    },
+    async toggleLike() {
+      await this.$apollo.mutate({
+        mutation: likeUserFeedback,
+        variables: {
+          id: this.$route.query.feedbackId,
+        },
+      })
+      showSuccessToast(
+        this,
+        this.liked ? 'לייק הוסר בהצלחה' : 'לייק נוסף בהצלחה',
+        null,
+        () => {
+          if (this.disliked) {
+            this.disliked = false
+            this.dislikes--
+          }
+          this.liked = !this.liked
+          if (this.liked) {
+            this.likes++
+          } else {
+            this.likes--
+          }
+        }
+      )
+    },
+    async toggleDislike() {
+      await this.$apollo.mutate({
+        mutation: dislikeUserFeedback,
+        variables: {
+          id: this.$route.query.feedbackId,
+        },
+      })
+      showSuccessToast(
+        this,
+        this.disliked ? 'דיסלייק הוסר בהצלחה' : 'דיסלייק נוסף בהצלחה',
+        null,
+        () => {
+          if (this.liked) {
+            this.liked = false
+            this.likes--
+          }
+          this.disliked = !this.disliked
+          if (this.disliked) {
+            this.dislikes++
+          } else {
+            this.dislikes--
+          }
+        }
+      )
     },
   },
   apollo: {
