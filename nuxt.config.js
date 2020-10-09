@@ -72,6 +72,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/toast',
+    'nuxt-compress',
   ],
   /*
    ** Axios module configuration
@@ -123,5 +124,13 @@ export default {
       },
     },
     authenticationType: 'JWT',
+  },
+  'nuxt-compress': {
+    gzip: {
+      cache: false,
+    },
+    brotli: {
+      threshold: 10240,
+    },
   },
 }
