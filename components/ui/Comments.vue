@@ -138,7 +138,7 @@ export default {
 .comment-box input,
 .comment-box textarea {
   font-size: 0.8em;
-  width: 97.3%;
+  width: 70%;
   padding: 0.6em;
   border: 1px solid #eee;
   background-color: #f7f7f7;
@@ -149,16 +149,17 @@ export default {
 }
 .comment-box input:focus,
 .comment-box textarea:focus {
-  border-color: #47b784;
+  border-color: #0664aa;
   outline: none;
   box-shadow: inset 0 0 3px #ddd;
 }
 .comment-box input[type='submit'] {
   margin-bottom: 0;
+  margin-right: 15rem;
   width: 30%;
-  background-color: #47b784;
+  background-color: #0664aa;
   color: #fff;
-  border-color: #47b784;
+  border-color: #0664aa;
   font-weight: bold;
   text-transform: uppercase;
 }

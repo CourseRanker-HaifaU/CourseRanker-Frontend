@@ -109,7 +109,7 @@
     <div v-if="!viewMode" class="submit">
       <button class="button red-button">הוסף ביקורת</button>
     </div>
-    <div v-if="viewMode" class="flex justify-center pt-4 ml-2">
+    <div v-if="viewMode" class="flex justify-center pt-4 ml-24">
       <div class="flex">
         <div class="ml-4 mt-2">{{ dislikes }}</div>
         <img
