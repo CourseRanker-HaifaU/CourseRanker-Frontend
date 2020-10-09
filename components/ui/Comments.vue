@@ -104,6 +104,7 @@ export default {
         },
       })
       showSuccessToast(this, 'התגובה נערכה בהצלחה')
+      this.$apollo.queries.comments.refetch()
     },
     async deleteComment(index) {
       const { id } = this.comments.edges[index].node
