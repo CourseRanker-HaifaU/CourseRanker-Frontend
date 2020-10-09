@@ -128,7 +128,12 @@
       </div>
     </div>
     <div v-if="viewMode">
-      <comments :comments="comments" @commented="updateComment"></comments>
+      <comments
+        :comments="comments"
+        :user-feedback-id="$route.query.feedbackId"
+        @commented="updateComment"
+        @new-comment="newComment"
+      ></comments>
     </div>
   </div>
 </template>
@@ -343,6 +348,9 @@ export default {
           }
         }
       )
+    },
+    newComment(comment) {
+      this.comments.push(comment)
     },
   },
   apollo: {

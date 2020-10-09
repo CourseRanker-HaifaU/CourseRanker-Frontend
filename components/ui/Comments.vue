@@ -13,24 +13,30 @@
         ></comment>
       </ul>
     </div>
-    <form action="" method="post" @submit.prevent="submit">
-      <input
-        v-model="data.name"
-        class="input-name"
-        type="text"
-        name="name"
-        placeholder="שם מלא"
-        required
-      />
+    <form class="grid grid-cols-2 min-w-0" @submit.prevent="addComment">
+      <label for="message">תוכן התגובה:</label>
       <textarea
+        id="message"
         v-model="data.message"
-        class="input-message"
-        name="message"
+        class="form-field h-24 mb-2"
         rows="3"
         placeholder="אנא מלא את תגובתך.."
         required
       ></textarea>
-      <input :disabled="loading" type="submit" value="שלח תגובה" />
+      <label for="isAnonymous">תגובה אנונימית:</label>
+      <input
+        id="isAnonymous"
+        v-model="data.isAnonymous"
+        type="checkbox"
+        class="form-checkbox"
+      />
+      <button
+        :disabled="loading"
+        type="submit"
+        class="button blue-button mt-2 col-start-2"
+      >
+        שלח תגובה
+      </button>
     </form>
   </div>
 </template>
@@ -46,28 +52,34 @@ export default {
       type: Array,
       required: true,
     },
+    userFeedbackId: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
       loading: false,
       data: {
-        name: '',
         message: '',
+        isAnonymous: true,
       },
     }
   },
   methods: {
     async addComment() {
-      await this.$apollo.mutate({
+      const result = await this.$apollo.mutate({
         mutation: addComment,
         variables: {
           input: {
             content: this.data.message,
+            userFeedbackId: this.userFeedbackId,
+            isAnonymous: this.data.isAnonymous,
           },
         },
       })
+      this.$emit('new-comment', { node: result.data.addComment.comment })
       showSuccessToast(this, 'התגובה נוספה בהצלחה')
-      this.$apollo.queries.comments.refetch()
       this.clearNewComment()
     },
     async editComment(index) {
@@ -106,45 +118,10 @@ export default {
 
 <style>
 .comment-box {
-  width: 100%;
   margin: auto;
 }
 .comment-box form {
   padding: 1rem;
-}
-.comment-box input,
-.comment-box textarea {
-  font-size: 0.8em;
-  width: 70%;
-  padding: 0.6em;
-  border: 1px solid #eee;
-  background-color: #f7f7f7;
-  display: block;
-  margin-bottom: 1em;
-  font-family: 'Raleway', sans-serif;
-  transition: all ease 0.3s;
-}
-.comment-box input:focus,
-.comment-box textarea:focus {
-  border-color: #0664aa;
-  outline: none;
-  box-shadow: inset 0 0 3px #ddd;
-}
-.comment-box input[type='submit'] {
-  margin-bottom: 0;
-  margin-right: 15rem;
-  width: 30%;
-  background-color: #0664aa;
-  color: #fff;
-  border-color: #0664aa;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.comment-box input[type='submit']:focus {
-  background-color: #36495d;
-}
-.comment-box input[type='submit']:disabled {
-  opacity: 0.6;
 }
 .comment-list {
   padding: 1em 0;
