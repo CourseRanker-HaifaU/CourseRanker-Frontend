@@ -109,11 +109,11 @@
     <div v-if="!viewMode" class="submit">
       <button class="button red-button">הוסף ביקורת</button>
     </div>
-    <div v-if="viewMode" class="flex justify-center pt-4">
+    <div v-if="viewMode" class="flex justify-center pt-4 ml-2">
       <div class="flex">
         <div class="ml-4 mt-2">{{ dislikes }}</div>
         <img
-          class="like-button"
+          class="dislike-button"
           width="100"
           height="100"
           src="~/assets/images/Dislike.png"
@@ -162,18 +162,24 @@
   @apply pb-6;
 }
 
-.like-button {
+.like-button,
+.dislike-button {
   opacity: 0.8;
 
   @apply cursor-pointer;
 }
 
-.like-button:active {
-  transform: translateY(4px);
+.like-button:hover,
+.dislike-button:hover {
+  opacity: 1;
 }
 
-.like-button:hover {
-  opacity: 1;
+.like-button:active {
+  transform: translateY(-2px);
+}
+
+.dislike-button:active {
+  transform: translateY(2px);
 }
 
 h2 {
