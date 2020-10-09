@@ -47,6 +47,7 @@ query ($id: ID!){
           id
           authorName
           content
+          canEdit
         }
       }
     }

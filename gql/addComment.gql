@@ -4,6 +4,7 @@ mutation addComment($input: AddCommentInput!) {
       id
       authorName
       content
+      canEdit
     }
   }
 }
