@@ -1,5 +1,5 @@
-query($search: String!, $first: Int!, $after: String) {
-  allStaff(search: $search, first: $first, after: $after) {
+query($search: String!, $first: Int!, $after: String, $orderBy: String) {
+  allStaff(search: $search, first: $first, after: $after, orderBy: $orderBy) {
     pageInfo {
       endCursor
       hasNextPage

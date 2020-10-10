@@ -1,6 +1,6 @@
 query myCourses($keywords: String!, $rowsPerPage: Int!, $after: String!) {
   currentUser {
-    userCourses(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after) {
+    userCourses(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after, orderBy: "-semesterYearJewish,-semesterName,courseName") {
       pageInfo {
         endCursor
         hasNextPage

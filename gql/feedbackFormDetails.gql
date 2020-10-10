@@ -41,7 +41,7 @@ query feedbackFormDetails($id: ID!){
           feedbackForm {
             id
             label
-            questions {
+            questions(orderBy: "classification,question") {
               edges {
                 node {
                   id

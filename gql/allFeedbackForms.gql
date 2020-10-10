@@ -1,5 +1,5 @@
 query {
-  allFeedbackForms {
+  allFeedbackForms(orderBy: "-timeCreated,label") {
     edges {
       node {
         id

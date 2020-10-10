@@ -14,7 +14,7 @@
     ></panel-page-title>
     <div v-if="canEdit" class="flex flex-row">
       <nuxt-link
-        v-if="!$route.query.feedbackId"
+        v-if="viewMode"
         tag="button"
         :to="`/feedback/${$route.params.id}?feedbackId=${$route.query.feedbackId}&edit=1`"
         class="button blue-button ml-2"

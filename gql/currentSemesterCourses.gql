@@ -2,7 +2,7 @@ query currentSemesterCourses($keywords: String!, $rowsPerPage: Int!, $after: Str
   allSemesters(isCurrent: true) {
     edges {
       node {
-        coursesemesterSet(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after, course_Tags: $tags, course_Compulsory: $compulsory) {
+        coursesemesterSet(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after, course_Tags: $tags, course_Compulsory: $compulsory, orderBy: "courseName") {
           pageInfo {
             endCursor
             hasNextPage
