@@ -411,7 +411,9 @@ export default {
                   courseSemesterId: this.$route.params.id,
                 }),
             lecturerId: this.selectedLecturer.id,
-            teachingAssistantId: this.selectedTeachingAssistant.id,
+            teachingAssistantId: this.selectedTeachingAssistant
+              ? this.selectedTeachingAssistant.id
+              : undefined,
             questionRatings: Object.keys(this.ratings).map((key) => ({
               questionId: key,
               rating: this.ratings[key],
