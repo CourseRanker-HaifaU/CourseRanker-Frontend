@@ -136,10 +136,18 @@
       </div>
       <div
         v-if="edge.node.coursesemesterexamSet.edges.length > 0"
-        class="col-span-2 items-start justify-items-stretch flex flex-col md:flex-row"
+        class="col-span-2 items-start justify-items-stretch flex flex-col"
       >
         <strong>התפלגות ציונים:</strong>
+        <button class="button blue-button" @click="toggleHistogram(index)">
+          {{
+            histogramShown.includes(index)
+              ? 'הסתר התפלגות ציונים'
+              : 'הצג התפלגות ציונים'
+          }}
+        </button>
         <bar-chart
+          v-if="histogramShown.includes(index)"
           :exam-edges="edge.node.coursesemesterexamSet.edges"
           class="w-full md:w-3/4 lg:w-full max-w-full"
         />
@@ -225,6 +233,7 @@ export default {
   data() {
     return {
       showIndices: [0],
+      histogramShown: [],
     }
   },
   computed: {
@@ -279,6 +288,14 @@ export default {
       })
       showSuccessToast(this, 'נמחק בהצלחה', '/')
       this.$emit('delete-course-semester', index)
+    },
+    toggleHistogram(index) {
+      const shownIndex = this.histogramShown.indexOf(index)
+      if (shownIndex === -1) {
+        this.histogramShown.push(index)
+      } else {
+        this.histogramShown.splice(shownIndex, 1)
+      }
     },
   },
 }
