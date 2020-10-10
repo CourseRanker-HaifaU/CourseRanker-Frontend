@@ -1,0 +1,7 @@
+mutation likeUserFeedback($id: ID!) {
+  likeUserFeedback(input: {
+    userFeedbackId: $id
+  }) {
+    ok
+  }
+}

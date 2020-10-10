@@ -2,14 +2,37 @@
   <div v-if="courseData !== null" class="min-w-full items-stretch">
     <panel-page-title
       v-if="viewMode"
-      :title="` חוות דעת על ${courseSemesterDetails.course.name}`"
-      :course-id="`${courseSemesterDetails.course.id}`"
+      :title="` חוות דעת על ${feedbackFormDetails.course.name}`"
+      :course-id="`${feedbackFormDetails.course.id}`"
     ></panel-page-title>
     <panel-page-title
       v-if="!viewMode"
-      :title="`הוספת חוות דעת על ${courseSemesterDetails.course.name}`"
-      :course-id="`${courseSemesterDetails.course.id}`"
+      :title="`הוספת חוות דעת על ${feedbackFormDetails.course.name}`"
+      :course-id="`${feedbackFormDetails.course.id}`"
     ></panel-page-title>
+    <div v-if="!viewMode" class="grid grid-cols-2 gap-4">
+      <h2 class="col-span-2">סגל הקורס</h2>
+      <label for="selectedLecturer">מרצה:</label>
+      <multiselect
+        id="selectedLecturer"
+        v-model="selectedLecturer"
+        :options="lecturersList"
+        :searchable="false"
+        :show-labels="false"
+        label="label"
+        track-by="id"
+      />
+      <label for="selectedteachingAssistant">מתרגל/ת:</label>
+      <multiselect
+        id="selectedteachingAssistant"
+        v-model="selectedTeachingAssistant"
+        :options="teachingAssistantsList"
+        :searchable="false"
+        :show-labels="false"
+        label="label"
+        track-by="id"
+      />
+    </div>
     <div>
       <h2>שאלות כלליות</h2>
       <div
@@ -17,15 +40,15 @@
         :key="question.id"
         class="items-baseline"
       >
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-2">
           <div class="text-lg mb-2">
             {{ question.question }}
           </div>
           <div class="text-lg mb-2">
             <rating
               :editable="!viewMode"
-              :rating="question.currentRating"
-              @rating-set="ratingSet"
+              :rating="question.id in ratings ? ratings[question.id] : 0"
+              @rating-set="ratingSet(question.id, $event)"
             />
           </div>
         </div>
@@ -37,7 +60,7 @@
           v-model="generalFreeContent"
           placeholder="מלל חופשי על הקורס..."
           rows="5"
-          class="free-text"
+          class="form-field h-24"
           :disabled="viewMode"
         ></textarea>
       </div>
@@ -47,17 +70,19 @@
       <div
         v-for="question in lecturerQuestions"
         :key="question.id"
-        class="items-baseline"
+        class="items-center"
       >
-        <div class="grid grid-cols-2">
+        <div
+          class="grid grid-cols-2 gap-2 border-b border-input-border border-solid py-2"
+        >
           <div class="text-lg mb-2">
             {{ question.question }}
           </div>
-          <div class="text-lg mb-2">
+          <div class="text-lg mb-2 flex items-center">
             <rating
               :editable="!viewMode"
-              :rating="question.currentRating"
-              @rating-set="ratingSet"
+              :rating="question.id in ratings ? ratings[question.id] : 0"
+              @rating-set="ratingSet(question.id, $event)"
             />
           </div>
         </div>
@@ -69,39 +94,39 @@
           v-model="lecturerFreeContent"
           placeholder="מלל חופשי על מרצה הקורס..."
           rows="5"
-          class="free-text"
+          class="form-field h-24"
           :disabled="viewMode"
         ></textarea>
       </div>
     </div>
-    <div class="paragraph-comp">
+    <div>
       <h2>שאלות מתרגל</h2>
       <div
         v-for="question in taQuestions"
         :key="question.id"
         class="items-baseline"
       >
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-2">
           <div class="text-lg mb-2">
             {{ question.question }}
           </div>
           <div class="text-lg mb-2">
             <rating
               :editable="!viewMode"
-              :rating="question.currentRating"
-              @rating-set="ratingSet"
+              :rating="question.id in ratings ? ratings[question.id] : 0"
+              @rating-set="ratingSet(question.id, $event)"
             />
           </div>
         </div>
       </div>
-      <div class="grid grid-rows gap-1 text-lg">
+      <div class="grid grid-rows gap-2">
         <label for="taFreeContent" class="font-bold">מלל חופשי</label>
         <textarea
           id="taFreeContent"
           v-model="taFreeContent"
           placeholder="מלל חופשי על מתרגלי הקורס..."
           rows="5"
-          class="free-text"
+          class="form-field h-24"
           :disabled="viewMode"
         ></textarea>
       </div>
@@ -109,8 +134,31 @@
     <div v-if="!viewMode" class="submit">
       <button class="button red-button">הוסף ביקורת</button>
     </div>
+    <div v-if="viewMode" class="flex justify-center pt-4">
+      <div class="flex">
+        <button class="button red-button" @click="toggleDislike">
+          <font-awesome-icon
+            :icon="[disliked ? 'fas' : 'far', 'thumbs-down']"
+          />
+          לא אהבתי
+        </button>
+        <div class="mr-4 mt-2">{{ dislikes }}</div>
+      </div>
+      <div class="flex mr-16">
+        <button class="button green-button" @click="toggleLike">
+          <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'thumbs-up']" />
+          אהבתי
+        </button>
+        <div class="mr-4 mt-2">{{ likes }}</div>
+      </div>
+    </div>
     <div v-if="viewMode">
-      <comments @commented="updateComment"></comments>
+      <comments
+        :comments="comments"
+        :user-feedback-id="$route.query.feedbackId"
+        @commented="updateComment"
+        @new-comment="newComment"
+      ></comments>
     </div>
   </div>
 </template>
@@ -140,18 +188,52 @@
   @apply pb-6;
 }
 
+.like-button,
+.dislike-button {
+  opacity: 0.8;
+
+  @apply cursor-pointer;
+}
+
+.like-button:hover,
+.dislike-button:hover {
+  opacity: 1;
+}
+
+.like-button:active {
+  transform: translateY(-2px);
+}
+
+.dislike-button:active {
+  transform: translateY(2px);
+}
+
 h2 {
   @apply text-xl;
   @apply font-bold;
   @apply underline;
   @apply pb-2;
 }
+
+img {
+  border-radius: 0;
+}
 </style>
 
 <script>
+import Multiselect from 'vue-multiselect'
 import feedbackForm from '@/gql/editFeedbackFormDetails.gql'
-import courseSemesterDetails from '@/gql/courseSemesterDetails.gql'
+import feedbackFormDetails from '@/gql/feedbackFormDetails.gql'
+import userFeedback from '@/gql/userFeedback.gql'
+import likeUserFeedback from '@/gql/likeUserFeedback.gql'
+import dislikeUserFeedback from '@/gql/dislikeUserFeedback.gql'
+import { showSuccessToast, staffToString } from '@/utils'
+import Vue from 'vue'
+
 export default {
+  components: {
+    Multiselect,
+  },
   data() {
     return {
       availableFeedbackQuestions: {
@@ -164,11 +246,18 @@ export default {
       taFreeContent: '',
       comments: [],
       loading: false,
-      courseSemesterDetails: {
+      feedbackFormDetails: {
         course: {
           name: '',
         },
       },
+      likes: 0,
+      dislikes: 0,
+      liked: false,
+      disliked: false,
+      ratings: {},
+      selectedLecturer: null,
+      selectedTeachingAssistant: null,
     }
   },
   computed: {
@@ -177,10 +266,11 @@ export default {
     },
     generalQuestions() {
       const gqList = []
-      if (!('edges' in this.availableFeedbackQuestions.questions)) {
+      if (!('feedbackformcoursesemesterSet' in this.feedbackFormDetails)) {
         return []
       }
-      for (const item of this.availableFeedbackQuestions.questions.edges) {
+      for (const item of this.feedbackFormDetails.feedbackformcoursesemesterSet
+        .edges[0].node.feedbackForm.questions.edges) {
         if (item.node.classification === 'A_3') {
           gqList.push(item.node)
         }
@@ -189,10 +279,11 @@ export default {
     },
     lecturerQuestions() {
       const lqList = []
-      if (!('edges' in this.availableFeedbackQuestions.questions)) {
+      if (!('feedbackformcoursesemesterSet' in this.feedbackFormDetails)) {
         return []
       }
-      for (const item of this.availableFeedbackQuestions.questions.edges) {
+      for (const item of this.feedbackFormDetails.feedbackformcoursesemesterSet
+        .edges[0].node.feedbackForm.questions.edges) {
         if (item.node.classification === 'A_1') {
           lqList.push(item.node)
         }
@@ -201,16 +292,73 @@ export default {
     },
     taQuestions() {
       const tqList = []
-      if (!('edges' in this.availableFeedbackQuestions.questions)) {
+      if (!('feedbackformcoursesemesterSet' in this.feedbackFormDetails)) {
         return []
       }
-      for (const item of this.availableFeedbackQuestions.questions.edges) {
+      for (const item of this.feedbackFormDetails.feedbackformcoursesemesterSet
+        .edges[0].node.feedbackForm.questions.edges) {
         if (item.node.classification === 'A_2') {
           tqList.push(item.node)
         }
       }
       return tqList
     },
+    lecturersList() {
+      if (!('coursesemesterstaffSet' in this.feedbackFormDetails)) {
+        return []
+      }
+      return this.feedbackFormDetails.coursesemesterstaffSet.edges[0].node.lecturers.edges.map(
+        ({ node }) => ({
+          ...node,
+          label: staffToString(node),
+        })
+      )
+    },
+    teachingAssistantsList() {
+      if (!('coursesemesterstaffSet' in this.feedbackFormDetails)) {
+        return []
+      }
+      return this.feedbackFormDetails.coursesemesterstaffSet.edges[0].node.teachingAssistants.edges.map(
+        ({ node }) => ({
+          ...node,
+          label: staffToString(node),
+        })
+      )
+    },
+  },
+  watch: {
+    lecturersList(oldVal, newVal) {
+      this.selectedLecturer = this.lecturersList[0]
+    },
+    teachingAssistantsList(oldVal, newVal) {
+      this.selectedTeachingAssistant = this.teachingAssistantsList[0]
+    },
+  },
+  created() {
+    if (this.$route.query.feedbackId) {
+      this.$apollo
+        .query({
+          query: userFeedback,
+          variables: {
+            id: this.$route.query.feedbackId,
+          },
+          fetchPolicy: 'no-cache',
+        })
+        .then((response) => {
+          const serverData = response.data.userFeedback
+          this.generalFreeContent = serverData.generalFeedback
+          this.lecturerFreeContent = serverData.lecturerFeedback
+          this.taFreeContent = serverData.teachingAssistantFeedback
+          this.likes = serverData.likesCount
+          this.dislikes = serverData.dislikesCount
+          this.liked = serverData.liked
+          this.disliked = serverData.disliked
+          this.comments = serverData.commentSet.edges
+          serverData.questionuserfeedbackSet.edges.forEach(({ node }) => {
+            Vue.set(this.ratings, node.question.id, node.ranking)
+          })
+        })
+    }
   },
   methods: {
     toggleShown(index) {
@@ -219,10 +367,66 @@ export default {
     updateComment(comment) {
       this.comments.push(comment)
     },
+    async toggleLike() {
+      await this.$apollo.mutate({
+        mutation: likeUserFeedback,
+        variables: {
+          id: this.$route.query.feedbackId,
+        },
+      })
+      showSuccessToast(
+        this,
+        this.liked ? 'לייק הוסר בהצלחה' : 'לייק נוסף בהצלחה',
+        null,
+        () => {
+          if (this.disliked) {
+            this.disliked = false
+            this.dislikes--
+          }
+          this.liked = !this.liked
+          if (this.liked) {
+            this.likes++
+          } else {
+            this.likes--
+          }
+        }
+      )
+    },
+    async toggleDislike() {
+      await this.$apollo.mutate({
+        mutation: dislikeUserFeedback,
+        variables: {
+          id: this.$route.query.feedbackId,
+        },
+      })
+      showSuccessToast(
+        this,
+        this.disliked ? 'דיסלייק הוסר בהצלחה' : 'דיסלייק נוסף בהצלחה',
+        null,
+        () => {
+          if (this.liked) {
+            this.liked = false
+            this.likes--
+          }
+          this.disliked = !this.disliked
+          if (this.disliked) {
+            this.dislikes++
+          } else {
+            this.dislikes--
+          }
+        }
+      )
+    },
+    newComment(comment) {
+      this.comments.push(comment)
+    },
+    ratingSet(questionId, rating) {
+      Vue.set(this.ratings, questionId, rating)
+    },
   },
   apollo: {
-    courseSemesterDetails: {
-      query: courseSemesterDetails,
+    feedbackFormDetails: {
+      query: feedbackFormDetails,
       variables() {
         return {
           id: this.$route.params.id,
@@ -230,6 +434,7 @@ export default {
       },
       errorPolicy: 'all',
       fetchPolicy: 'no-cache',
+      update: (data) => data.courseSemesterDetails,
     },
     availableFeedbackQuestions: {
       query: feedbackForm,

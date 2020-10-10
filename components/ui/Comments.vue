@@ -1,197 +1,131 @@
 <template>
   <div class="comment-box">
+    <h2 class="text-2xl font-bold text-primary tracking-wide">תגובות</h2>
     <div v-show="loading" class="loader">
       <span class="spinner"></span>
     </div>
     <div class="comment-list">
       <span v-show="loading" class="spinner"></span>
-      <ul>
+      <ul class="my-6">
         <comment
-          v-for="comment in comments"
-          :key="comment.message"
-          :comment="comment"
+          v-for="({ node }, index) in comments"
+          :key="node.id"
+          :comment="node"
+          :index="index"
+          @edit-comment="beginEditComment"
+          @delete-comment="deleteComment"
         ></comment>
       </ul>
     </div>
-    <form action="" method="post" @submit.prevent="submit">
-      <input
-        v-model="data.name"
-        class="input-name"
-        type="text"
-        name="name"
-        placeholder="שם מלא"
-        required
-      />
+    <h3 class="text-xl font-bold text-primary tracking-wide mb-2">
+      {{ isEditing ? 'עריכת תגובה' : 'הוספת תגובה חדשה' }}
+    </h3>
+    <form class="grid grid-cols-2 min-w-0" @submit.prevent="addComment">
+      <label for="message">תוכן התגובה:</label>
       <textarea
+        id="message"
         v-model="data.message"
-        class="input-message"
-        name="message"
+        class="form-field h-24 mb-2"
         rows="3"
         placeholder="אנא מלא את תגובתך.."
         required
       ></textarea>
-      <input :disabled="loading" type="submit" value="שלח תגובה" />
+      <label for="isAnonymous">תגובה אנונימית:</label>
+      <input
+        id="isAnonymous"
+        v-model="data.isAnonymous"
+        type="checkbox"
+        class="form-checkbox"
+        :disabled="isEditing"
+      />
+      <button
+        :disabled="loading"
+        type="submit"
+        class="button blue-button mt-2 col-start-2"
+      >
+        {{ isEditing ? 'שמור תגובה' : 'שלח תגובה' }}
+      </button>
     </form>
   </div>
 </template>
 
 <script>
+import deleteComment from '@/gql/deleteComment.gql'
+import editComment from '@/gql/editComment.gql'
+import addComment from '@/gql/addComment.gql'
+import { showSuccessToast } from '@/utils'
 export default {
+  props: {
+    comments: {
+      type: Array,
+      required: true,
+    },
+    userFeedbackId: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       loading: false,
-      comments: {
-        sagi_com: {
-          name: 'שומו שמיים',
-          message: 'שלום לכולם',
-          date: '07/10/2020',
-          avatar: this.avatar(),
-        },
-        shubi: {
-          name: 'זאב ערבות',
-          message: 'זו בדיקה',
-          date: '07/10/2020',
-          avatar: this.avatar(),
-        },
-        dubi: {
-          name: 'שוקי נגר',
-          message: 'וזו עוד בדיקה',
-          date: '07/10/2020',
-          avatar: this.avatar(),
-        },
+      data: {
+        id: undefined,
+        message: '',
+        isAnonymous: true,
       },
-      data: {},
+      isEditing: false,
     }
   },
   methods: {
-    randomWord() {
-      const num = Math.floor(Math.random() * 10)
-      const word = Math.random().toString(36).substring(num)
-      return word
+    async addComment() {
+      const result = await this.$apollo.mutate({
+        mutation: this.isEditing ? editComment : addComment,
+        variables: {
+          input: {
+            id: this.data.id,
+            content: this.data.message,
+            userFeedbackId: this.isEditing ? undefined : this.userFeedbackId,
+            isAnonymous: this.isEditing ? undefined : this.data.isAnonymous,
+          },
+        },
+      })
+      this.$emit('new-comment', {
+        node: this.isEditing
+          ? result.data.editComment.comment
+          : result.data.addComment.comment,
+      })
+      showSuccessToast(
+        this,
+        this.isEditing ? 'התגובה נערכה בהצלחה' : 'התגובה נוספה בהצלחה'
+      )
+      this.clearNewComment()
+      this.isEditing = false
     },
-    avatar() {
-      return 'https://robohash.org/' + this.randomWord() + '?set=set2'
+    beginEditComment(index) {
+      this.isEditing = true
+      const selectedComment = this.comments[index].node
+      this.comments.splice(index, 1)
+      this.data.message = selectedComment.content
+      this.data.isAnonymous = selectedComment.isAnonymous
+      this.data.id = selectedComment.id
     },
-    submit() {},
+    async deleteComment(index) {
+      const { id } = this.comments[index].node
+      await this.$apollo.mutate({
+        mutation: deleteComment,
+        variables: {
+          id,
+        },
+      })
+      showSuccessToast(this, 'התגובה נמחקה בהצלחה', null, () => {
+        this.comments.splice(index, 1)
+      })
+    },
+    clearNewComment() {
+      this.data.id = undefined
+      this.data.message = ''
+      this.data.isAnonymous = true
+    },
   },
 }
 </script>
-
-<style>
-.comment-box {
-  width: 100%;
-  margin: auto;
-}
-.comment-box form {
-  padding: 1rem;
-}
-.comment-box input,
-.comment-box textarea {
-  font-size: 0.8em;
-  width: 97.3%;
-  padding: 0.6em;
-  border: 1px solid #eee;
-  background-color: #f7f7f7;
-  display: block;
-  margin-bottom: 1em;
-  font-family: 'Raleway', sans-serif;
-  transition: all ease 0.3s;
-}
-.comment-box input:focus,
-.comment-box textarea:focus {
-  border-color: #47b784;
-  outline: none;
-  box-shadow: inset 0 0 3px #ddd;
-}
-.comment-box input[type='submit'] {
-  margin-bottom: 0;
-  width: 30%;
-  background-color: #47b784;
-  color: #fff;
-  border-color: #47b784;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.comment-box input[type='submit']:focus {
-  background-color: #36495d;
-}
-.comment-box input[type='submit']:disabled {
-  opacity: 0.6;
-}
-.comment-list {
-  padding: 1em 0;
-}
-.comment-list ul {
-  margin: 0;
-  padding: 1em;
-}
-.comment-list li {
-  list-style: none;
-  text-align: right;
-  overflow: hidden;
-  margin-bottom: 2em;
-  padding: 0.4em;
-}
-.comment-list .profile {
-  width: 80px;
-  float: right;
-}
-.comment-list .profile img {
-  border-radius: 50%;
-  border: 2px solid #fff;
-  width: 48px;
-  height: 48px;
-  background-color: #ddd;
-  box-shadow: 0 0 5px #ddd;
-}
-.comment-list .msg {
-  width: 86%;
-  float: right;
-  background-color: #fff;
-  border-radius: 0 5px 5px 5px;
-  box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.05);
-  position: relative;
-}
-.comment-list .msg-body {
-  padding: 0.8em;
-  color: #666;
-  line-height: 1.5;
-}
-.comment-list .msg-body p:last-child {
-  margin-bottom: 0;
-}
-.comment-list .msg-body ::after {
-  content: ' ';
-  position: absolute;
-  right: -13px;
-  top: 0;
-  border: 14px solid;
-  border-color: #fff transparent transparent transparent;
-}
-.comment-list .name {
-  margin: 0;
-  color: #999;
-  font-weight: bold;
-  font-size: 0.8em;
-}
-.comment-list .date {
-  float: right;
-}
-#comment {
-  position: relative;
-}
-#comment .spinner {
-  margin-top: 5em;
-  z-index: 999;
-}
-#comment .loader {
-  content: '';
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 2;
-}
-</style>

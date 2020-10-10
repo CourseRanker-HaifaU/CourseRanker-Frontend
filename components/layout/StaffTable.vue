@@ -132,7 +132,6 @@ export default {
   @apply py-4;
   @apply px-1;
   @apply mx-0;
-  @apply text-xs;
   @apply align-middle;
 }
 
@@ -144,7 +143,6 @@ export default {
 }
 @screen md {
   .td-style {
-    @apply text-sm;
     @apply mx-2;
   }
 }
