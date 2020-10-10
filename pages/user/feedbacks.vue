@@ -1,9 +1,9 @@
 <template>
   <div>
-    <panel-page-title title="הקורסים שלי" />
+    <panel-page-title title="חוות הדעת שלי" />
     <feedback-preview
       :my-feedbacks="true"
-      :course-semester-id="feedbacksList.edges.node.courseSemester.id"
+      :course-semester-id="feedbacksList.edges[0].node.courseSemester.id"
       :feedbacks="feedbacksList"
     ></feedback-preview>
   </div>
@@ -16,21 +16,7 @@ export default {
     return {
       feedbacksList: {
         edges: {
-          node: {
-            id: '',
-            averageCourseRating: '',
-            averageLecturerRating: '',
-            averageTeachingAssistantRating: '',
-            courseSemester: {
-              course: {
-                name: '',
-              },
-              semester: {
-                name: '',
-                yearJewish: '',
-              },
-            },
-          },
+          node: {},
         },
       },
     }
@@ -38,6 +24,7 @@ export default {
   apollo: {
     feedbacksList: {
       query: myFeedbacks,
+      update: (data) => data.myFeedbacks,
     },
   },
 }

@@ -11,6 +11,7 @@
           <th v-if="myFeedbacks" class="td-style">שם הקורס</th>
           <th v-if="myFeedbacks" class="td-style">סימסטר</th>
           <th
+            v-if="!myFeedbacks"
             :class="{ 'column-title': !myFeedbacks, 'td-style': myFeedbacks }"
           >
             ביקורת מילולית על הקורס
