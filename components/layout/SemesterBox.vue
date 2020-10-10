@@ -204,7 +204,14 @@
           מחק קורס בסמסטר
         </button>
       </div>
-      <div
+      <div class="flex flex-row col-span-2 items-center">
+        <feedback-preview
+          :avatar="avatar()"
+          :course-semester-id="edge.node.id"
+          :feedbacks="edge.node.userfeedbackSet"
+        ></feedback-preview>
+      </div>
+      <form
         v-if="histogramAddShown.includes(index)"
         class="col-span-2 items-baseline grid grid-cols-2 gap-2"
       >
@@ -223,19 +230,31 @@
           type="number"
         ></input-field>
         <label :for="`histogram_${index}`">התפלגות:</label>
-        <table :id="`histogram_${index}`">
-          <thead>
-            <tr></tr>
-          </thead>
-        </table>
-      </div>
-      <div class="flex flex-row col-span-2 items-center">
-        <feedback-preview
-          :avatar="avatar()"
-          :course-semester-id="edge.node.id"
-          :feedbacks="edge.node.userfeedbackSet"
-        ></feedback-preview>
-      </div>
+        <div :id="`histogram_${index}`">
+          <div
+            v-for="i in 10"
+            :key="`histogram_${index}_bin_${i}`"
+            class="flex flex-col items-baseline rounded-lg border-input-border border border-solid mb-2 p-2 text-left"
+            dir="ltr"
+          >
+            <label :for="`histogram_${index}_bin_${i}_input`">
+              {{ histogramMapping[i - 1] }}:
+            </label>
+            <input-field
+              :id="`histogram_${index}_bin_${i}_input`"
+              v-model.number="addGrades[index].histogram[i - 1]"
+              type="number"
+              :label="histogramMapping[i - 1]"
+            ></input-field>
+          </div>
+          <button
+            class="button blue-button"
+            @click.prevent="sendHistogram(index)"
+          >
+            {{ isAdmin ? 'הוסף ציוני מבחן' : 'שלח ציוני מבחן לאישור' }}
+          </button>
+        </div>
+      </form>
     </labeled-box-card>
   </div>
 </template>
@@ -250,6 +269,7 @@ import {
 import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
 import deleteCourseInSemester from '@/gql/deleteCourseInSemester.gql'
+import addGrades from '@/gql/addGrades.gql'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -267,6 +287,18 @@ export default {
       histogramShown: [],
       histogramAddShown: [],
       addGrades: {},
+      histogramMapping: [
+        '0-10',
+        '11-20',
+        '21-30',
+        '31-40',
+        '41-50',
+        '51-60',
+        '61-70',
+        '71-80',
+        '81-90',
+        '91+',
+      ],
     }
   },
   computed: {
@@ -343,6 +375,26 @@ export default {
         this.histogramAddShown.splice(shownIndex, 1)
         delete this.addGrades[index]
       }
+    },
+    async sendHistogram(index) {
+      await this.$apollo.mutate({
+        mutation: addGrades,
+        variables: {
+          input: {
+            courseSemesterId: this.data[index].node.id,
+            ...this.addGrades[index],
+          },
+        },
+      })
+      showSuccessToast(
+        this,
+        'נשלח בהצלחה. יתכן שיידרש אישור מנהל',
+        null,
+        () => {
+          this.toggleHistogramAddShown(index)
+          this.$router.go()
+        }
+      )
     },
   },
 }

@@ -1,0 +1,7 @@
+mutation addGrades($input: AddGradesInput!) {
+  addGrades(input: $input) {
+    courseSemesterExam {
+      id
+    }
+  }
+}
