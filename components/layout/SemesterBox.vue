@@ -10,20 +10,37 @@
     >
       <div class="items-baseline flex-row">
         <strong>מרצה:</strong>
-        <span>{{
-          multipleStaffToString(
-            edge.node.coursesemesterstaffSet.edges[0].node.lecturers.edges
-          )
-        }}</span>
+        <ul class="list-disc pr-5">
+          <li
+            v-for="staffEdge in edge.node.coursesemesterstaffSet.edges[0].node
+              .lecturers.edges"
+            :key="staffEdge.node.id"
+          >
+            <nuxt-link
+              :to="`/staff/${staffEdge.node.id}`"
+              class="underline text-primary hover:text-primary-hover"
+            >
+              {{ staffToString(staffEdge.node) }}
+            </nuxt-link>
+          </li>
+        </ul>
       </div>
-      <div class="flex items-baseline flex-row">
+      <div class="items-baseline flex-row">
         <strong>מתרגל/ת:</strong>
-        <span>{{
-          multipleStaffToString(
-            edge.node.coursesemesterstaffSet.edges[0].node.teachingAssistants
-              .edges
-          )
-        }}</span>
+        <ul class="list-disc pr-5">
+          <li
+            v-for="staffEdge in edge.node.coursesemesterstaffSet.edges[0].node
+              .teachingAssistants.edges"
+            :key="staffEdge.node.id"
+          >
+            <nuxt-link
+              :to="`/staff/${staffEdge.node.id}`"
+              class="underline text-primary hover:text-primary-hover"
+            >
+              {{ staffToString(staffEdge.node) }}
+            </nuxt-link>
+          </li>
+        </ul>
       </div>
       <div
         class="flex items-baseline flex-row justify-between md:justify-start"
@@ -185,7 +202,12 @@
 </template>
 
 <script>
-import { multipleStaffToString, getSemester, showSuccessToast } from '@/utils'
+import {
+  multipleStaffToString,
+  staffToString,
+  getSemester,
+  showSuccessToast,
+} from '@/utils'
 import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
 import deleteCourseInSemester from '@/gql/deleteCourseInSemester.gql'
@@ -213,6 +235,7 @@ export default {
   },
   methods: {
     multipleStaffToString,
+    staffToString,
     getSemester,
     randomWord() {
       const num = Math.floor(Math.random() * 10)
