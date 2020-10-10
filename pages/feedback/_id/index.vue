@@ -367,30 +367,25 @@ export default {
         mutation: addUserFeedback,
         variables: {
           input: {
-            feedback_form_id: this.feedbackFormDetails
-              .feedbackformcoursesemesterSet.edges.node.feedbackForm.id,
-            /* Not sure where to get coursesemeter id */
-
-            course_semester_id: this.feedbackFormDetails
-              .feedbackformcoursesemesterSet.edges.node.feedbackForm.id,
-            lecturer_id: this.feedbackFormDetails.coursesemesterstaffSet.edges
-              .node.lecturers.edges.node.id,
-            teaching_assistant_id: this.feedbackFormDetails
-              .coursesemesterstaffSet.edges.node.teachingAssistants.edges.node
-              .id,
-            /* Not sure where to get question ratings */
-
-            question_ratings: this.ratings,
-            lecturer_feedback: this.lecturerFreeContent,
-            teaching_assistant_feedback: this.taFreeContent,
-            general_feedback: this.generalFreeContent,
+            feedbackFormId: this.feedbackFormDetails
+              .feedbackformcoursesemesterSet.edges[0].node.feedbackForm.id,
+            courseSemesterId: this.$route.params.id,
+            lecturerId: this.selectedLecturer.id,
+            teachingAssistantId: this.selectedTeachingAssistant.id,
+            questionRatings: Object.keys(this.ratings).map((key) => ({
+              questionId: key,
+              rating: this.ratings[key],
+            })),
+            lecturerFeedback: this.lecturerFreeContent,
+            teachingAssistantFeedback: this.taFreeContent,
+            generalFeedback: this.generalFreeContent,
           },
         },
       })
       showSuccessToast(
         this,
         'ביקורת נוספה בהצלחה!',
-        `/course/${feedbackFormDetails.course.id}`
+        `/course/${this.feedbackFormDetails.course.id}`
       )
     },
     toggleShown(index) {
