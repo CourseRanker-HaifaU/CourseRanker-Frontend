@@ -63,6 +63,7 @@ query courseDetails($id: ID!) {
                 lecturers {
                   edges {
                     node {
+                      id
                       title
                       firstName
                       lastName
@@ -72,6 +73,7 @@ query courseDetails($id: ID!) {
                 teachingAssistants {
                   edges {
                     node {
+                      id
                       title
                       firstName
                       lastName
