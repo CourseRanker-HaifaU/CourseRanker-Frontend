@@ -170,6 +170,12 @@
         >
           הסר מהקורסים שלי
         </button>
+        <button
+          class="button blue-button mb-2 md:mb-0 md:ml-2 h-full"
+          @click="toggleHistogramAddShown(index)"
+        >
+          הוסף ציוני מבחן
+        </button>
         <nuxt-link
           v-if="edge.node.feedbackformcoursesemesterSet.edges.length > 0"
           class="button blue-button h-full mb-2 md:mb-0 md:ml-2"
@@ -205,6 +211,50 @@
           :feedbacks="edge.node.userfeedbackSet"
         ></feedback-preview>
       </div>
+      <form
+        v-if="histogramAddShown.includes(index)"
+        class="col-span-2 items-baseline grid grid-cols-2 gap-2"
+      >
+        <label :for="`moed_${index}`">מועד:</label>
+        <input-field
+          :id="`moed_${index}`"
+          v-model="addGrades[index].moed"
+          label="מועד"
+          type="text"
+        ></input-field>
+        <label :for="`average_${index}`">ממוצע:</label>
+        <input-field
+          :id="`average_${index}`"
+          v-model="addGrades[index].average"
+          label="ממוצע"
+          type="number"
+        ></input-field>
+        <label :for="`histogram_${index}`">התפלגות:</label>
+        <div :id="`histogram_${index}`">
+          <div
+            v-for="i in 10"
+            :key="`histogram_${index}_bin_${i}`"
+            class="flex flex-col items-baseline rounded-lg border-input-border border border-solid mb-2 p-2 text-left"
+            dir="ltr"
+          >
+            <label :for="`histogram_${index}_bin_${i}_input`">
+              {{ histogramMapping[i - 1] }}:
+            </label>
+            <input-field
+              :id="`histogram_${index}_bin_${i}_input`"
+              v-model.number="addGrades[index].histogram[i - 1]"
+              type="number"
+              :label="histogramMapping[i - 1]"
+            ></input-field>
+          </div>
+          <button
+            class="button blue-button"
+            @click.prevent="sendHistogram(index)"
+          >
+            {{ isAdmin ? 'הוסף ציוני מבחן' : 'שלח ציוני מבחן לאישור' }}
+          </button>
+        </div>
+      </form>
     </labeled-box-card>
   </div>
 </template>
@@ -219,6 +269,7 @@ import {
 import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
 import deleteCourseInSemester from '@/gql/deleteCourseInSemester.gql'
+import addGrades from '@/gql/addGrades.gql'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -234,6 +285,20 @@ export default {
     return {
       showIndices: [0],
       histogramShown: [],
+      histogramAddShown: [],
+      addGrades: {},
+      histogramMapping: [
+        '0-10',
+        '11-20',
+        '21-30',
+        '31-40',
+        '41-50',
+        '51-60',
+        '61-70',
+        '71-80',
+        '81-90',
+        '91+',
+      ],
     }
   },
   computed: {
@@ -296,6 +361,40 @@ export default {
       } else {
         this.histogramShown.splice(shownIndex, 1)
       }
+    },
+    toggleHistogramAddShown(index) {
+      const shownIndex = this.histogramAddShown.indexOf(index)
+      if (shownIndex === -1) {
+        this.histogramAddShown.push(index)
+        this.addGrades[index] = {
+          moed: '',
+          average: 0.0,
+          histogram: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        }
+      } else {
+        this.histogramAddShown.splice(shownIndex, 1)
+        delete this.addGrades[index]
+      }
+    },
+    async sendHistogram(index) {
+      await this.$apollo.mutate({
+        mutation: addGrades,
+        variables: {
+          input: {
+            courseSemesterId: this.data[index].node.id,
+            ...this.addGrades[index],
+          },
+        },
+      })
+      showSuccessToast(
+        this,
+        'נשלח בהצלחה. יתכן שיידרש אישור מנהל',
+        null,
+        () => {
+          this.toggleHistogramAddShown(index)
+          this.$router.go()
+        }
+      )
     },
   },
 }
