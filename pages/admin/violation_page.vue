@@ -275,20 +275,6 @@ export default {
   @apply bg-green-200;
 }
 
-.nav-button {
-  @apply text-sm;
-  @apply bg-gray-300;
-  @apply text-gray-800;
-  @apply font-semibold;
-  @apply py-2;
-  @apply px-4;
-  @apply leading-tight;
-}
-
-.nav-button:hover {
-  @apply bg-secondary-hover;
-}
-
 tr:hover td {
   @apply bg-secondary-hover;
 }

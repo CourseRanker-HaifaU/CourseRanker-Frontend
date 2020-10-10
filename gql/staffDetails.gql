@@ -6,7 +6,7 @@ query ($id: ID!, $lecturersPerPage: Int!, $lecturersAfter: String, $teachingAssi
     lastName
     averageRatingAsLecturer
     averageRatingAsTeachingAssistant
-    lecturers(first: $lecturersPerPage, after: $lecturersAfter) {
+    lecturers(first: $lecturersPerPage, after: $lecturersAfter, orderBy: "courseName,semesterYearJewish,semesterName") {
       pageInfo {
         hasNextPage
         endCursor
@@ -33,7 +33,7 @@ query ($id: ID!, $lecturersPerPage: Int!, $lecturersAfter: String, $teachingAssi
         }
       }
     }
-    teachingAssistants(first: $teachingAssistantsPerPage, after: $teachingAssistantsAfter) {
+    teachingAssistants(first: $teachingAssistantsPerPage, after: $teachingAssistantsAfter, orderBy: "courseName,semesterYearJewish,semesterName") {
       pageInfo {
         hasNextPage
         endCursor

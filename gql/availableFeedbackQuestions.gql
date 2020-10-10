@@ -1,5 +1,5 @@
 query($perPage: Int, $after: String, $keywords: String, $classification: String,) {
-  availableFeedbackQuestions(first: $perPage, after: $after, question_Icontains: $keywords, classification: $classification) {
+  availableFeedbackQuestions(first: $perPage, after: $after, question_Icontains: $keywords, classification: $classification, orderBy: "classification,question") {
     pageInfo {
       hasNextPage
       endCursor

@@ -1,0 +1,7 @@
+mutation addUserFeedback($input: AddUserFeedbackInput!) {
+  addUserFeedback(input: $input) {
+    userFeedback {
+      id
+    }
+  }
+}

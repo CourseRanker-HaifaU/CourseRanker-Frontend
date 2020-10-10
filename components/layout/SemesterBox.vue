@@ -71,6 +71,9 @@
       </div>
       <div
         class="flex items-baseline flex-row justify-between md:justify-start"
+        :class="{
+          'md:col-span-2': edge.node.coursesemesterexamSet.edges.length === 0,
+        }"
       >
         <strong>דירוג קורס + מתרגל/ת:</strong>
         <span>
@@ -142,12 +145,18 @@
         >
           הסר מהקורסים שלי
         </button>
-        <button
-          class="button blue-button h-full"
-          :class="{ 'mb-2 md:mb-0 md:ml-2': isAdmin }"
+        <nuxt-link
+          v-if="edge.node.feedbackformcoursesemesterSet.edges.length > 0"
+          class="button blue-button h-full mb-2 md:mb-0 md:ml-2"
+          :to="
+            edge.node.wroteFeedback
+              ? `/feedback/${edge.node.id}?edit=1&feedbackId=${edge.node.feedbackId}`
+              : `/feedback/${edge.node.id}?edit=1`
+          "
+          tag="button"
         >
-          הוסף חוות דעת
-        </button>
+          {{ edge.node.wroteFeedback ? 'ערוך חוות דעת' : 'הוסף חוות דעת' }}
+        </nuxt-link>
         <nuxt-link
           v-if="isAdmin"
           :to="`/admin/course_semester/${edge.node.id}`"
@@ -164,12 +173,19 @@
           מחק קורס בסמסטר
         </button>
       </div>
+      <div class="flex flex-row col-span-2 items-center">
+        <feedback-preview
+          :avatar="avatar()"
+          :course-semester-id="edge.node.id"
+          :feedbacks="edge.node.userfeedbackSet"
+        ></feedback-preview>
+      </div>
     </labeled-box-card>
   </div>
 </template>
 
 <script>
-import { multipleStaffToString, getSemester } from '@/utils'
+import { multipleStaffToString, getSemester, showSuccessToast } from '@/utils'
 import addCourseToMyCourses from '@/gql/addCourseToMyCourses.gql'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
 import deleteCourseInSemester from '@/gql/deleteCourseInSemester.gql'
@@ -198,6 +214,14 @@ export default {
   methods: {
     multipleStaffToString,
     getSemester,
+    randomWord() {
+      const num = Math.floor(Math.random() * 10)
+      const word = Math.random().toString(36).substring(num)
+      return word
+    },
+    avatar() {
+      return 'https://robohash.org/' + this.randomWord() + '?set=set2'
+    },
     triggerToggleShown(index) {
       this.$emit('toggle-shown', index)
     },
@@ -209,7 +233,7 @@ export default {
         },
       })
       node.inMyCourses = true
-      alert('נוסף בהצלחה!')
+      showSuccessToast(this, 'נוסף לקורסים שלי', null)
       this.$forceUpdate()
     },
     async removeFromMyCourses(node) {
@@ -220,7 +244,7 @@ export default {
         },
       })
       node.inMyCourses = false
-      alert('הוסר מהקורסים שלך')
+      showSuccessToast(this, 'הוסר מהקורסים שלי', null)
       this.$forceUpdate()
     },
     async deleteCourseSemester(node, index) {
@@ -230,7 +254,7 @@ export default {
           id: node.id,
         },
       })
-      alert('נמחק בהצלחה')
+      showSuccessToast(this, 'נמחק בהצלחה', '/')
       this.$emit('delete-course-semester', index)
     },
   },

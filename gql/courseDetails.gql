@@ -25,13 +25,37 @@ query courseDetails($id: ID!) {
         }
       }
     }
-    coursesemesterSet {
+    coursesemesterSet(orderBy: "semesterYearJewish,semesterName") {
       edges {
         node {
           id
           semester {
             name
             yearJewish
+          }
+          feedbackformcoursesemesterSet {
+            edges {
+              node {
+                feedbackForm {
+                  id
+                  label
+                }
+              }
+            }
+          }
+          userfeedbackSet {
+            edges {
+              node {
+                id
+                timestamp
+                generalFeedback
+                lecturerFeedback
+                teachingAssistantFeedback
+                averageCourseRating
+                averageLecturerRating
+                averageTeachingAssistantRating
+              }
+            }
           }
           coursesemesterstaffSet {
             edges {
@@ -73,6 +97,8 @@ query courseDetails($id: ID!) {
           averageCourseAndLecturerRating
           averageCourseAndTeachingAssistantRating
           inMyCourses
+          wroteFeedback
+          feedbackId
         }
       }
     }

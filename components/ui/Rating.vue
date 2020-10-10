@@ -8,7 +8,8 @@
       <font-awesome-icon
         v-for="n in 5"
         :key="n"
-        class="text-primary text-xs"
+        class="text-primary"
+        :size="size"
         :icon="[displayRating >= n ? 'fas' : 'far', 'star']"
         :aria-label="n + ' מתוך 5'"
         @mouseover="mouseOver(n)"
@@ -51,6 +52,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    size: {
+      type: String,
+      default: 'xs',
+    },
   },
   data() {
     return {
@@ -66,7 +71,9 @@ export default {
   },
   methods: {
     ratingSet(number) {
-      this.$emit('rating-set', number)
+      if (this.editable) {
+        this.$emit('rating-set', number)
+      }
     },
     mouseOver(n) {
       if (this.editable) {

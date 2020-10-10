@@ -106,6 +106,7 @@ export default {
           search: this.keywords,
           first: this.rowsPerPage,
           after: '',
+          orderBy: 'lastName,firstName',
         }
       },
       debounce: 300,
@@ -158,6 +159,7 @@ export default {
               search: this.keywords,
               first: this.rowsPerPage,
               after: endCursor,
+              orderBy: 'lastName,firstName',
             },
             updateQuery: (previousResult, { fetchMoreResult }) => {
               const ret = { ...fetchMoreResult }

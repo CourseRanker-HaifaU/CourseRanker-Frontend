@@ -14,7 +14,14 @@
       >
         <div>
           <strong>שם קורס:</strong>
-          {{ listItem.course.name }}
+          <nuxt-link
+            v-if="whichTable === 'myCourses'"
+            :to="`/course/${listItem.course.id}`"
+            >{{ listItem.course.name }}
+          </nuxt-link>
+          <span v-if="whichTable !== 'myCourses'">
+            {{ listItem.course.name }}
+          </span>
         </div>
         <div>
           <strong>סמסטר:</strong>
@@ -61,8 +68,31 @@
             הוספת חוות דעת
           </button>
         </div>
-        <div v-if="whichTable === 'myCourses' && !isLecturer && !isAssist">
-          <button class="table-btn">מחק קורס</button>
+        <div
+          v-if="whichTable === 'myCourses' && !isLecturer && !isAssist"
+          class="col-span-2"
+        >
+          <button class="table-btn" @click.prevent="removeCourse(listItem.id)">
+            מחק קורס
+          </button>
+          <nuxt-link
+            v-if="listItem.feedbackformSet.edges.length > 0"
+            tag="button"
+            class="button mr-2"
+            :class="{
+              'blue-button': listItem.wroteFeedback,
+              'green-button': !listItem.wroteFeedback,
+            }"
+            :to="`/feedback/${listItem.id}?feedbackId=${
+              listItem.feedbackformSet.edges[0].node.id
+            }${
+              listItem.wroteFeedback
+                ? `&edit=1&userFeedbackId=${listItem.feedbackId}`
+                : ''
+            }`"
+          >
+            {{ listItem.wroteFeedback ? 'ערוך חוות דעת' : 'הוסף חוות דעת' }}
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -86,7 +116,7 @@
             v-if="whichTable === 'myCourses' && !isLecturer && !isAssist"
             class="td-style"
           >
-            מחק מהקורסים שלי
+            פעולות
           </th>
         </tr>
       </thead>
@@ -106,7 +136,14 @@
         <td
           :class="[whichTable === 'myCourses' ? 'td-my-courses' : 'td-style']"
         >
-          {{ listItem.course.name }}
+          <nuxt-link
+            v-if="whichTable === 'myCourses'"
+            :to="`/course/${listItem.course.id}`"
+            >{{ listItem.course.name }}
+          </nuxt-link>
+          <span v-if="whichTable !== 'myCourses'">
+            {{ listItem.course.name }}
+          </span>
         </td>
 
         <!-------------------- 2nd col -------------------->
@@ -180,9 +217,28 @@
           v-if="whichTable === 'myCourses' && !isLecturer && !isAssist"
           class="td-my-courses"
         >
-          <button class="table-btn" @click.prevent="removeCourse(listItem.id)">
+          <button
+            class="table-btn min-w-full xxl:min-w-0"
+            @click.prevent="removeCourse(listItem.id)"
+          >
             מחק קורס
           </button>
+          <nuxt-link
+            v-if="listItem.feedbackformSet.edges.length > 0"
+            tag="button"
+            class="button mt-2 min-w-full xxl:min-w-0 xxl:mt-0 xxl:mr-2"
+            :class="{
+              'blue-button': listItem.wroteFeedback,
+              'green-button': !listItem.wroteFeedback,
+            }"
+            :to="`/feedback/${listItem.id}${
+              listItem.wroteFeedback
+                ? `?feedbackId=${listItem.feedbackId}&edit=1`
+                : '?edit=1'
+            }`"
+          >
+            {{ listItem.wroteFeedback ? 'ערוך חוות דעת' : 'הוסף חוות דעת' }}
+          </nuxt-link>
         </td>
       </tr>
     </table>
@@ -195,7 +251,7 @@
 
 <script>
 import SmallWidthMixin from '@/mixins/small_width'
-import { multipleStaffToString, getSemester } from '@/utils'
+import { multipleStaffToString, getSemester, showSuccessToast } from '@/utils'
 import removeFromMyCourses from '@/gql/removeFromMyCourses.gql'
 import { mapMutations } from 'vuex'
 
@@ -267,6 +323,7 @@ export default {
       const toRemove = this.courseList.dataArray.findIndex(
         (item) => item.id === id
       )
+      showSuccessToast(this, 'הוסר בהצלחה', '/user/courses')
       this.$emit('remove-row', toRemove)
     },
   },
@@ -278,7 +335,6 @@ export default {
   @apply py-4;
   @apply px-1;
   @apply mx-0;
-  @apply text-xs;
   @apply align-middle;
 }
 
@@ -290,7 +346,6 @@ export default {
 }
 @screen md {
   .td-style {
-    @apply text-sm;
     @apply mx-2;
   }
 }

@@ -1,0 +1,58 @@
+query feedbackFormDetails($id: ID!){
+  courseSemesterDetails(id: $id) {
+    course {
+      id
+      name
+    }
+    semester {
+      id
+      name
+      yearJewish
+    }
+    coursesemesterstaffSet {
+      edges {
+        node {
+          lecturers {
+            edges {
+              node {
+                id
+                title
+                firstName
+                lastName
+              }
+            }
+          }
+          teachingAssistants {
+            edges {
+              node {
+                id
+                title
+                firstName
+                lastName
+              }
+            }
+          }
+        }
+      }
+    }
+    feedbackformcoursesemesterSet {
+      edges {
+        node {
+          feedbackForm {
+            id
+            label
+            questions(orderBy: "classification,question") {
+              edges {
+                node {
+                  id
+                  question
+                  classification
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

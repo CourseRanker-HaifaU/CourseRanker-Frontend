@@ -99,8 +99,10 @@ export default {
         'faExclamationTriangle',
         'faArrowRight',
         'faAngleUp',
+        'faThumbsUp',
+        'faThumbsDown',
       ],
-      regular: ['faStar'],
+      regular: ['faStar', 'faThumbsUp', 'faThumbsDown'],
     },
   },
   apollo: {
