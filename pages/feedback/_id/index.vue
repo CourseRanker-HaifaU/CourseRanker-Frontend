@@ -132,7 +132,7 @@
       </div>
     </div>
     <div v-if="!viewMode" class="submit">
-      <button class="button red-button">הוסף ביקורת</button>
+      <button class="button red-button" @click="onSubmit">הוסף ביקורת</button>
     </div>
     <div v-if="viewMode" class="flex justify-center pt-4">
       <div class="flex">
@@ -225,6 +225,7 @@ import Multiselect from 'vue-multiselect'
 import feedbackForm from '@/gql/editFeedbackFormDetails.gql'
 import feedbackFormDetails from '@/gql/feedbackFormDetails.gql'
 import userFeedback from '@/gql/userFeedback.gql'
+import addUserFeedback from '@/gql/addUserFeedback.gql'
 import likeUserFeedback from '@/gql/likeUserFeedback.gql'
 import dislikeUserFeedback from '@/gql/dislikeUserFeedback.gql'
 import { showSuccessToast, staffToString } from '@/utils'
@@ -361,6 +362,37 @@ export default {
     }
   },
   methods: {
+    async onSubmit() {
+      await this.$apollo.mutate({
+        mutation: addUserFeedback,
+        variables: {
+          input: {
+            feedback_form_id: this.feedbackFormDetails
+              .feedbackformcoursesemesterSet.edges.node.feedbackForm.id,
+            /* Not sure where to get coursesemeter id */
+
+            course_semester_id: this.feedbackFormDetails
+              .feedbackformcoursesemesterSet.edges.node.feedbackForm.id,
+            lecturer_id: this.feedbackFormDetails.coursesemesterstaffSet.edges
+              .node.lecturers.edges.node.id,
+            teaching_assistant_id: this.feedbackFormDetails
+              .coursesemesterstaffSet.edges.node.teachingAssistants.edges.node
+              .id,
+            /* Not sure where to get question ratings */
+
+            question_ratings: this.ratings,
+            lecturer_feedback: this.lecturerFreeContent,
+            teaching_assistant_feedback: this.taFreeContent,
+            general_feedback: this.generalFreeContent,
+          },
+        },
+      })
+      showSuccessToast(
+        this,
+        'ביקורת נוספה בהצלחה!',
+        `/course/${feedbackFormDetails.course.id}`
+      )
+    },
     toggleShown(index) {
       this.isShown[index].value = !this.isShown[index].value
     },
