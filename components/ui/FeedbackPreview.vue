@@ -1,13 +1,40 @@
 <template>
   <div v-if="feedbacks.edges.length > 0" class="flex">
-    <table class="min-w-full leading-normal">
+    <table
+      class="min-w-full leading-normal"
+      :class="{
+        'lg:w-full text-right': myFeedbacks,
+      }"
+    >
       <thead>
-        <tr>
-          <th class="column-title">ביקורת מילולית על הקורס</th>
-          <th class="column-title">דירוג קורס</th>
-          <th class="column-title">דירוג מרצה</th>
-          <th class="column-title">דירוג מתרגל</th>
-          <th class="column-title">נשלח בתאריך</th>
+        <tr :class="{ 'border-b-2 border-black': myFeedbacks }">
+          <th v-if="myFeedbacks" class="td-style">שם הקורס</th>
+          <th v-if="myFeedbacks" class="td-style">סימסטר</th>
+          <th
+            :class="{ 'column-title': !myFeedbacks, 'td-style': myFeedbacks }"
+          >
+            ביקורת מילולית על הקורס
+          </th>
+          <th
+            :class="{ 'column-title': !myFeedbacks, 'td-style': myFeedbacks }"
+          >
+            דירוג קורס
+          </th>
+          <th
+            :class="{ 'column-title': !myFeedbacks, 'td-style': myFeedbacks }"
+          >
+            דירוג מרצה
+          </th>
+          <th
+            :class="{ 'column-title': !myFeedbacks, 'td-style': myFeedbacks }"
+          >
+            דירוג מתרגל
+          </th>
+          <th
+            :class="{ 'column-title': !myFeedbacks, 'td-style': myFeedbacks }"
+          >
+            נשלח בתאריך
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -19,17 +46,28 @@
             sendTo(`/feedback/${courseSemesterId}?feedbackId=${edge.node.id}`)
           "
         >
-          <td>{{ edge.node.generalFeedback }}</td>
-          <td>
+          <td v-if="myFeedbacks" class="td-my-courses">
+            {{ edge.node.courseSemester.course.name }}
+          </td>
+          <td v-if="myFeedbacks" class="td-my-courses">
+            {{ getSemester(edge.node.courseSemester.semester.yearJewish) }}
+            {{ getSemester(edge.node.courseSemester.semester.name) }}
+          </td>
+          <td v-if="!myFeedbacks" :class="{ 'td-my-courses': myFeedbacks }">
+            {{ edge.node.generalFeedback }}
+          </td>
+          <td :class="{ 'td-my-courses': myFeedbacks }">
             <rating :rating="edge.node.averageCourseRating"></rating>
           </td>
-          <td>
+          <td :class="{ 'td-my-courses': myFeedbacks }">
             <rating :rating="edge.node.averageLecturerRating"></rating>
           </td>
-          <td>
+          <td :class="{ 'td-my-courses': myFeedbacks }">
             <rating :rating="edge.node.averageTeachingAssistantRating"></rating>
           </td>
-          <td>{{ getDate(edge.node.timestamp) }}</td>
+          <td v-if="!myFeedbacks">
+            {{ getDate(edge.node.timestamp) }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -37,15 +75,9 @@
 </template>
 
 <script>
-import { getDate } from '@/utils'
+import { getSemester, getDate } from '@/utils'
 export default {
   props: {
-    avatar: {
-      type: String,
-      default() {
-        return ''
-      },
-    },
     courseSemesterId: {
       type: String,
       default() {
@@ -56,6 +88,10 @@ export default {
       type: Object,
       required: true,
     },
+    myFeedbacks: {
+      type: Boolean,
+      required: false,
+    },
   },
   data() {
     return {
@@ -65,6 +101,7 @@ export default {
   },
   methods: {
     getDate,
+    getSemester,
     sendTo(msg) {
       this.$router.push(msg)
     },
@@ -73,6 +110,19 @@ export default {
 </script>
 
 <style>
+.td-style {
+  @apply py-4;
+  @apply px-1;
+  @apply mx-0;
+  @apply align-middle;
+}
+
+.td-my-courses {
+  @apply w-1/5;
+  @apply py-4;
+  @apply mx-0;
+  @apply font-normal;
+}
 .column-title {
   @apply px-5;
   @apply py-3;
