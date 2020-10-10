@@ -71,7 +71,9 @@ export default {
   },
   methods: {
     ratingSet(number) {
-      this.$emit('rating-set', number)
+      if (this.editable) {
+        this.$emit('rating-set', number)
+      }
     },
     mouseOver(n) {
       if (this.editable) {

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="courseData !== null" class="min-w-full items-stretch">
+  <div class="min-w-full items-stretch">
     <panel-page-title
       v-if="viewMode"
       :title="` חוות דעת על ${feedbackFormDetails.course.name}`"
@@ -7,9 +7,24 @@
     ></panel-page-title>
     <panel-page-title
       v-if="!viewMode"
-      :title="`הוספת חוות דעת על ${feedbackFormDetails.course.name}`"
+      :title="`${
+        $route.query.feedbackId ? 'עריכת חוות הדעת על' : 'הוספת חוות דעת על'
+      } ${feedbackFormDetails.course.name}`"
       :course-id="`${feedbackFormDetails.course.id}`"
     ></panel-page-title>
+    <div v-if="canEdit" class="flex flex-row">
+      <nuxt-link
+        v-if="!$route.query.feedbackId"
+        tag="button"
+        :to="`/feedback/${$route.params.id}?feedbackId=${$route.query.feedbackId}&edit=1`"
+        class="button blue-button ml-2"
+      >
+        ערוך ביקורת
+      </nuxt-link>
+      <button class="button red-button" @click="deleteFeedback">
+        מחק ביקורת
+      </button>
+    </div>
     <div v-if="!viewMode" class="grid grid-cols-2 gap-4">
       <h2 class="col-span-2">סגל הקורס</h2>
       <label for="selectedLecturer">מרצה:</label>
@@ -131,8 +146,10 @@
         ></textarea>
       </div>
     </div>
-    <div v-if="!viewMode" class="submit">
-      <button class="button red-button" @click="onSubmit">הוסף ביקורת</button>
+    <div v-if="!viewMode" class="mt-2">
+      <button class="button blue-button" @click="onSubmit">
+        {{ $route.query.feedbackId ? 'שמור ביקורת' : 'הוסף ביקורת' }}
+      </button>
     </div>
     <div v-if="viewMode" class="flex justify-center pt-4">
       <div class="flex">
@@ -222,14 +239,16 @@ img {
 
 <script>
 import Multiselect from 'vue-multiselect'
-import feedbackForm from '@/gql/editFeedbackFormDetails.gql'
 import feedbackFormDetails from '@/gql/feedbackFormDetails.gql'
 import userFeedback from '@/gql/userFeedback.gql'
 import addUserFeedback from '@/gql/addUserFeedback.gql'
+import editUserFeedback from '@/gql/editUserFeedback.gql'
+import deleteUserFeedback from '@/gql/deleteUserFeedback.gql'
 import likeUserFeedback from '@/gql/likeUserFeedback.gql'
 import dislikeUserFeedback from '@/gql/dislikeUserFeedback.gql'
 import { showSuccessToast, staffToString } from '@/utils'
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -237,11 +256,6 @@ export default {
   },
   data() {
     return {
-      availableFeedbackQuestions: {
-        questions: {
-          edges: [],
-        },
-      },
       generalFreeContent: '',
       lecturerFreeContent: '',
       taFreeContent: '',
@@ -251,6 +265,9 @@ export default {
         course: {
           name: '',
         },
+        feedbackformcoursesemesterSet: {
+          edges: [],
+        },
       },
       likes: 0,
       dislikes: 0,
@@ -259,6 +276,7 @@ export default {
       ratings: {},
       selectedLecturer: null,
       selectedTeachingAssistant: null,
+      canEdit: false,
     }
   },
   computed: {
@@ -267,7 +285,10 @@ export default {
     },
     generalQuestions() {
       const gqList = []
-      if (!('feedbackformcoursesemesterSet' in this.feedbackFormDetails)) {
+      if (
+        this.feedbackFormDetails.feedbackformcoursesemesterSet.edges.length ===
+        0
+      ) {
         return []
       }
       for (const item of this.feedbackFormDetails.feedbackformcoursesemesterSet
@@ -280,7 +301,10 @@ export default {
     },
     lecturerQuestions() {
       const lqList = []
-      if (!('feedbackformcoursesemesterSet' in this.feedbackFormDetails)) {
+      if (
+        this.feedbackFormDetails.feedbackformcoursesemesterSet.edges.length ===
+        0
+      ) {
         return []
       }
       for (const item of this.feedbackFormDetails.feedbackformcoursesemesterSet
@@ -293,7 +317,10 @@ export default {
     },
     taQuestions() {
       const tqList = []
-      if (!('feedbackformcoursesemesterSet' in this.feedbackFormDetails)) {
+      if (
+        this.feedbackFormDetails.feedbackformcoursesemesterSet.edges.length ===
+        0
+      ) {
         return []
       }
       for (const item of this.feedbackFormDetails.feedbackformcoursesemesterSet
@@ -326,6 +353,9 @@ export default {
         })
       )
     },
+    ...mapGetters({
+      fullPermissions: 'user_data/fullPermissions',
+    }),
   },
   watch: {
     lecturersList(oldVal, newVal) {
@@ -358,18 +388,28 @@ export default {
           serverData.questionuserfeedbackSet.edges.forEach(({ node }) => {
             Vue.set(this.ratings, node.question.id, node.ranking)
           })
+          this.canEdit = serverData.myFeedback || this.fullPermissions
         })
     }
   },
   methods: {
     async onSubmit() {
       await this.$apollo.mutate({
-        mutation: addUserFeedback,
+        mutation: this.$route.query.feedbackId
+          ? editUserFeedback
+          : addUserFeedback,
         variables: {
           input: {
-            feedbackFormId: this.feedbackFormDetails
-              .feedbackformcoursesemesterSet.edges[0].node.feedbackForm.id,
-            courseSemesterId: this.$route.params.id,
+            ...(this.$route.query.feedbackId
+              ? {
+                  userFeedbackId: this.$route.query.feedbackId,
+                }
+              : {
+                  feedbackFormId: this.feedbackFormDetails
+                    .feedbackformcoursesemesterSet.edges[0].node.feedbackForm
+                    .id,
+                  courseSemesterId: this.$route.params.id,
+                }),
             lecturerId: this.selectedLecturer.id,
             teachingAssistantId: this.selectedTeachingAssistant.id,
             questionRatings: Object.keys(this.ratings).map((key) => ({
@@ -384,7 +424,9 @@ export default {
       })
       showSuccessToast(
         this,
-        'ביקורת נוספה בהצלחה!',
+        this.$route.query.feedbackId
+          ? 'ביקורת נערכה בהצלחה!'
+          : 'ביקורת נוספה בהצלחה!',
         `/course/${this.feedbackFormDetails.course.id}`
       )
     },
@@ -450,6 +492,19 @@ export default {
     ratingSet(questionId, rating) {
       Vue.set(this.ratings, questionId, rating)
     },
+    async deleteFeedback() {
+      await this.$apollo.mutate({
+        mutation: deleteUserFeedback,
+        variables: {
+          id: this.$route.query.feedbackId,
+        },
+      })
+      showSuccessToast(
+        this,
+        'הביקורת נמחקה בהצלחה',
+        `/course/${this.feedbackFormDetails.course.id}`
+      )
+    },
   },
   apollo: {
     feedbackFormDetails: {
@@ -462,15 +517,6 @@ export default {
       errorPolicy: 'all',
       fetchPolicy: 'no-cache',
       update: (data) => data.courseSemesterDetails,
-    },
-    availableFeedbackQuestions: {
-      query: feedbackForm,
-      variables() {
-        return {
-          id: this.$route.query.feedbackId,
-        }
-      },
-      update: (data) => data.feedbackForm,
     },
   },
 }

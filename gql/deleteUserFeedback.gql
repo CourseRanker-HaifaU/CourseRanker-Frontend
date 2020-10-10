@@ -1,0 +1,7 @@
+mutation deleteUserFeedback($id: ID!) {
+  deleteUserFeedback(input: {
+    userFeedbackId: $id
+  }) {
+    ok
+  }
+}

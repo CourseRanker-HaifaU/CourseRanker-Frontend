@@ -1,0 +1,7 @@
+mutation editUserFeedback($input: EditUserFeedbackInput!) {
+  editUserFeedback(input: $input) {
+    userFeedback {
+      id
+    }
+  }
+}

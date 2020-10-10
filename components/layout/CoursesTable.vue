@@ -231,12 +231,10 @@
               'blue-button': listItem.wroteFeedback,
               'green-button': !listItem.wroteFeedback,
             }"
-            :to="`/feedback/${listItem.id}?feedbackId=${
-              listItem.feedbackformSet.edges[0].node.id
-            }${
+            :to="`/feedback/${listItem.id}${
               listItem.wroteFeedback
-                ? `&edit=1&userFeedbackId=${listItem.feedbackId}`
-                : ''
+                ? `?feedbackId=${listItem.feedbackId}&edit=1`
+                : '?edit=1'
             }`"
           >
             {{ listItem.wroteFeedback ? 'ערוך חוות דעת' : 'הוסף חוות דעת' }}
