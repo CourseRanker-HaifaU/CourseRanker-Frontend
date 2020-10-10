@@ -170,6 +170,12 @@
         >
           הסר מהקורסים שלי
         </button>
+        <button
+          class="button blue-button mb-2 md:mb-0 md:ml-2 h-full"
+          @click="toggleHistogramAddShown(index)"
+        >
+          הוסף ציוני מבחן
+        </button>
         <nuxt-link
           v-if="edge.node.feedbackformcoursesemesterSet.edges.length > 0"
           class="button blue-button h-full mb-2 md:mb-0 md:ml-2"
@@ -197,6 +203,31 @@
         >
           מחק קורס בסמסטר
         </button>
+      </div>
+      <div
+        v-if="histogramAddShown.includes(index)"
+        class="col-span-2 items-baseline grid grid-cols-2 gap-2"
+      >
+        <label :for="`moed_${index}`">מועד:</label>
+        <input-field
+          :id="`moed_${index}`"
+          v-model="addGrades[index].moed"
+          label="מועד"
+          type="text"
+        ></input-field>
+        <label :for="`average_${index}`">ממוצע:</label>
+        <input-field
+          :id="`average_${index}`"
+          v-model="addGrades[index].average"
+          label="ממוצע"
+          type="number"
+        ></input-field>
+        <label :for="`histogram_${index}`">התפלגות:</label>
+        <table :id="`histogram_${index}`">
+          <thead>
+            <tr></tr>
+          </thead>
+        </table>
       </div>
       <div class="flex flex-row col-span-2 items-center">
         <feedback-preview
@@ -234,6 +265,8 @@ export default {
     return {
       showIndices: [0],
       histogramShown: [],
+      histogramAddShown: [],
+      addGrades: {},
     }
   },
   computed: {
@@ -295,6 +328,20 @@ export default {
         this.histogramShown.push(index)
       } else {
         this.histogramShown.splice(shownIndex, 1)
+      }
+    },
+    toggleHistogramAddShown(index) {
+      const shownIndex = this.histogramAddShown.indexOf(index)
+      if (shownIndex === -1) {
+        this.histogramAddShown.push(index)
+        this.addGrades[index] = {
+          moed: '',
+          average: 0.0,
+          histogram: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        }
+      } else {
+        this.histogramAddShown.splice(shownIndex, 1)
+        delete this.addGrades[index]
       }
     },
   },
