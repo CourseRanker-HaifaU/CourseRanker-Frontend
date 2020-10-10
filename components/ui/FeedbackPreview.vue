@@ -14,21 +14,22 @@
         <tr
           v-for="edge in feedbacks.edges"
           :key="edge.node.id"
+          class="row"
           @click="
             sendTo(`/feedback/${courseSemesterId}?feedbackId=${edge.node.id}`)
           "
         >
-          <td class="row">{{ edge.node.generalFeedback }}</td>
-          <td class="row">
+          <td>{{ edge.node.generalFeedback }}</td>
+          <td>
             <rating :rating="edge.node.averageCourseRating"></rating>
           </td>
-          <td class="row">
+          <td>
             <rating :rating="edge.node.averageLecturerRating"></rating>
           </td>
-          <td class="row">
+          <td>
             <rating :rating="edge.node.averageTeachingAssistantRating"></rating>
           </td>
-          <td class="row">{{ getDate(edge.node.timestamp) }}</td>
+          <td>{{ getDate(edge.node.timestamp) }}</td>
         </tr>
       </tbody>
     </table>
@@ -77,16 +78,6 @@ export default {
   @apply py-3;
   @apply bg-primary;
   @apply text-white;
-}
-
-.row {
-  @apply px-5;
-  @apply py-5;
-  @apply border-b;
-  @apply border-gray-200;
-  @apply bg-white;
-  @apply text-sm;
-  @apply cursor-pointer;
 }
 
 .comment-box {
