@@ -73,6 +73,10 @@ export default {
           link: '/admin/feedback_forms',
         },
         {
+          label: 'ניהול ציונים והתפלגויות',
+          link: '/admin/grades_manager',
+        },
+        {
           label: 'דיווחים על תוכן פוגעני',
           link: '/admin/violation_page',
         },
