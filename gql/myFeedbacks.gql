@@ -1,0 +1,26 @@
+query {
+  myFeedbacks {
+    edges {
+      node {
+        id
+        averageCourseRating
+        averageLecturerRating
+        averageTeachingAssistantRating
+        timestamp
+        courseSemester {
+          id
+          course {
+            name
+          }
+          semester {
+            name
+            yearJewish
+          }
+        }
+        feedback {
+          id
+        }
+      }
+    }
+  }
+}

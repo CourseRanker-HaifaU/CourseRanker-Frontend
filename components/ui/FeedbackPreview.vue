@@ -79,12 +79,10 @@ export default {
   @apply bg-primary;
   @apply text-white;
 }
-
 .comment-box {
   width: 100%;
   margin: auto;
 }
-
 img {
   border-radius: 50%;
 }
