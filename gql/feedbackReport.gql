@@ -1,0 +1,34 @@
+query ($id: ID!) {
+  feedbackReport(id: $id) {
+    id
+    timestamp
+    userFeedback {
+      id
+      courseSemester {
+        id
+        course {
+          name
+        }
+        semester {
+          name
+          yearJewish
+        }
+      }
+    }
+    description
+    answer
+    answeredBy {
+      firstName
+      lastName
+    }
+    reportedBy {
+      id
+      firstName
+      lastName
+      role
+    }
+    status
+    timestamp
+    feedbackAuthor
+  }
+}

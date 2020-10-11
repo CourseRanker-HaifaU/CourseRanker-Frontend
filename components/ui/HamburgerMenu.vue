@@ -74,7 +74,7 @@ export default {
         },
         {
           label: 'דיווחים על תוכן פוגעני',
-          link: '/admin/violation_page',
+          link: '/admin/reports',
         },
       ],
       userLinks: [
