@@ -3,7 +3,6 @@
     <panel-page-title title="חוות הדעת שלי" />
     <feedback-preview
       :my-feedbacks="true"
-      :course-semester-id="feedbacksList.edges[0].node.courseSemester.id"
       :feedbacks="feedbacksList"
     ></feedback-preview>
   </div>
@@ -16,7 +15,7 @@ export default {
     return {
       feedbacksList: {
         edges: {
-          node: {},
+          node: [],
         },
       },
     }
@@ -24,7 +23,9 @@ export default {
   apollo: {
     feedbacksList: {
       query: myFeedbacks,
-      update: (data) => data.myFeedbacks,
+      update: (data) => {
+        return data.myFeedbacks
+      },
     },
   },
 }

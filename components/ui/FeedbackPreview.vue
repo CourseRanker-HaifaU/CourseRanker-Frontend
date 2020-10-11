@@ -1,5 +1,5 @@
 <template>
-  <div v-if="feedbacks.edges.length > 0" class="flex">
+  <div class="flex" :class="{ 'w-full': myFeedbacks }">
     <table
       class="min-w-full leading-normal"
       :class="{
@@ -51,7 +51,7 @@
             {{ edge.node.courseSemester.course.name }}
           </td>
           <td v-if="myFeedbacks" class="td-my-courses">
-            {{ getSemester(edge.node.courseSemester.semester.yearJewish) }}
+            {{ edge.node.courseSemester.semester.yearJewish }}
             {{ getSemester(edge.node.courseSemester.semester.name) }}
           </td>
           <td v-if="!myFeedbacks" :class="{ 'td-my-courses': myFeedbacks }">
@@ -66,7 +66,7 @@
           <td :class="{ 'td-my-courses': myFeedbacks }">
             <rating :rating="edge.node.averageTeachingAssistantRating"></rating>
           </td>
-          <td v-if="!myFeedbacks">
+          <td :class="{ 'td-my-courses': myFeedbacks }">
             {{ getDate(edge.node.timestamp) }}
           </td>
         </tr>
