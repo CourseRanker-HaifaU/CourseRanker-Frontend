@@ -1,0 +1,7 @@
+mutation approveGrades($input: AddCourseInput!) {
+  approveGrades(input: $input) {
+    course_semester_exam {
+      id
+    }
+  }
+}

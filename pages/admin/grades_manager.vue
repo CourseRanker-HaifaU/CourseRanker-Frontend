@@ -78,19 +78,19 @@
                   <button
                     v-if="getStringApproved(row.node.approved) === 'לא אושר'"
                     class="table-btn min-w-full xxl:min-w-0"
-                    @click.prevent="ApproveGrade(listItem.id)"
+                    @click.prevent="ApproveGrade(row.node)"
                   >
                     אשר התפלגות
                   </button>
                   <button
                     class="table-btn min-w-full xxl:min-w-0"
-                    @click.prevent="ApproveGrade(listItem.id)"
+                    @click.prevent="ApproveGrade(row.node)"
                   >
                     ערוך התפלגות
                   </button>
                   <button
                     class="table-btn min-w-full xxl:min-w-0"
-                    @click.prevent="ApproveGrade(listItem.id)"
+                    @click.prevent="ApproveGrade(row.node)"
                   >
                     מחק התפלגות
                   </button>
@@ -135,7 +135,8 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import allGrades from '@/gql/allGrades.gql'
-import { getSemester } from '@/utils'
+import approveGrades from '@/gql/approveGrades.gql'
+import { showSuccessToast, getSemester } from '@/utils'
 export default {
   components: {
     Multiselect,
@@ -187,6 +188,17 @@ export default {
   },
   methods: {
     getSemester,
+    async approveGrades(node) {
+      await this.$apollo.mutate({
+        mutation: approveGrades,
+        variables: {
+          id: node.id,
+        },
+      })
+      node.approved = true
+      showSuccessToast(this, 'ההתפלגות אושרה בהצלחה', null)
+      this.$forceUpdate()
+    },
     getStringApproved(approved) {
       if (approved) {
         return 'אושר'
