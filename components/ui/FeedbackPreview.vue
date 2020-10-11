@@ -1,5 +1,9 @@
 <template>
-  <div class="flex" :class="{ 'w-full': myFeedbacks }">
+  <div
+    v-if="feedbacks.edges.length > 0"
+    class="flex"
+    :class="{ 'w-full': myFeedbacks }"
+  >
     <table
       class="min-w-full leading-normal"
       :class="{
