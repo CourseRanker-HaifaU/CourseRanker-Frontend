@@ -3,6 +3,7 @@
     <panel-page-title title="חוות הדעת שלי" />
     <feedback-preview
       :my-feedbacks="true"
+      :course-semester-id="feedbacksList.edges[0].node.courseSemester.id"
       :feedbacks="feedbacksList"
     ></feedback-preview>
   </div>
