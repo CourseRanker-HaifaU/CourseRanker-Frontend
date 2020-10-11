@@ -234,7 +234,7 @@
           <div
             v-for="i in 10"
             :key="`histogram_${index}_bin_${i}`"
-            class="flex flex-col items-baseline rounded-lg border-input-border border border-solid mb-2 p-2 text-left"
+            class="flex flex-col items-right rounded-lg border-input-border border border-solid mb-2 p-2 text-right"
             dir="ltr"
           >
             <label :for="`histogram_${index}_bin_${i}_input`">
