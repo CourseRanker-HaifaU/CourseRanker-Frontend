@@ -40,7 +40,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in rows.edges" :key="row.node.id">
+              <tr v-for="(row, index) in rows.edges" :key="row.node.id">
                 <td class="row items-center">?</td>
                 <td class="row">{{ row.node.courseSemester.course.name }}</td>
                 <td class="row">
@@ -90,7 +90,7 @@
                   </button>
                   <button
                     class="table-btn min-w-full xxl:min-w-0"
-                    @click.prevent="ApproveGrade(row.node)"
+                    @click.prevent="DeleteGrades(index)"
                   >
                     מחק התפלגות
                   </button>
@@ -136,6 +136,7 @@
 import Multiselect from 'vue-multiselect'
 import allGrades from '@/gql/allGrades.gql'
 import approveGrades from '@/gql/approveGrades.gql'
+import deleteGrades from '@/gql/deleteGrades.gql'
 import { showSuccessToast, getSemester } from '@/utils'
 export default {
   components: {
@@ -198,6 +199,19 @@ export default {
       node.approved = true
       showSuccessToast(this, 'ההתפלגות אושרה בהצלחה', null)
       this.$forceUpdate()
+    },
+    async DeleteGrades(id) {
+      await this.$apollo.mutate({
+        mutation: deleteGrades,
+        variables: {
+          input: {
+            id: this.rows.edges[id].node.id,
+          },
+        },
+      })
+      showSuccessToast(this, 'התפלגות נמחקה בהצלחה', null, () => {
+        this.rows.edges.splice(id, 1)
+      })
     },
     getStringApproved(approved) {
       if (approved) {
