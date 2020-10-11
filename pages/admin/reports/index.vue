@@ -146,11 +146,13 @@ export default {
               status: this.selectedStatus.id,
             },
             updateQuery: (prevResult, { fetchMoreResult }) => {
-              const newResult = { ...fetchMoreResult }
-              newResult.feedbackReports.edges = [
-                ...prevResult.feedbackReports.edges,
-                ...fetchMoreResult.feedbackReports.edges,
-              ]
+              const prevEdges = prevResult.feedbackReports.edges
+              const nextEdges = fetchMoreResult.feedbackReports.edges
+              const newResult = { ...prevResult }
+              newResult.feedbackReports.edges = [...prevEdges, ...nextEdges]
+              newResult.feedbackReports.pageInfo = {
+                ...fetchMoreResult.feedbackReports.pageInfo,
+              }
               return newResult
             },
           })
