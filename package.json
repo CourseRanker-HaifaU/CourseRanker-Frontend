@@ -34,7 +34,8 @@
     "vue-chartjs": "^3.5.1",
     "vue-infinite-loading": "^2.4.5",
     "vue-multiselect": "^2.1.6",
-    "vuelidate": "^0.7.5"
+    "vuelidate": "^0.7.5",
+    "@nuxtjs/netlify-files": "^1.2.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
