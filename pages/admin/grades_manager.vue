@@ -49,12 +49,14 @@
                 <td class="row">
                   {{ getSemester(row.node.courseSemester.semester) }}
                 </td>
-                <td v-if="!editMode" class="row">{{ row.node.moed }}</td>
-                <td v-if="editMode" class="row">
+                <td v-if="!row.node.isEdit" class="row">{{ row.node.moed }}</td>
+                <td v-if="row.node.isEdit" class="row">
                   <input-field id="moed" v-model="row.node.moed" type="text" />
                 </td>
-                <td v-if="!editMode" class="row">{{ row.node.average }}</td>
-                <td v-if="editMode" class="row">
+                <td v-if="!row.node.isEdit" class="row">
+                  {{ row.node.average }}
+                </td>
+                <td v-if="row.node.isEdit" class="row">
                   <input-field
                     id="average"
                     v-model="row.node.average"
@@ -96,14 +98,14 @@
                     אשר התפלגות
                   </button>
                   <button
-                    v-if="!editMode"
+                    v-if="!row.node.isEdit"
                     class="table-btn min-w-full xxl:min-w-0"
                     @click="editOn(index)"
                   >
                     ערוך התפלגות
                   </button>
                   <button
-                    v-if="editMode"
+                    v-if="row.node.isEdit"
                     class="table-btn min-w-full xxl:min-w-0"
                     @click="editOn(index)"
                   >
@@ -182,7 +184,6 @@ export default {
       rows: {
         edges: [],
       },
-      editMode: false,
     }
   },
   computed: {
@@ -284,7 +285,11 @@ export default {
     rows: {
       query: allGrades,
       update: (data) => {
-        return data.allGrades
+        const serverData = data.allGrades
+        for (const item of serverData.edges) {
+          item.node.isEdit = false
+        }
+        return serverData
       },
     },
   },
