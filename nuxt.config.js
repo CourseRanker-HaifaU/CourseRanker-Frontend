@@ -158,4 +158,7 @@ export default {
       threshold: 10240,
     },
   },
+  generate: {
+    fallback: true,
+  },
 }
