@@ -4,7 +4,7 @@
       <div class="bar-block">
         <nuxt-link to="/" class="h-full inline-flex">
           <img
-            class="h-full rounded-full"
+            class="h-16 w-16 rounded-full bg-white"
             src="~/assets/images/logoranker.png"
             alt="לוגו ועד הסטודנטים"
           />
