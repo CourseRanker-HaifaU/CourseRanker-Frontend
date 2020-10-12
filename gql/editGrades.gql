@@ -1,4 +1,4 @@
-mutation editGrades($input: UpdateUserInput!) {
+mutation editGrades($input: EditGradesInput!) {
   editGrades (input: $input) {
     courseSemesterExam {
       id

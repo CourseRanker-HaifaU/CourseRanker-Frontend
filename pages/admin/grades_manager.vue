@@ -216,7 +216,7 @@ export default {
     editOn(index) {
       if (this.rows.edges[index].node.isEdit) {
         this.rows.edges[index].node.isEdit = false
-        /*  this.editGrades(index)  */
+        this.editGrades(index)
       } else {
         this.rows.edges[index].node.isEdit = true
       }
