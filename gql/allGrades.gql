@@ -7,6 +7,10 @@ query {
         average
         histogram
         approved
+        uploader {
+          firstName
+          lastName
+        }
         courseSemester {
           id
           course {

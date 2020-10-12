@@ -41,7 +41,10 @@
             </thead>
             <tbody>
               <tr v-for="(row, index) in rows.edges" :key="row.node.id">
-                <td class="row items-center">?</td>
+                <td class="row items-center">
+                  {{ row.node.uploader.firstName }}
+                  {{ row.node.uploader.lastName }}
+                </td>
                 <td class="row">{{ row.node.courseSemester.course.name }}</td>
                 <td class="row">
                   {{ getSemester(row.node.courseSemester.semester) }}
