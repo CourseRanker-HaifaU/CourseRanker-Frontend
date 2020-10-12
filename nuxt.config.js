@@ -95,6 +95,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/toast',
     'nuxt-compress',
+    '@nuxtjs/netlify-files',
   ],
   /*
    ** Axios module configuration
