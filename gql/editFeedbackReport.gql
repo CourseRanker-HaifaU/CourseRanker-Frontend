@@ -1,0 +1,7 @@
+mutation editFeedbackReport($input: EditFeedbackReportInput!) {
+  editFeedbackReport(input: $input) {
+    feedbackReport {
+      id
+    }
+  }
+}

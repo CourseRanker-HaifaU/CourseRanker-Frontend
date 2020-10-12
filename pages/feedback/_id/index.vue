@@ -168,6 +168,17 @@
         </button>
         <div class="mr-4 mt-2">{{ likes }}</div>
       </div>
+      <div class="flex mr-16">
+        <button class="button red-button" @click="openReportForm">
+          דווח על חוות הדעת
+        </button>
+      </div>
+    </div>
+    <div v-if="reportFormVisible">
+      <report-form
+        :feedback-id="this.$route.query.feedbackId"
+        @close-form="reportFormVisible = false"
+      />
     </div>
     <div v-if="viewMode">
       <comments
@@ -277,6 +288,7 @@ export default {
       selectedLecturer: null,
       selectedTeachingAssistant: null,
       canEdit: false,
+      reportFormVisible: false,
     }
   },
   computed: {
@@ -506,6 +518,9 @@ export default {
         'הביקורת נמחקה בהצלחה',
         `/course/${this.feedbackFormDetails.course.id}`
       )
+    },
+    openReportForm() {
+      this.reportFormVisible = true
     },
   },
   apollo: {

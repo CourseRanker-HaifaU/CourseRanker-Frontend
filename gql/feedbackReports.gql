@@ -1,0 +1,42 @@
+query($perPage: Int, $after: String, $status: String) {
+  feedbackReports(first: $perPage, after: $after, orderBy: "status", status: $status) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        timestamp
+        userFeedback {
+          id
+          courseSemester {
+            id
+            course {
+              name
+            }
+            semester {
+              name
+              yearJewish
+            }
+          }
+        }
+        description
+        answer
+        answeredBy {
+          firstName
+          lastName
+        }
+        reportedBy {
+          id
+          firstName
+          lastName
+          role
+        }
+        status
+        timestamp
+        feedbackAuthor
+      }
+    }
+  }
+}

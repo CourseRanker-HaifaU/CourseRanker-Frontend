@@ -1,0 +1,7 @@
+mutation addFeedbackReport($input: AddFeedbackReportInput!) {
+  addFeedbackReport(input: $input) {
+    feedbackReport {
+      id
+    }
+  }
+}
