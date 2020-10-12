@@ -1,0 +1,7 @@
+mutation editGrades($input: UpdateUserInput!) {
+  editGrades (input: $input) {
+    courseSemesterExam {
+      id
+    }
+  }
+}

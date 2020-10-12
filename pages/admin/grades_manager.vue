@@ -46,8 +46,18 @@
                 <td class="row">
                   {{ getSemester(row.node.courseSemester.semester) }}
                 </td>
-                <td class="row">{{ row.node.moed }}</td>
-                <td class="row">{{ row.node.average }}</td>
+                <td v-if="!editMode" class="row">{{ row.node.moed }}</td>
+                <td v-if="editMode" class="row">
+                  <input-field id="moed" v-model="row.node.moed" type="text" />
+                </td>
+                <td v-if="!editMode" class="row">{{ row.node.average }}</td>
+                <td v-if="editMode" class="row">
+                  <input-field
+                    id="average"
+                    v-model="row.node.average"
+                    type="text"
+                  />
+                </td>
                 <td class="row">פה תהיה התפלגות</td>
                 <td class="row">
                   <span
@@ -83,10 +93,18 @@
                     אשר התפלגות
                   </button>
                   <button
+                    v-if="!editMode"
                     class="table-btn min-w-full xxl:min-w-0"
-                    @click.prevent="ApproveGrade(row.node)"
+                    @click="editOn(index)"
                   >
                     ערוך התפלגות
+                  </button>
+                  <button
+                    v-if="editMode"
+                    class="table-btn min-w-full xxl:min-w-0"
+                    @click="editOn(index)"
+                  >
+                    שמור התפלגות
                   </button>
                   <button
                     class="table-btn min-w-full xxl:min-w-0"
@@ -137,6 +155,7 @@ import Multiselect from 'vue-multiselect'
 import allGrades from '@/gql/allGrades.gql'
 import approveGrades from '@/gql/approveGrades.gql'
 import deleteGrades from '@/gql/deleteGrades.gql'
+import editGrades from '@/gql/editGrades.gql'
 import { showSuccessToast, getSemester } from '@/utils'
 export default {
   components: {
@@ -160,6 +179,7 @@ export default {
       rows: {
         edges: [],
       },
+      editMode: false,
     }
   },
   computed: {
@@ -189,6 +209,14 @@ export default {
   },
   methods: {
     getSemester,
+    editOn(index) {
+      if (this.rows.edges[index].node.isEdit) {
+        this.rows.edges[index].node.isEdit = false
+        /*  this.editGrades(index)  */
+      } else {
+        this.rows.edges[index].node.isEdit = true
+      }
+    },
     async approveGrades(node) {
       await this.$apollo.mutate({
         mutation: approveGrades,
@@ -212,6 +240,19 @@ export default {
       showSuccessToast(this, 'התפלגות נמחקה בהצלחה', null, () => {
         this.rows.edges.splice(id, 1)
       })
+    },
+    async editGrades(id) {
+      await this.$apollo.mutate({
+        mutation: editGrades,
+        variables: {
+          input: {
+            id: this.rows.edges[id].node.id,
+            moed: this.rows.edges[id].node.moed,
+            average: this.rows.edges[id].node.average,
+          },
+        },
+      })
+      showSuccessToast(this, 'ההתפלגות עודכנה בהצלחה')
     },
     getStringApproved(approved) {
       if (approved) {
