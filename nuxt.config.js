@@ -95,6 +95,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/toast',
     'nuxt-compress',
+    '@nuxtjs/netlify-files',
   ],
   /*
    ** Axios module configuration
@@ -156,5 +157,8 @@ export default {
     brotli: {
       threshold: 10240,
     },
+  },
+  generate: {
+    fallback: true,
   },
 }
