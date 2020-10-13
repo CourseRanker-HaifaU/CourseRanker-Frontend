@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="courseData !== null"
+      v-if="!showError && courseData !== null"
       class="flex flex-col gap-y-10 mt-4 min-w-full items-stretch"
     >
       <h1 class="text-3xl font-bold ml-6">{{ courseData.name }}</h1>
@@ -81,7 +81,7 @@
       ></semester-box>
     </div>
     <error-message
-      v-if="courseData === null && !$apollo.loading"
+      v-if="showError"
       :message="`לא נמצא קורס ${this.$route.params.id}.`"
     />
   </div>
@@ -98,22 +98,8 @@ export default {
     return {
       courseData: null,
       hidden: [],
+      showError: false,
     }
-  },
-  apollo: {
-    courseData: {
-      query: courseDetails,
-      variables() {
-        return {
-          id: this.$route.params.id,
-        }
-      },
-      update: (data) => {
-        return data.courseDetails
-      },
-      errorPolicy: 'all',
-      fetchPolicy: 'no-cache',
-    },
   },
   computed: {
     ...mapGetters({
@@ -151,6 +137,23 @@ export default {
     courseData() {
       this.hidden = []
     },
+  },
+  created() {
+    this.$apollo
+      .query({
+        query: courseDetails,
+        variables: {
+          id: this.$route.params.id,
+        },
+        errorPolicy: 'all',
+        fetchPolicy: 'no-cache',
+      })
+      .then((response) => {
+        this.courseData = response.data.courseDetails
+        if (response.data.courseDetails === null) {
+          this.showError = true
+        }
+      })
   },
   methods: {
     courseTypeToString(courseType) {

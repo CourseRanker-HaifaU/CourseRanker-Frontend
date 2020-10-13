@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col almost-full-height">
+  <div class="flex flex-col md:h-screen">
     <header>
       <top-bar></top-bar>
     </header>
