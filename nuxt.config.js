@@ -54,7 +54,7 @@ export default {
       },
     ],
     bodyAttrs: {
-      class: ['bg-secondary', 'text-dark', 'min-h-screen'],
+      class: ['bg-secondary', 'text-dark', 'min-h-screen', 'flex', 'flex-col'],
     },
   },
   /*
@@ -63,6 +63,7 @@ export default {
   css: [
     'vue-multiselect/dist/vue-multiselect.min.css',
     '@/assets/css/custom_dropdown.css',
+    '@/assets/css/full_height.css',
   ],
   /*
    ** Plugins to load before mounting the App
