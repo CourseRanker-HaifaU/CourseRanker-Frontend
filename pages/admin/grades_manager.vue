@@ -66,7 +66,7 @@
                 <td class="row">
                   <button
                     class="table-btn min-w-full xxl:min-w-0"
-                    @click.prevent="popModal(row.node)"
+                    @click="popModal()"
                   >
                     הצג התפלגות
                   </button>
@@ -143,6 +143,7 @@
                         <div class="flex justify-end pt-2">
                           <button
                             class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400"
+                            @click="popModal()"
                           >
                             סגור
                           </button>
@@ -283,6 +284,7 @@ export default {
         '81-90',
         '91+',
       ],
+      modalOn: false,
     }
   },
   computed: {
@@ -312,6 +314,13 @@ export default {
   },
   methods: {
     getSemester,
+    popModal() {
+      if (this.modalOn) {
+        this.modalOn = false
+      } else {
+        this.modalOn = true
+      }
+    },
     editOn(index) {
       if (this.rows.edges[index].node.isEdit) {
         this.rows.edges[index].node.isEdit = false
