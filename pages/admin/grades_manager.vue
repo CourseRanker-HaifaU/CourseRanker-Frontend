@@ -100,7 +100,7 @@
                   <button
                     v-if="getStringApproved(row.node.approved) === 'לא אושר'"
                     class="table-btn min-w-full xxl:min-w-0"
-                    @click.prevent="ApproveGrade(row.node)"
+                    @click.prevent="approveGrades(row.node)"
                   >
                     אשר התפלגות
                   </button>
@@ -377,6 +377,7 @@ export default {
         }
         return serverData
       },
+      fetchPolicy: 'network-only',
     },
   },
 }

@@ -2,6 +2,8 @@ mutation approveGrades($id: ID!) {
   approveGrades(input: {
     id: $id
   }) {
-    ok
+    courseSemesterExam {
+      id
+    }
   }
 }
