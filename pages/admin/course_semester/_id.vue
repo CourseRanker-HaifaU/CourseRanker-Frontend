@@ -11,7 +11,6 @@
           <multiselect
             v-model="selectedCourse"
             :options="serverData.allCourses.edges"
-            :searchable="false"
             :show-labels="false"
             placeholder="בחר קורס"
             label="name"
@@ -24,7 +23,6 @@
           <multiselect
             v-model="selectedSemester"
             :options="serverData.allSemesters.edges"
-            :searchable="false"
             :show-labels="false"
             placeholder="בחר שנה וסמסטר"
             label="name"
