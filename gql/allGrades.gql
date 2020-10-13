@@ -1,5 +1,9 @@
-query {
-  allGrades {
+query($perPage: Int, $approved: Boolean, $after: String) {
+  allGrades(first: $perPage, approved: $approved, after: $after, orderBy: "approved") {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
       node {
         id

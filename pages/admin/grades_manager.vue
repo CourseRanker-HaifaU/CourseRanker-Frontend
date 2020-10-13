@@ -119,6 +119,13 @@
               </tr>
             </tbody>
           </table>
+          <infinite-loading
+            v-if="!$apollo.loading && rows.edges.length > 0"
+            @infinite="infiniteHandler"
+          >
+            <div slot="no-more"></div>
+            <div slot="no-results"></div>
+          </infinite-loading>
           <!--Modal-->
           <div
             v-if="modalOn"
@@ -248,28 +255,32 @@ export default {
     }
   },
   computed: {
-    rowsInPage() {
-      return this.rows.edges.slice(
-        this.perPage * (this.page - 1),
-        this.perPage * this.page
-      )
-    },
-    filteredRows() {
-      return this.rowsInPage.filter((row) => {
-        const name = row.node.moed
-        const status = row.node.approved
-
-        if (this.selectedStatus === 'הכול') return name
-        return name && status === this.selectedStatus
-      })
-    },
-    displayedPosts() {
-      return this.paginate(this.posts)
+    statusFilter() {
+      const mapping = {
+        הכול: undefined,
+        'לא אושר': false,
+        אושר: true,
+      }
+      return mapping[this.selectedStatus]
     },
   },
-  watch: {
-    posts() {
-      this.setPages()
+  apollo: {
+    rows: {
+      query: allGrades,
+      update: (data) => {
+        const serverData = data.allGrades
+        for (const item of serverData.edges) {
+          item.node.isEdit = false
+        }
+        return serverData
+      },
+      fetchPolicy: 'network-only',
+      variables() {
+        return {
+          perPage: this.perPage,
+          status: this.statusFilter,
+        }
+      },
     },
   },
   methods: {
@@ -339,18 +350,31 @@ export default {
     sendTo(msg) {
       this.$router.push(msg)
     },
-  },
-  apollo: {
-    rows: {
-      query: allGrades,
-      update: (data) => {
-        const serverData = data.allGrades
-        for (const item of serverData.edges) {
-          item.node.isEdit = false
-        }
-        return serverData
-      },
-      fetchPolicy: 'network-only',
+    infiniteHandler($state) {
+      if (!this.rows.pageInfo.hasNextPage) {
+        $state.complete()
+      } else {
+        const nextCursor = this.rows.pageInfo.endCursor
+        this.$apollo.queries.rows
+          .fetchMore({
+            query: allGrades,
+            variables: {
+              after: nextCursor,
+              perPage: this.perPage,
+              status: this.statusFilter,
+            },
+            updateQuery: (prevResult, { fetchMoreResult }) => {
+              const newResult = { ...prevResult }
+              newResult.allGrades.edges = [
+                ...prevResult.allGrades.edges,
+                ...fetchMoreResult.allGrades.edges,
+              ]
+              newResult.allGrades.pageInfo = fetchMoreResult.allGrades.pageInfo
+              return newResult
+            },
+          })
+          .then(() => $state.loaded())
+      }
     },
   },
 }
