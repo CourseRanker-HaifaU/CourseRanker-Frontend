@@ -83,7 +83,7 @@ query courseDetails($id: ID!) {
               }
             }
           }
-          coursesemesterexamSet {
+          coursesemesterexamSet(approved: true) {
             edges {
               node {
                 id
