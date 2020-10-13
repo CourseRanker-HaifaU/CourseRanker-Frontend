@@ -278,7 +278,7 @@ export default {
       variables() {
         return {
           perPage: this.perPage,
-          status: this.statusFilter,
+          approved: this.statusFilter,
         }
       },
     },
@@ -361,7 +361,7 @@ export default {
             variables: {
               after: nextCursor,
               perPage: this.perPage,
-              status: this.statusFilter,
+              approved: this.statusFilter,
             },
             updateQuery: (prevResult, { fetchMoreResult }) => {
               const newResult = { ...prevResult }
