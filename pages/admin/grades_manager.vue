@@ -367,7 +367,10 @@ export default {
               const newResult = { ...prevResult }
               newResult.allGrades.edges = [
                 ...prevResult.allGrades.edges,
-                ...fetchMoreResult.allGrades.edges,
+                ...fetchMoreResult.allGrades.edges.map((edge) => {
+                  edge.node.isEdit = false
+                  return edge
+                }),
               ]
               newResult.allGrades.pageInfo = fetchMoreResult.allGrades.pageInfo
               return newResult
