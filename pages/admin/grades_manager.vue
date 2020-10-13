@@ -6,15 +6,6 @@
         <div class="flex flex-row mb-1 sm:mb-0">
           <div class="relative ml-4">
             <multiselect
-              v-model="perPage"
-              :options="perPageOptions"
-              :searchable="false"
-              :show-labels="false"
-            >
-            </multiselect>
-          </div>
-          <div class="relative ml-4">
-            <multiselect
               v-model="selectedStatus"
               :options="statusOptions"
               :searchable="false"
@@ -233,14 +224,9 @@ export default {
   },
   data() {
     return {
-      perPageOptions: [5, 10, 20],
       statusOptions: ['אושר', 'לא אושר', 'הכול'],
       selectedStatus: 'הכול',
-      filter: '',
-      posts: [''],
-      page: 1,
       perPage: 5,
-      pages: [1, 2, 3],
       rows: {
         edges: [],
       },
@@ -352,19 +338,6 @@ export default {
     },
     sendTo(msg) {
       this.$router.push(msg)
-    },
-    setPages() {
-      const numberOfPages = Math.ceil(this.posts.length / this.perPage)
-      for (let index = 1; index <= numberOfPages; index++) {
-        this.pages.push(index)
-      }
-    },
-    paginate(posts) {
-      const page = this.page
-      const perPage = this.perPage
-      const from = page * perPage - perPage
-      const to = page * perPage
-      return this.posts.slice(from, to)
     },
   },
   apollo: {
