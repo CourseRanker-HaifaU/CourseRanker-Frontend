@@ -13,7 +13,7 @@ export default {
     htmlAttrs: {
       dir: 'rtl',
     },
-    title: 'משוב קורסים',
+    title: 'CS Ranker',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
