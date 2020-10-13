@@ -68,22 +68,21 @@
             </template>
           </multiselect>
         </div>
-        <label for="selectedFeedbackForms">בחר טופסי חוות דעת למילוי:</label>
-        <div id="selectedFeedbackFroms">
+        <label for="selectedFeedbackForm">בחר טופס חוות דעת למילוי:</label>
+        <div id="selectedFeedbackFrom">
           <multiselect
-            v-model="selectedFeedbackForms"
-            tag-placeholder="בחר טופסי חוות דעת"
-            placeholder="חפש טפסים"
+            v-model="selectedFeedbackForm"
+            tag-placeholder="בחר טופס חוות דעת"
+            placeholder="חפש טופס"
             label="label"
             track-by="id"
             :options="serverData.allFeedbackForms.edges"
-            :multiple="true"
             :hide-selected="true"
             :show-labels="false"
             :loading="$apollo.loading"
           >
             <template v-slot:noResult>
-              לא נמצאו חברי סגל התואמים את החיפוש
+              לא נמצאו טפסים התואמים את החיפוש
             </template>
           </multiselect>
         </div>
@@ -117,7 +116,7 @@ export default {
       selectedSemester: null,
       selectedLecturers: [],
       selectedTeachingAssistants: [],
-      selectedFeedbackForms: [],
+      selectedFeedbackForm: null,
       serverData: {
         allCourses: {
           edges: [],
@@ -173,12 +172,12 @@ export default {
               name: staffToString(node),
             })
           )
-          this.selectedFeedbackForms = results.feedbackformcoursesemesterSet.edges.map(
+          this.selectedFeedbackForm = results.feedbackformcoursesemesterSet.edges.map(
             ({ node }) => ({
               id: node.feedbackForm.id,
               label: node.feedbackForm.label,
             })
-          )
+          )[0]
         })
     }
   },
@@ -204,7 +203,7 @@ export default {
             semesterId: this.selectedSemester.id,
             lecturerIds: this.getIds(this.selectedLecturers),
             otherStaffIds: this.getIds(this.selectedTeachingAssistants),
-            feedbackFormIds: this.getIds(this.selectedFeedbackForms),
+            feedbackFormIds: [this.selectedFeedbackForm.id],
           },
         },
       })
