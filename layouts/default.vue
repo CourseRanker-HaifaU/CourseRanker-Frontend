@@ -1,55 +1,39 @@
 <template>
-  <div>
-    <Nuxt />
+  <div class="flex flex-col md:h-screen">
+    <header>
+      <top-bar></top-bar>
+    </header>
+    <main
+      class="flex flex-col items-center lg:mx-32 xl:mx-64 bg-white px-3 md:px-6 py-2 flex-grow shadow-2xl"
+    >
+      <Nuxt class="flex flex-col items-center w-full min-w-full h-full" />
+    </main>
   </div>
 </template>
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+<script>
+import { mapActions } from 'vuex'
+export default {
+  created() {
+    this.restoreUserData()
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.updateScrolled)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.updateScrolled)
+  },
+  methods: {
+    ...mapActions({
+      restoreUserData: 'user_data/restoreState',
+      updateScrolled: 'scrolling/changeScrolled',
+    }),
+  },
 }
+</script>
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+<style scoped>
+.almost-full-height {
+  height: 100vh;
 }
 </style>

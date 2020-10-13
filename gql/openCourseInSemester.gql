@@ -1,0 +1,7 @@
+mutation openCourseInSemester($input: OpenCourseInSemesterInput!) {
+  openCourseInSemester(input: $input) {
+    courseSemester {
+      id
+    }
+  }
+}

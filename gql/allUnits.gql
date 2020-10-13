@@ -1,0 +1,10 @@
+query {
+  allUnits {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}

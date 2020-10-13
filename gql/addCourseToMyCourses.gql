@@ -1,0 +1,9 @@
+mutation addCourseToMyCourses($id: ID!) {
+  addCourseToMyCourses(input: {
+    courseSemesterIds: [$id]
+  }) {
+    user {
+      id
+    }
+  }
+}

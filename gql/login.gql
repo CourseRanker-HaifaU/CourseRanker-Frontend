@@ -1,0 +1,11 @@
+mutation login($input: LoginMutationInput!) {
+  login(input: $input) {
+    token
+    refreshExpiresIn
+    user {
+      firstName
+      lastName
+      role
+    }
+  }
+}

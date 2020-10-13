@@ -1,0 +1,108 @@
+query courseDetails($id: ID!) {
+  courseDetails(id: $id) {
+    name
+    unit {
+      name
+    }
+    courseType
+    compulsory
+    points
+    classification
+    prerequisites {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    averageRating
+    tags {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    coursesemesterSet(orderBy: "semesterYearJewish,semesterName") {
+      edges {
+        node {
+          id
+          semester {
+            name
+            yearJewish
+          }
+          feedbackformcoursesemesterSet {
+            edges {
+              node {
+                feedbackForm {
+                  id
+                  label
+                }
+              }
+            }
+          }
+          userfeedbackSet {
+            edges {
+              node {
+                id
+                timestamp
+                generalFeedback
+                lecturerFeedback
+                teachingAssistantFeedback
+                averageCourseRating
+                averageLecturerRating
+                averageTeachingAssistantRating
+              }
+            }
+          }
+          coursesemesterstaffSet {
+            edges {
+              node {
+                lecturers {
+                  edges {
+                    node {
+                      id
+                      title
+                      firstName
+                      lastName
+                    }
+                  }
+                }
+                teachingAssistants {
+                  edges {
+                    node {
+                      id
+                      title
+                      firstName
+                      lastName
+                    }
+                  }
+                }
+              }
+            }
+          }
+          coursesemesterexamSet {
+            edges {
+              node {
+                id
+                moed
+                average
+                histogram
+              }
+            }
+          }
+          averageLecturerRating
+          averageTeachingAssistantRating
+          averageCourseRating
+          averageCourseAndLecturerRating
+          averageCourseAndTeachingAssistantRating
+          inMyCourses
+          wroteFeedback
+          feedbackId
+        }
+      }
+    }
+  }
+}

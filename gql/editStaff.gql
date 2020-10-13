@@ -1,0 +1,7 @@
+mutation editStaff($input: EditStaffInput!) {
+  editStaff(input: $input) {
+    staff {
+      id
+    }
+  }
+}

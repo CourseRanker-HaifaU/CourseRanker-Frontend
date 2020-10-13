@@ -1,0 +1,54 @@
+query currentSemesterCourses($keywords: String!, $rowsPerPage: Int!, $after: String!, $tags: [ID], $compulsory: Boolean) {
+  allSemesters(isCurrent: true) {
+    edges {
+      node {
+        coursesemesterSet(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after, course_Tags: $tags, course_Compulsory: $compulsory, orderBy: "courseName") {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+          edges {
+            node {
+              id
+              course {
+                id
+                name
+              }
+              semester {
+                name
+                yearJewish
+              }
+              coursesemesterstaffSet {
+                edges {
+                  node {
+                    lecturers {
+                      edges {
+                        node {
+                          title
+                          firstName
+                          lastName
+                        }
+                      }
+                    }
+                    teachingAssistants {
+                      edges {
+                        node {
+                          title
+                          firstName
+                          lastName
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              averageLecturerRating
+              averageTeachingAssistantRating
+              averageCourseRating
+            }
+          }
+        }
+      }
+    }
+  }
+}

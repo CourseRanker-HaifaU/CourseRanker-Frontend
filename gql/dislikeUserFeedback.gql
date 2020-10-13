@@ -1,0 +1,7 @@
+mutation dislikeUserFeedback($id: ID!) {
+  dislikeUserFeedback(input: {
+    userFeedbackId: $id
+  }) {
+    ok
+  }
+}

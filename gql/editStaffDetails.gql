@@ -1,0 +1,16 @@
+query ($id: ID!){
+  staff(id: $id) {
+    id
+    title
+    firstName
+    lastName
+    units {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+}

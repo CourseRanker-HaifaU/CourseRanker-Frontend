@@ -1,0 +1,64 @@
+query ($id: ID!, $lecturersPerPage: Int!, $lecturersAfter: String, $teachingAssistantsPerPage: Int!, $teachingAssistantsAfter: String){
+  staff(id: $id) {
+    id
+    title
+    firstName
+    lastName
+    averageRatingAsLecturer
+    averageRatingAsTeachingAssistant
+    lecturers(first: $lecturersPerPage, after: $lecturersAfter, orderBy: "courseName,semesterYearJewish,semesterName") {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          courseSemester {
+            id
+            course {
+              id
+              name
+              unit {
+                name
+              }
+            }
+            semester {
+              name
+              yearJewish
+            }
+            averageCourseRating
+            averageLecturerRating
+            averageTeachingAssistantRating
+          }
+        }
+      }
+    }
+    teachingAssistants(first: $teachingAssistantsPerPage, after: $teachingAssistantsAfter, orderBy: "courseName,semesterYearJewish,semesterName") {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          courseSemester {
+            id
+            course {
+              id
+              name
+              unit {
+                name
+              }
+            }
+            semester {
+              name
+              yearJewish
+            }
+            averageCourseRating
+            averageLecturerRating
+            averageTeachingAssistantRating
+          }
+        }
+      }
+    }
+  }
+}

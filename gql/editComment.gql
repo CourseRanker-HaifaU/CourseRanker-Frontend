@@ -1,0 +1,11 @@
+mutation editComment($input: EditCommentInput!) {
+  editComment(input: $input) {
+    comment {
+      id
+      authorName
+      content
+      canEdit
+      isAnonymous
+    }
+  }
+}

@@ -1,0 +1,59 @@
+query myCourses($keywords: String!, $rowsPerPage: Int!, $after: String!) {
+  currentUser {
+    userCourses(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after, orderBy: "-semesterYearJewish,-semesterName,courseName") {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          course {
+            id
+            name
+          }
+          semester {
+            name
+            yearJewish
+          }
+          coursesemesterstaffSet {
+            edges {
+              node {
+                lecturers {
+                  edges {
+                    node {
+                      title
+                      firstName
+                      lastName
+                    }
+                  }
+                }
+                teachingAssistants {
+                  edges {
+                    node {
+                      title
+                      firstName
+                      lastName
+                    }
+                  }
+                }
+              }
+            }
+          }
+          feedbackformSet {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+          averageLecturerRating
+          averageTeachingAssistantRating
+          averageCourseRating
+          wroteFeedback
+          feedbackId
+        }
+      }
+    }
+  }
+}

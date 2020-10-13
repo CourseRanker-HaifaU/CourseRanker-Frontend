@@ -1,0 +1,48 @@
+query ($id: ID!){
+  userFeedback(id: $id) {
+    id
+    lecturer {
+      id
+      title
+      firstName
+      lastName
+    }
+    teachingAssistant {
+      id
+      title
+      firstName
+      lastName
+    }
+    questionuserfeedbackSet {
+      edges {
+        node {
+          question {
+            id
+            question
+            classification
+          }
+          ranking
+        }
+      }
+    }
+    commentSet {
+      edges {
+        node {
+          id
+          authorName
+          content
+          canEdit
+          isAnonymous
+        }
+      }
+    }
+    generalFeedback
+    lecturerFeedback
+    teachingAssistantFeedback
+    likesCount
+    dislikesCount
+    myFeedback
+    liked
+    disliked
+  }
+}

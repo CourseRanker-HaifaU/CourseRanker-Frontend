@@ -1,0 +1,7 @@
+mutation deleteFeedbackForm($id: ID!) {
+  deleteFeedbackForm(input: {
+    id: $id
+  }) {
+    ok
+  }
+}
