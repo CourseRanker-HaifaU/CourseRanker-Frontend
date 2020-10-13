@@ -281,6 +281,8 @@ export default {
           approved: this.statusFilter,
         }
       },
+      throttle: 300,
+      debounce: 300,
     },
   },
   methods: {

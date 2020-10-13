@@ -82,6 +82,7 @@ export default {
       update: (data) => {
         return data.myFeedbacks
       },
+      fetchPolicy: 'network-only',
     },
   },
 }
