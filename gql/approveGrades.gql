@@ -1,0 +1,9 @@
+mutation approveGrades($id: ID!) {
+  approveGrades(input: {
+    id: $id
+  }) {
+    courseSemesterExam {
+      id
+    }
+  }
+}

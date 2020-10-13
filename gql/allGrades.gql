@@ -1,0 +1,31 @@
+query($perPage: Int, $approved: Boolean, $after: String) {
+  allGrades(first: $perPage, approved: $approved, after: $after, orderBy: "approved") {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        moed
+        average
+        histogram
+        approved
+        uploader {
+          firstName
+          lastName
+        }
+        courseSemester {
+          id
+          course {
+            name
+          }
+          semester {
+            name
+            yearJewish
+          }
+        }
+      }
+    }
+  }
+}

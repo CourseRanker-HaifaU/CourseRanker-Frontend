@@ -26,6 +26,12 @@
       >
         שאלונים
       </nuxt-link>
+      <nuxt-link
+        to="/admin/grades_manager"
+        class="button blue-button ml-2 my-2"
+      >
+        ניהול ציונים והתפלגויות
+      </nuxt-link>
       <nuxt-link to="/admin/reports" class="button blue-button ml-2 my-2">
         דיווחים על תוכן פוגעני
       </nuxt-link>
