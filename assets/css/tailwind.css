@@ -148,6 +148,11 @@
     @apply break-all;
   }
 
+  .responsive-card.no-pr div {
+    @apply pr-0;
+    @apply pl-1;
+  }
+
   .responsive-card div strong {
     @apply ml-2;
   }
