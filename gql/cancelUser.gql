@@ -1,0 +1,5 @@
+mutation cancelUser($input: CancelUserInput!) {
+  cancelUser(input: $input) {
+    ok
+  }
+}

@@ -29,7 +29,7 @@
           id="email"
           v-model="userEmail"
           type="email"
-          label="אימייל"
+          label="אימייל (אוניברסיטאי)"
           div-class="col-span-2"
           :error-message="emailError"
           show-label
@@ -65,8 +65,10 @@
 
 <script>
 import newUser from '@/gql/newUser.gql'
-import { userLogin, showSuccessToast } from '@/utils'
+import { showSuccessToast } from '@/utils'
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
+
+const campusMail = (value) => value.endsWith('@campus.haifa.ac.il')
 
 export default {
   data() {
@@ -105,7 +107,8 @@ export default {
       if (this.$v.$invalid) {
         // TODO: Notify the user in a better way
         if (this.$v.userEmail.$invalid) {
-          this.emailError = 'חובה להזין כתובת אימייל תקינה'
+          this.emailError =
+            'חובה להזין כתובת אימייל תקינה של האוניברסיטה (campus)'
         }
 
         if (this.$v.userPassword.$invalid) {
@@ -127,11 +130,7 @@ export default {
         })
         showSuccessToast(
           this,
-          'המשתמש נוצר בהצלחה. המערכת כעת תיכנס בתור המשתמש החדש',
-          null,
-          () => {
-            userLogin(this, this.userEmail, this.userPassword)
-          }
+          'המשתמש נוצר בהצלחה. יש לאמת אותו ע״י לחיצה על הקישור במייל שנשלח.'
         )
       }
     },
@@ -140,6 +139,7 @@ export default {
     userEmail: {
       required,
       email,
+      campusMail,
     },
     userPassword: {
       required,
