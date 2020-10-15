@@ -4,6 +4,8 @@ import { DateTime } from 'luxon'
 export const calculateExpiresIn = (timestamp) =>
   (timestamp - Math.floor(Date.now() / 1000)) / (3600 * 24)
 
+const TOAST_LENGTH = 4000
+
 export async function userLogin(vueInstance, email, password) {
   try {
     const res = await vueInstance.$apollo.mutate({
@@ -137,7 +139,7 @@ export const showSuccessToast = (
 ) => {
   vm.$toast.success(message, {
     position: 'bottom-left',
-    duration: 1500,
+    duration: TOAST_LENGTH,
     onComplete: () => {
       if (onCompleteHook !== null) {
         onCompleteHook()
@@ -157,7 +159,7 @@ export const showErrorToast = (
 ) => {
   vm.$toast.error(message, {
     position: 'bottom-left',
-    duration: 3000,
+    duration: TOAST_LENGTH,
     onComplete: () => {
       if (onCompleteHook !== null) {
         onCompleteHook()
@@ -171,3 +173,6 @@ export const showErrorToast = (
 
 export const getDate = (date) =>
   DateTime.fromISO(date).setLocale('he').toLocaleString(DateTime.DATE_SHORT)
+
+export const trimLength = (message, length = 40) =>
+  message.slice(0, length) + (message.length > length ? '...' : '')
