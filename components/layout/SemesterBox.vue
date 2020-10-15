@@ -4,7 +4,7 @@
       v-for="(edge, index) in data"
       :key="edge.node.id"
       :title="'סמסטר ' + getSemester(edge.node.semester)"
-      :is-shown="edge.isShown"
+      :is-shown="showIndices.includes(index)"
       body-class="grid gap-1 grid-cols-2 gap-y-3 border-primary border-b-2 border-l-2 border-r-2 rounded-b-md p-4"
       @toggle-shown="triggerToggleShown(index)"
     >
@@ -283,7 +283,7 @@ export default {
   },
   data() {
     return {
-      showIndices: [0],
+      showIndices: [],
       histogramShown: [],
       histogramAddShown: [],
       addGrades: {},
@@ -307,6 +307,12 @@ export default {
       isLoggedIn: 'user_data/isLoggedIn',
     }),
   },
+  created() {
+    this.showIndices = this.data
+      .map((item, index) => [index, item.isShown])
+      .filter((value) => value[1])
+      .map((item) => item[0])
+  },
   methods: {
     multipleStaffToString,
     staffToString,
@@ -320,7 +326,12 @@ export default {
       return 'https://robohash.org/' + this.randomWord() + '?set=set2'
     },
     triggerToggleShown(index) {
-      this.$emit('toggle-shown', index)
+      const shownIndex = this.showIndices.indexOf(index)
+      if (shownIndex === -1) {
+        this.showIndices.push(index)
+      } else {
+        this.showIndices.splice(shownIndex, 1)
+      }
     },
     async addToMyCourses(node) {
       await this.$apollo.mutate({

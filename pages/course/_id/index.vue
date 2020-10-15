@@ -76,7 +76,6 @@
       </div>
       <semester-box
         :data="dataWithShownProperty"
-        @toggle-shown="toggleShown"
         @delete-course-semester="deleteCourseSemester"
       ></semester-box>
     </div>
@@ -112,7 +111,7 @@ export default {
       const newData = this.courseData.coursesemesterSet.edges.map(
         (item, index) => {
           const newItem = { ...item }
-          newItem.isShown = !this.hidden.includes(index)
+          newItem.isShown = item.node.semester.isCurrent
           return newItem
         }
       )
@@ -177,13 +176,6 @@ export default {
         return ''
       }
       return mapping[classification]
-    },
-    toggleShown(index) {
-      if (this.hidden.includes(index)) {
-        this.hidden.splice(this.hidden.indexOf(index), 1)
-      } else {
-        this.hidden.push(index)
-      }
     },
     async deleteCourse() {
       await this.$apollo.mutate({
