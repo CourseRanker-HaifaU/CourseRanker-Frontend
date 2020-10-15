@@ -25,13 +25,14 @@ query courseDetails($id: ID!) {
         }
       }
     }
-    coursesemesterSet(orderBy: "semesterYearJewish,semesterName") {
+    coursesemesterSet(orderBy: "-semesterYearJewish,-semesterName") {
       edges {
         node {
           id
           semester {
             name
             yearJewish
+            isCurrent
           }
           feedbackformcoursesemesterSet {
             edges {
