@@ -48,7 +48,7 @@
         <strong>דירוג מרצה:</strong>
         <span>
           <rating
-            :rating="edge.node.averageLecturerRating"
+            :rating="edge.node.averageLecturerRatingSpecific"
             class="rating"
           ></rating>
         </span>
@@ -59,7 +59,7 @@
         <strong>דירוג מתרגל/ת:</strong>
         <span>
           <rating
-            :rating="edge.node.averageTeachingAssistantRating"
+            :rating="edge.node.averageTeachingAssistantRatingSpecific"
             class="rating"
           ></rating>
         </span>
@@ -70,7 +70,7 @@
         <strong>דירוג קורס:</strong>
         <span>
           <rating
-            :rating="edge.node.averageCourseRating"
+            :rating="edge.node.averageCourseRatingSpecific"
             class="rating"
           ></rating>
         </span>

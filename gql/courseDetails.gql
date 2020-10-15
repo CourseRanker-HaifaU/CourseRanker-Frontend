@@ -94,9 +94,9 @@ query courseDetails($id: ID!) {
               }
             }
           }
-          averageLecturerRating
-          averageTeachingAssistantRating
-          averageCourseRating
+          averageLecturerRatingSpecific
+          averageTeachingAssistantRatingSpecific
+          averageCourseRatingSpecific
           averageCourseAndLecturerRating
           averageCourseAndTeachingAssistantRating
           inMyCourses
