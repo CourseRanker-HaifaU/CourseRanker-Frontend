@@ -1,19 +1,17 @@
-query currentSemesterCourses($keywords: String!, $rowsPerPage: Int!, $after: String!, $tags: [ID], $compulsory: Boolean) {
-  allSemesters(isCurrent: true) {
+query currentSemesterCourses($keywords: String!, $rowsPerPage: Int!, $after: String!, $tags: [ID], $compulsory: Boolean, $isCurrent: Boolean) {
+  allCourses(orderBy: "name", name_Icontains: $keywords, first: $rowsPerPage, after: $after, tags: $tags, compulsory: $compulsory) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
       node {
-        coursesemesterSet(course_Name_Icontains: $keywords, first: $rowsPerPage, after: $after, course_Tags: $tags, course_Compulsory: $compulsory, orderBy: "courseName") {
-          pageInfo {
-            endCursor
-            hasNextPage
-          }
+        id
+        name
+        coursesemesterSet(orderBy: "-semesterYearJewish,-semesterName", semester_IsCurrent: $isCurrent) {
           edges {
             node {
               id
-              course {
-                id
-                name
-              }
               semester {
                 name
                 yearJewish

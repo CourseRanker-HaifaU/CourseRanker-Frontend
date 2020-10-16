@@ -2,7 +2,7 @@ import allTags from '@/gql/allTags.gql'
 import { XOR } from '@/utils'
 
 export const state = () => ({
-  selectedTags: [],
+  selectedTags: ['סמסטר נוכחי'],
   availableTags: [],
   keywords: '',
 })
@@ -23,6 +23,12 @@ export const getters = {
       return undefined
     }
   },
+  isCurrent(state) {
+    if (state.selectedTags.includes('סמסטר נוכחי')) {
+      return true
+    }
+    return undefined
+  },
   keywords(state) {
     return state.keywords
   },
@@ -31,7 +37,12 @@ export const getters = {
       return state.availableTags
     }
     return state.selectedTags
-      .filter((item) => item !== 'קורסי בחירה' && item !== 'קורסי חובה')
+      .filter(
+        (item) =>
+          item !== 'קורסי בחירה' &&
+          item !== 'קורסי חובה' &&
+          item !== 'סמסטר נוכחי'
+      )
       .map(
         (label) => state.availableTags.find((item) => item.name === label).id
       )
