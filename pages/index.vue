@@ -76,6 +76,7 @@ export default {
       keywords: 'search/keywords',
       tags: 'search/filterTags',
       isCompulsory: 'search/isCompulsory',
+      isCurrent: 'search/isCurrent',
     }),
   },
   created() {
@@ -92,6 +93,7 @@ export default {
           after: '',
           tags: this.tags,
           compulsory: this.isCompulsory,
+          isCurrent: this.isCurrent,
         }
       },
       debounce: 300,
@@ -133,6 +135,7 @@ export default {
               after: this.courseList.endCursor,
               tags: this.tags,
               compulsory: this.isCompulsory,
+              isCurrent: this.isCurrent,
             },
             updateQuery: (previousResult, { fetchMoreResult }) => {
               const result = mergeCurrentSemesterCoursesData(

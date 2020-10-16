@@ -2,7 +2,7 @@
   <div class="frame-div flex flex-col w-full items-stretch justify-start">
     <div v-if="isSmall" class="courses-cards">
       <div
-        v-for="listItem in courseList.dataArray"
+        v-for="listItem in tableRows"
         :key="listItem.id"
         class="responsive-card hover:bg-secondary-hover"
         :class="{ 'cursor-pointer': whichTable !== 'myCourses' }"
@@ -122,7 +122,7 @@
       </thead>
 
       <tr
-        v-for="listItem in courseList.dataArray"
+        v-for="listItem in tableRows"
         :key="listItem.id"
         class="border-b border-black text-right hover:bg-gray-200"
         :class="{ 'cursor-pointer': whichTable !== 'myCourses' }"
@@ -302,6 +302,28 @@ export default {
       endCursor: '',
       hasNextPage: false,
     }
+  },
+  computed: {
+    tableRows() {
+      const rows = []
+      for (const course of this.courseList.dataArray) {
+        for (const { node } of course.coursesemesterSet.edges) {
+          rows.push({
+            id: node.id,
+            course: {
+              id: course.id,
+              name: course.name,
+            },
+            semester: node.semester,
+            coursesemesterstaffSet: node.coursesemesterstaffSet,
+            averageLecturerRating: node.averageLecturerRating,
+            averageTeachingAssistantRating: node.averageTeachingAssistantRating,
+            averageCourseRating: node.averageCourseRating,
+          })
+        }
+      }
+      return rows
+    },
   },
   methods: {
     ...mapMutations({

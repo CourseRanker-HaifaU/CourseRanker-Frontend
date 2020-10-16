@@ -50,7 +50,7 @@ export default {
     }),
     allSearchTags() {
       const fromServer = this.availableTags.map((item) => item.name)
-      return [...fromServer, 'קורסי חובה', 'קורסי בחירה']
+      return [...fromServer, 'קורסי חובה', 'קורסי בחירה', 'סמסטר נוכחי']
     },
   },
   created() {
