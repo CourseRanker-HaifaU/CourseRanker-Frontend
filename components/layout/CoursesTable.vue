@@ -17,6 +17,7 @@
           <nuxt-link
             v-if="whichTable === 'myCourses'"
             :to="`/course/${listItem.course.id}`"
+            class="underline text-primary"
             >{{ listItem.course.name }}
           </nuxt-link>
           <span v-if="whichTable !== 'myCourses'">
@@ -139,6 +140,7 @@
           <nuxt-link
             v-if="whichTable === 'myCourses'"
             :to="`/course/${listItem.course.id}`"
+            class="underline text-primary"
             >{{ listItem.course.name }}
           </nuxt-link>
           <span v-if="whichTable !== 'myCourses'">
@@ -306,23 +308,28 @@ export default {
   computed: {
     tableRows() {
       const rows = []
-      for (const course of this.courseList.dataArray) {
-        for (const { node } of course.coursesemesterSet.edges) {
-          rows.push({
-            id: node.id,
-            course: {
-              id: course.id,
-              name: course.name,
-            },
-            semester: node.semester,
-            coursesemesterstaffSet: node.coursesemesterstaffSet,
-            averageLecturerRating: node.averageLecturerRating,
-            averageTeachingAssistantRating: node.averageTeachingAssistantRating,
-            averageCourseRating: node.averageCourseRating,
-          })
+      if (this.whichTable === 'courses') {
+        for (const course of this.courseList.dataArray) {
+          for (const { node } of course.coursesemesterSet.edges) {
+            rows.push({
+              id: node.id,
+              course: {
+                id: course.id,
+                name: course.name,
+              },
+              semester: node.semester,
+              coursesemesterstaffSet: node.coursesemesterstaffSet,
+              averageLecturerRating: node.averageLecturerRating,
+              averageTeachingAssistantRating:
+                node.averageTeachingAssistantRating,
+              averageCourseRating: node.averageCourseRating,
+            })
+          }
         }
+        return rows
+      } else {
+        return this.courseList.dataArray
       }
-      return rows
     },
   },
   methods: {
