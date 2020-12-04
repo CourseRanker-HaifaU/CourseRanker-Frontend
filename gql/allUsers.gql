@@ -12,6 +12,7 @@ query ($after: String!, $perPage: Int!, $keywords: String!, $role: String!) {
         role
         createdDate
         email
+        isVerified
       }
     }
   }

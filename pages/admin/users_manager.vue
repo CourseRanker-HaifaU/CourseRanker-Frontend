@@ -102,20 +102,30 @@
                 <td class="row">
                   <button
                     v-if="!row.isEdit"
-                    class="table-btn"
+                    class="table-btn button blue-button"
                     @click="editOn(index)"
                   >
                     ערוך
                   </button>
                   <button
                     v-if="row.isEdit"
-                    class="table-btn"
+                    class="table-btn button blue-button"
                     @click="editOn(index)"
                   >
                     שמור
                   </button>
-                  <button class="table-btn" @click="deleteUser(index)">
+                  <button
+                    class="table-btn button red-button xl:mr-2"
+                    @click="deleteUser(index)"
+                  >
                     מחק
+                  </button>
+                  <button
+                    v-if="!row.isVerified"
+                    class="table-btn button green-button xl:mr-2"
+                    @click="verifyUser(index)"
+                  >
+                    אמת
                   </button>
                 </td>
               </tr>
@@ -178,20 +188,30 @@
               <div>
                 <button
                   v-if="!row.isEdit"
-                  class="table-btn"
+                  class="table-btn button blue-button"
                   @click="editOn(index)"
                 >
                   ערוך
                 </button>
                 <button
                   v-if="row.isEdit"
-                  class="table-btn"
+                  class="table-btn button blue-button"
                   @click="editOn(index)"
                 >
                   שמור
                 </button>
-                <button class="table-btn mr-2" @click="deleteUser(index)">
+                <button
+                  class="table-btn button red-button mr-2"
+                  @click="deleteUser(index)"
+                >
                   מחק
+                </button>
+                <button
+                  v-if="!row.isVerified"
+                  class="table-btn button green-button mr-2"
+                  @click="verifyUser(index)"
+                >
+                  אמת
                 </button>
               </div>
             </div>
@@ -216,6 +236,7 @@ import isSmallMixin from '@/mixins/small_width'
 import allUsers from '@/gql/allUsers.gql'
 import deleteUser from '@/gql/deleteUser.gql'
 import updateUser from '@/gql/updateUser.gql'
+import manuallyVerifyUser from '@/gql/manuallyVerifyUser.gql'
 import { roleParser, showSuccessToast, getDate } from '@/utils'
 
 export default {
@@ -353,17 +374,30 @@ export default {
       })
       showSuccessToast(this, 'המשתמש עודכן בהצלחה')
     },
-    async deleteUser(id) {
+    async deleteUser(idx) {
       await this.$apollo.mutate({
         mutation: deleteUser,
         variables: {
           input: {
-            id: this.allUsers.edges[id].node.id,
+            id: this.allUsers.edges[idx].node.id,
           },
         },
       })
       showSuccessToast(this, 'המשתמש נמחק בהצלחה', null, () => {
-        this.allUsers.edges.splice(id, 1)
+        this.allUsers.edges.splice(idx, 1)
+      })
+    },
+    async verifyUser(idx) {
+      await this.$apollo.mutate({
+        mutation: manuallyVerifyUser,
+        variables: {
+          input: {
+            email: this.allUsers.edges[idx].node.email,
+          },
+        },
+      })
+      showSuccessToast(this, 'המשתמש אומת בהצלחה', null, () => {
+        this.$apollo.queries.allUsers.refetch()
       })
     },
     infiniteHandler($state) {
@@ -462,8 +496,6 @@ export default {
 }
 
 .table-btn {
-  @apply text-white;
-  @apply bg-primary;
   @apply p-2;
   @apply my-1;
   @apply rounded;

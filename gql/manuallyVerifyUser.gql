@@ -1,0 +1,5 @@
+mutation manuallyVerifyUser($input: ManuallyVerifyUserInput!) {
+  manuallyVerifyUser(input: $input) {
+    ok
+  }
+}
