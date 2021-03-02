@@ -118,7 +118,7 @@
         v-if="edge.node.coursesemesterexamSet.edges.length > 0"
         class="flex flex-row items-baseline justify-start col-span-2"
       >
-        <strong>נבחנו:</strong>
+        <strong>מספר הנבחנים:</strong>
         <ul>
           <li
             v-for="examEdge in edge.node.coursesemesterexamSet.edges"
